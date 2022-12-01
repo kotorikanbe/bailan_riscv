@@ -74,11 +74,11 @@ module Imm_extractor
                 imm_reg[10:5] = inst[30:25];
                 imm_reg[11]   = inst[7];
                 imm_reg[12]   = inst[31];
-                imm_reg[11:0] = imm_reg[12:1];
-                if(imm_reg[11] == 1'b1)
-                imm_reg[31:12] = 20'b1111_1111_1111_1111;
-                else if(imm_reg[11] == 1'b0)
-                imm_reg[31:12] = 20'b0000_0000_0000_0000;
+                imm_reg[0]    = 1'b0;
+                if(imm_reg[12] == 1'b1)
+                imm_reg[31:13] = 19'b1111_1111_1111_111;
+                else if(imm_reg[12] == 1'b0)
+                imm_reg[31:13] = 19'b0000_0000_0000_000;
             end
 
             op_U_lui:
