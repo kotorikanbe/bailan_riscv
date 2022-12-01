@@ -100,12 +100,11 @@ module Imm_extractor
                 imm_reg[11]    = inst[20];
                 imm_reg[19:12] = inst[19:12];
                 imm_reg[20]    = inst[31];
-                imm_reg[19:0]  = imm_reg[20:1];
 
-                if(imm_reg[19] == 1'b1)
-                imm_reg[31:20] = 12'b1111_1111_1111;
-                else if(imm_reg[19] == 1'b0)
-                imm_reg[31:20] = 12'b0000_0000_0000;
+                if(imm_reg[20] == 1'b1)
+                imm_reg[31:21] = 11'b1111_1111_111;
+                else if(imm_reg[20] == 1'b0)
+                imm_reg[31:20] = 11'b0000_0000_000;
             end
 
             default: imm_reg[31:0] = 'd0;
