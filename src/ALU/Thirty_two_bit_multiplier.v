@@ -30,28 +30,30 @@ module  Thirty_two_bit_multiplier
         end
         always @(posedge clk) begin
             if(!flag) begin
-                case (curr_state)
-                    2'b00: begin
-                        low_answer <= operated_operator_2;
-                        high_answer <= high_answer + C_o;
-                    end
-                    2'b01: begin
-                        low_answer <= {operated_operator_2[15:0] , low_answer[15:0]};
-                        high_answer <= {high_answer[31:16] + C_o , operated_operator_2[31:16]};
-                    end
-                    2'b10: begin
-                        low_answer <= {operated_operator_2[15:0] , low_answer[15:0]};
-                        high_answer <= {high_answer[31:16] + C_o , operated_operator_2[31:16]};
-                    end
-                    2'b11: begin
-                        low_answer <= low_answer;
-                        high_answer <= operated_operator_2;
-                    end
-                    default: begin
-                        low_answer <= 32'b0;
-                        high_answer <= 32'b0;
-                    end
+                if(count < 3'b101)begin
+                    case (curr_state)
+                        2'b00: begin
+                            low_answer <= operated_operator_2;
+                            high_answer <= high_answer + C_o;
+                        end
+                        2'b01: begin
+                            low_answer <= {operated_operator_2[15:0] , low_answer[15:0]};
+                            high_answer <= {high_answer[31:16] + C_o , operated_operator_2[31:16]};
+                        end
+                        2'b10: begin
+                            low_answer <= {operated_operator_2[15:0] , low_answer[15:0]};
+                            high_answer <= {high_answer[31:16] + C_o , operated_operator_2[31:16]};
+                        end
+                        2'b11: begin
+                            low_answer <= low_answer;
+                            high_answer <= operated_operator_2;
+                        end
+                        default: begin
+                            low_answer <= 32'b0;
+                            high_answer <= 32'b0;
+                        end
                 endcase
+                end
             end
             else begin
                 low_answer <= 32'b0;
@@ -59,13 +61,13 @@ module  Thirty_two_bit_multiplier
             end
         end
         always @(negedge clk) begin
-            if(!flag && (count == 3'b100))begin
+            if(!flag && (count == 3'b101))begin
                 answer <= {high_answer , low_answer};
             end
         end
         always @(negedge clk) begin
             if(!flag) begin
-                if(count < 3'b100) begin
+                if(count < 3'b101) begin
                     case (curr_state)
                         2'b00: begin
                             to_be_added_operator_1 <= operated_operator_1;
@@ -89,9 +91,6 @@ module  Thirty_two_bit_multiplier
                         end
                     endcase
                     count <= count + 3'b001;
-                end
-                else begin
-                    count <= count + 1;
                 end
             end
             else begin

@@ -9,6 +9,7 @@ module  Sixteen_bit_multiplier
         wire [31:0]       stored_operator [15:0];
         wire [31:0]       identified_stored_operator [15:0];
         wire [31:0]       operated_operator [14:0];
+        wire [14:0]       C;
         assign            real_operator = {16'h0000 , operator_1};
         assign            answer = operated_operator[14];
         genvar            i;
@@ -27,6 +28,7 @@ module  Sixteen_bit_multiplier
                 .operator_1    (identified_stored_operator[0][31:0]),
                 .operator_2    (identified_stored_operator[1][31:0]),
                 .operator_3    (1'b0),
+                .C             (C[0]),
                 .answer        (operated_operator[0][31:0])
             );
         genvar            j;
@@ -37,6 +39,7 @@ module  Sixteen_bit_multiplier
                         .operator_1    (identified_stored_operator[j][31:0]),
                         .operator_2    (operated_operator[j-2][31:0]),
                         .operator_3    (1'b0),
+                        .C             (C[j-1]),
                         .answer        (operated_operator[j-1][31:0])
                     );
             end
