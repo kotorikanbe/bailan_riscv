@@ -1,3 +1,4 @@
+//32位加法器，带进位端
 `timescale 1ns/1ns
 module  Thirty_two_bit_adder
     (
@@ -11,7 +12,7 @@ module  Thirty_two_bit_adder
         wire [31:0]      CG;
         wire [31:0]      C_o;
         assign           C = C_o[31];
-        One_bit_adder  u_adder0
+        One_bit_adder  u_adder0//这里例化了32个1位加法器
             (
                 .A_i    (operator_1[0]),
                 .B_i    (operator_2[0]),
@@ -34,7 +35,7 @@ module  Thirty_two_bit_adder
                     );
             end
         endgenerate
-        Eight_bit_carry_look_ahead_adder u_eight_bit_carry_look_ahead_adder
+        Eight_bit_carry_look_ahead_adder u_eight_bit_carry_look_ahead_adder//这里例化了4个8位超前进位器
             (
                 .C_i    (operator_3),
                 .P_0    (CP[0]),

@@ -1,3 +1,4 @@
+//左移器
 `timescale 1ns/1ns
 module  Left_logic_shifter 
     (

@@ -1,6 +1,7 @@
 ///////////////////
 //八位超前进位电路//
 //////////////////
+//简单的超前进位端
 `timescale 1ns/1ns
 module  Eight_bit_carry_look_ahead_adder
     (

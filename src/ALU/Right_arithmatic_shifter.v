@@ -1,3 +1,4 @@
+//算术右移器，高位补符号位
 `timescale 1ns/1ns
 module  Right_arithmatic_shifter 
     (
