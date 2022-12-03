@@ -1,3 +1,4 @@
+`timescale 1ns/1ns
 module  Right_logic_shifter 
     (
         input [31:0]         operator_1,

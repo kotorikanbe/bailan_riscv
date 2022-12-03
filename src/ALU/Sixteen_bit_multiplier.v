@@ -1,3 +1,4 @@
+`timescale 1ns/1ns
 module  Sixteen_bit_multiplier 
     (
         input [15:0]      operator_1,

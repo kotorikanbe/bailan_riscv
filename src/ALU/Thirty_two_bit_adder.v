@@ -1,13 +1,16 @@
+`timescale 1ns/1ns
 module  Thirty_two_bit_adder
     (
         input [31:0]     operator_1,
         input [31:0]     operator_2,
         input            operator_3,
-        output [31:0]    answer
+        output [31:0]    answer,
+        output           C
     );
         wire [31:0]      CP;
         wire [31:0]      CG;
         wire [31:0]      C_o;
+        assign           C = C_o[31];
         One_bit_adder  u_adder0
             (
                 .A_i    (operator_1[0]),

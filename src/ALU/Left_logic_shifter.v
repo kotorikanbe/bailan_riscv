@@ -1,3 +1,4 @@
+`timescale 1ns/1ns
 module  Left_logic_shifter 
     (
         input [31:0]         operator_1,
@@ -37,7 +38,7 @@ module  Left_logic_shifter
                 5'b11100: answer = {operator_1[3:0] , 28'b0};
                 5'b11101: answer = {operator_1[2:0] , 29'b0};
                 5'b11110: answer = {operator_1[1:0] , 30'b0};
-                5'b11111: answer = {operator_1[0],31'b0};
+                5'b11111: answer = {operator_1[0] , 31'b0};
                 default:  answer = {operator_1};
             endcase
         end

@@ -1,6 +1,7 @@
 ///////////////////
 //八位超前进位电路//
 //////////////////
+`timescale 1ns/1ns
 module  Eight_bit_carry_look_ahead_adder
     (
         input     C_i ,
@@ -34,7 +35,7 @@ module  Eight_bit_carry_look_ahead_adder
         assign    C_2 = G_2 | (P_2 & G_1) | (P_2 & P_1 & G_0) | (P_2 & P_1 & P_0 & C_i);
         assign    C_3 = G_3 | (P_3 & G_2) | (P_3 & P_2 & G_1) | (P_3 & P_2 & P_1 & G_0) | (P_3 & P_2 & P_1 & P_0 & C_i);
         assign    C_4 = G_4 | (P_4 & G_3) | (P_4 & P_3 & G_2) | (P_4 & P_3 & P_2 & G_1) | (P_4 & P_3 & P_2 & P_1 & G_0) | (P_4 & P_3 & P_2 & P_1 & P_0 & C_i);
-        assign    C_5 = G_5 | (P_5 & G_4) | (P_5 & P_4 & G_3) | (P_5 & P_4 & P_3 & G_2) | (P_5 & P_4 & P_3 & P_2 & G_1) | (P_5 & P_4 & P_3 & P_2 & P_1 & C_i) | (P_5 & P_4 & P_3 & P_2 & P_1 & P_0 & C_i);
+        assign    C_5 = G_5 | (P_5 & G_4) | (P_5 & P_4 & G_3) | (P_5 & P_4 & P_3 & G_2) | (P_5 & P_4 & P_3 & P_2 & G_1) | (P_5 & P_4 & P_3 & P_2 & P_1 & G_0) | (P_5 & P_4 & P_3 & P_2 & P_1 & P_0 & C_i);
         assign    C_6 = G_6 | (P_6 & G_5) | (P_6 & P_5 & G_4) | (P_6 & P_5 & P_4 & G_3) | (P_6 & P_5 & P_4 & P_3 & G_2) | (P_6 & P_5 & P_4 & P_3 & P_2 & G_1) | (P_6 & P_5 & P_4 & P_3 & P_2 & P_1 & G_0) | (P_6 & P_5 & P_4 & P_3 & P_2 & P_1 & P_0 & C_i);
         assign    C_7 = G_7 | (P_7 & G_6) | (P_7 & P_6 & G_5) | (P_7 & P_6 & P_5 & G_4) | (P_7 & P_6 & P_5 & P_4 & G_3) | (P_7 & P_6 & P_5 & P_4 & P_3 & G_2) | (P_7 & P_6 & P_5 & P_4 & P_3 & P_2 & G_1) | (P_7 & P_6 & P_5 & P_4 & P_3 & P_2 & P_1 & G_0) | (P_7 & P_6 & P_5 & P_4 & P_3 & P_2 & P_1 & P_0 & C_i);
 endmodule
