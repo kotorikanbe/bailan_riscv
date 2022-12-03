@@ -16,10 +16,13 @@ module  Decoder
         output [6:0]                opcode,
         output [2:0]                funct3,
         output [6:0]                funct7,
-        output [4:0]                r_src_1,
-        output [4:0]                r_src_2,
-        output [4:0]                r_des,
+        output [4:0]                reg_src_1,
+        output [4:0]                reg_src_2,
+        output [4:0]                reg_des,
         output reg signed [11:0]    imm,
+
+        output                      is_R,
+        //output                      is_I,
 
         output                      is_B_beq,
 	    output                      is_B_bne,
@@ -27,6 +30,9 @@ module  Decoder
 	    output                      is_B_bge,
 	    output                      is_B_bltu,
 	    output                      is_B_bgeu,
+
+        output                      is_I_load,
+        output                      is_S,
 
         output                      is_U,
         output                      is_U_lui,
@@ -47,11 +53,11 @@ module  Decoder
     ///////////////////////////////////////////////////////////////////////////
 	//// 先对opcode进行判断，看是哪一类型的指令                               ////
 	///////////////////////////////////////////////////////////////////////////
-        wire    is_R;
-        wire    is_I_load;
+        //wire    is_R;
+        //wire    is_I_load;
         //wire    is_I_jalr;
         wire    is_I_cal;
-        wire    is_S;
+        //wire    is_S;
         wire    is_B;
         // wire    is_U_lui;
         wire    is_U_auipc;
@@ -133,9 +139,9 @@ module  Decoder
         assign  opcode     = inst[6:0];
         assign  funct3     = inst[14:12];
         assign  funct7     = inst[31:25];
-        assign  r_src_1    = inst[19:15];
-        assign  r_src_2    = inst[24:20];
-        assign  r_des      = inst[11:7]; 
+        assign  reg_src_1    = inst[19:15];
+        assign  reg_src_2    = inst[24:20];
+        assign  reg_des      = inst[11:7]; 
 
     
     //指令大类判断
@@ -143,6 +149,7 @@ module  Decoder
         assign    is_I_load     = (opcode == op_I_load);
         assign    is_I_jalr     = (opcode == op_I_jalr);
         assign    is_I_cal      = (opcode == op_I_cal);
+        //assign    is_I          = is_I_load | is_I_cal | is_I_jalr;
         assign    is_S          = (opcode == op_S);
         assign    is_B          = (opcode == op_B);
         assign    is_U_lui      = (opcode == op_U_lui);
