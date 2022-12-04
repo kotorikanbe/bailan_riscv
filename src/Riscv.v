@@ -1,9 +1,11 @@
 module Riscv
     (
         input                   clk,
-        input   [31:0]          inst,
+        input                   rst_n,
         output  [7:0]           rom_addr
     );
+        wire    [31:0]          inst;
+        
         wire    [31:0]          pc_new;
         wire    [31:0]          pc_out;
         wire    [31:0]          pc_plus_4;
@@ -138,20 +140,20 @@ module Riscv
         
         
 
-        MUX pc_mux( .data1_i(alu_result),
+        Mux pc_mux( .data1_i(alu_result),
                     .data2_i(pc_plus_4),
                     .sel_i(pc_sel),
                     .dat_o(pc_new)
                   );
 
-        MUX rs1_mux(
+        Mux rs1_mux(
                     .data1_i(PC),
                     .data2_i(reg_src_dat_1),
                     .sel_i(alu_src1_sel),
                     .dat_o(alu_src1_dat)
                     );
 
-        MUX rs2_mux(
+        Mux rs2_mux(
                     .data1_i(imm),
                     .data2_i(reg_src_dat_2),
                     .sel_i(alu_src2_sel),
@@ -159,7 +161,7 @@ module Riscv
                     );
 
         WB_mux wb_mux(
-                      .pc_plus4_i(pc+4),
+                      .pc_plus4_i(pc_plus_4),
                       .alu_result_i(alu_result),
                       .imm_i(imm),
                       .mem_i(mem_dat_o),
