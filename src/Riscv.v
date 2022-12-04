@@ -1,63 +1,59 @@
 module Riscv
     (
-        input   clk,
-        input [31:0] inst
+        input                   clk,
+        input   [31:0]          inst
     );
-        wire [31:0]             pc_new;
-        wire [31:0]             pc_out;
-        wire [31:0]             pc_plus_4;
+        wire    [31:0]          pc_new;
+        wire    [31:0]          pc_out;
+        wire    [31:0]          pc_plus_4;
         
-        wire                      branch_judge;
+        wire                    branch_judge; //比较判断信号
         
-        wire [4:0]                reg_src_1;
-        wire [4:0]                reg_src_2;
+        wire    [4:0]           reg_src_1;
+        wire    [4:0]           reg_src_2;
 
-        wire [31:0]               reg_src_dat_1;
-        wire [31:0]               reg_src_dat_2;
+        wire    [31:0]          reg_src_dat_1;
+        wire    [31:0]          reg_src_dat_2;
 
-        wire [31:0]               reg_des_dat;
+        wire    [31:0]          reg_des_dat;
 
-        wire [4:0]                reg_des;
-        wire signed [11:0]          imm;
+        wire    [4:0]           reg_des;
+        wire signed [11:0]      imm;
         
-        wire              mem_rd; //RAM的读使能
-        wire              mem_wr; //RAM写使能
+        wire                    mem_rd; //RAM的读使能
+        wire                    mem_wr; //RAM写使能
 
-        wire [31:0]       mem_dat_i;
-        wire [31:0]       mem_dat_o;
+        wire    [31:0]          mem_dat_i;
+        wire    [31:0]          mem_dat_o;
 
-        wire [1:0]    wb_sel; //写回寄存器的数据选择器控制信号
-        wire              reg_wr;  //寄存器的写使能控制信号
-        wire              pc_sel;
+        wire    [1:0]           wb_sel; //写回寄存器的数据选择器控制信号
+        wire                    reg_wr;  //寄存器的写使能控制信号
+        wire                    pc_sel;
         
-        wire              alu_src1_sel; //ALU操作数来源
-        wire              alu_src2_sel; //ALU操作数来源
-        wire [31:0]       alu_src1_dat;
-        wire [31:0]       alu_src2_dat;
-        wire [4:0]    alu_ctl; //ALU控制信号
-        wire [31:0]       alu_result;
+        wire                    alu_src1_sel; //ALU操作数来源
+        wire                    alu_src2_sel; //ALU操作数来源
+        wire    [31:0]          alu_src1_dat;
+        wire    [31:0]          alu_src2_dat;
+        wire    [4:0]           alu_ctl; //ALU控制信号
+        wire    [31:0]          alu_result;
 
-        wire              jal;
-        wire              jalr;
-        wire              beq;
-        wire              bne;
-        wire              blt;
-        wire              bge;
-        wire              bltu;
-        wire              bgeu;
-        wire              lui;
-        wire              U_type;
+        wire                    beq;
+        wire                    bne;
+        wire                    blt;
+        wire                    bge;
+        wire                    bltu;
+        wire                    bgeu;
         
-        wire [2:0]        rw_typel; //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
+        wire [2:0]              rw_type; //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
 
-        assign pc_plus_4 = pc_out+4;
+        assign                  pc_plus_4 = pc_out+4;
 
 
-        PC pc (.clk(clk),
-               .rst_n(rst_n),
-               .pc_new(pc_new),
-               .pc_out(pc_out)
-        );
+        PC pc(.clk(clk),
+              .rst_n(rst_n),
+              .pc_new(pc_new),
+              .pc_out(pc_out)
+             );
 
 
        Decoder_control decoder_control( .clk(clk),
@@ -80,16 +76,12 @@ module Riscv
                                         .alu_src2(alu_src2_sel), //ALU操作数来源
                                         .alu_ctl(alu_ctl), //ALU控制信号
 
-                                        .jal(jal),
-                                        .jalr(jalr),
                                         .beq(beq),
                                         .bne(bne),
                                         .blt(blt),
                                         .bge(bge),
                                         .bltu(bltu),
                                         .bgeu(bgeu),
-                                        .lui(lui),
-                                        .U_type(U_type),
                                         .rw_type(rw_type) //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
                                     );
 
@@ -104,19 +96,38 @@ module Riscv
                              .reg_src_2_dat_o(reg_src_dat_2) //输出的数据2
                             );
 
+        Branch branch(
+                      .beq(beq),
+                      .bne(bne),
+                      .blt(blt),
+                      .bge(bge),
+                      .bltu(bltu),
+                      .bgeu(bgeu),
+                      .reg_src_dat_1(reg_src_dat_1),
+                      .reg_src_dat_2(reg_src_dat_2),
+                      .branch_judge(branch_judge)
+                     );
+
+        ALU alu( .operator_1(alu_src1_dat),
+                 .operator_2(alu_src2_dat),
+                 .opcode(alu_ctl),
+                 .clk(clk),
+                 .answer(alu_result)
+                );
+
         
-        RAM ram(.clk(clk),
-                .rst_n(rst_n),
+        RAM ram( .clk(clk),
+                 .rst_n(rst_n),
         
-                .wr_en(mem_wr),
-                .rd_en(mem_rd),
+                 .wr_en(mem_wr),
+                 .rd_en(mem_rd),
         
-                .addr(alu_result),
-                .rw_type(rw_type), //读写的类型，有：字节，半字，字，双字等等
+                 .addr(alu_result),
+                 .rw_type(rw_type), //读写的类型，有：字节，半字，字，双字等等
                                 //000：lb sb; 001: lh sh; 010: lw sw; 100: lbu; 101:lhu
 
-                .dat_i(mem_dat_i),
-                .dat_o(mem_dat_o)
+                 .dat_i(mem_dat_i),
+                 .dat_o(mem_dat_o)
                 );
 
         MUX pc_mux( .data1_i(alu_result),

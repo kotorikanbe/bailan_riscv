@@ -32,16 +32,12 @@ module Decoder_control
         output              alu_src2, //ALU操作数来源
         output reg [4:0]    alu_ctl, //ALU控制信号
 
-        output              jal,
-        output              jalr,
         output              beq,
         output              bne,
         output              blt,
         output              bge,
         output              bltu,
         output              bgeu,
-        output              lui,
-        output              U_type,
         
         output [2:0]        rw_type //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
     );
@@ -253,11 +249,6 @@ module Decoder_control
         assign  bltu          = is_B_bltu;
         assign  bgeu          = is_B_bgeu;
 
-
-        assign  lui           = is_U_lui;
-        assign  U_type        = is_U;
-        assign  jal           = is_J_jal;
-        assign  jalr          = is_I_jalr;
 
         //ALU控制信号
         always @(*) begin
