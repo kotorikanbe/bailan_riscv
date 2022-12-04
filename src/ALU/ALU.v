@@ -6,6 +6,8 @@ module  ALU
         input [31:0]         operator_2,
         input [4:0]          opcode,
         input                clk,
+        input                clk_alu,
+        input                clk_mul,
         output reg [31:0]    answer
     );
         wire [31:0]      operator_1_c;
@@ -23,9 +25,7 @@ module  ALU
         wire [31:0]      r_a_shifter_o;
         wire [31:0]      ALU_o;
         wire             C;    
-        wire             clk_mul;
-        wire             clk_div;
-        wire             clk_alu;    
+        wire             clk_div;  
         reg [31:0]       operator_1_r;
         reg [31:0]       operator_2_r;
         reg [4:0]        opcode_r;
@@ -43,9 +43,7 @@ module  ALU
         end
         clk_wiz_alu u_clk_wizard
             (
-                .clk_out1(clk_alu),     // output clk_out1
-                .clk_out2(clk_mul),     // output clk_out2
-                .clk_out3(clk_div),     // output clk_out3
+                .clk_out1(clk_div),     // output clk_out1
                 .clk_in1(clk)
             );      // input clk_in1
         Converter_o u_converter_o0
@@ -108,6 +106,13 @@ module  ALU
                 .clk           (clk_mul),
                 .answer        (multiplier_o)
             );
+        /*mult_gen_0 u_alu_mul_ip 
+            (
+                .CLK     (clk_mul),  // input wire CLK
+                .A       (operator_1_c),      // input wire [31 : 0] A
+                .B       (operator_2_c),      // input wire [31 : 0] B
+                .P       (multiplier_o)      // output wire [63 : 0] P
+            );*/
         Divider u_divider0
             (
                 .dividend      (operator_1_c),
