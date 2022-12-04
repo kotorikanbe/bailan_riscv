@@ -67,7 +67,7 @@ module Control
         input               is_J_jal,
 
         output              mem_rd, //RAM的读使能
-        output              mem_wr, //数据存储器写使能
+        output              mem_wr, //RAM写使能
 
         output reg [1:0]    wb_sel, //写回寄存器的数据选择器控制信号
         output              reg_wr,  //寄存器的写使能控制信号
