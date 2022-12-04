@@ -1,3 +1,4 @@
+`timescale 1ns/1ns
 module WB_mux 
     (
         input      [31:0]   pc_plus4_i,

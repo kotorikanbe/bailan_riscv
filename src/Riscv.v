@@ -1,7 +1,8 @@
 module Riscv
     (
         input                   clk,
-        input   [31:0]          inst
+        input   [31:0]          inst,
+        output  [7:0]           rom_addr
     );
         wire    [31:0]          pc_new;
         wire    [31:0]          pc_out;
@@ -47,6 +48,25 @@ module Riscv
         wire [2:0]              rw_type; //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
 
         assign                  pc_plus_4 = pc_out+4;
+        assign                  rom_addr = pc_out[9:2];
+
+        ROM rom (.addr(rom_addr),
+                 .inst(inst)
+                );
+
+        RAM ram (.clk(clk),
+                 .rst_n(rst_n),
+        
+                 .wr_en(mem_wr),
+                 .rd_en(mem_rd),
+        
+                 .addr(alu_result),
+                 .rw_type(rw_type), //读写的类型，有：字节，半字，字，双字等等
+                                //000：lb sb; 001: lh sh; 010: lw sw; 100: lbu; 101:lhu
+
+                 .dat_i(mem_dat_i),
+                 .dat_o(mem_dat_o)
+                );
 
 
         PC pc(.clk(clk),
@@ -116,19 +136,7 @@ module Riscv
                 );
 
         
-        RAM ram( .clk(clk),
-                 .rst_n(rst_n),
         
-                 .wr_en(mem_wr),
-                 .rd_en(mem_rd),
-        
-                 .addr(alu_result),
-                 .rw_type(rw_type), //读写的类型，有：字节，半字，字，双字等等
-                                //000：lb sb; 001: lh sh; 010: lw sw; 100: lbu; 101:lhu
-
-                 .dat_i(mem_dat_i),
-                 .dat_o(mem_dat_o)
-                );
 
         MUX pc_mux( .data1_i(alu_result),
                     .data2_i(pc_plus_4),

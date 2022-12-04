@@ -1,4 +1,4 @@
-
+`timescale 1ns/1ns
 module Mux
     (
         input [31:0]    data1_i,

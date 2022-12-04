@@ -1,3 +1,4 @@
+`timescale 1ns/1ns
 module  Registers 
     (
         input [4:0]     reg_src_1_i, //寄存器序号1

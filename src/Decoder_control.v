@@ -1,3 +1,4 @@
+`timescale 1ns/1ns
 module Decoder_control 
     #(
         parameter [6:0]             op_R        = 7'b0110011, //R型指令

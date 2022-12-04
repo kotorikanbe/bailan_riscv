@@ -1,3 +1,4 @@
+`timescale 1ns/1ns
 module PC
     (
         input               clk,
@@ -14,3 +15,4 @@ module PC
 	end	
 
 endmodule
+
