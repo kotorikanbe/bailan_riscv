@@ -50,21 +50,22 @@ module  ALU
             );      // input clk_in1
         Converter_o u_converter_o0
             (
-                .operator_1(operator_1_r[31]),
-                .operator_2(operator_2_r[31]),
-                .opcode(opcode_r),
-                .adder_o(adder_o),
-                .multiplier_o(multiplier_o),
-                .divider_q_o(divider_q_o),
-                .divider_r_o(divider_r_o),
-                .and_o(and_o),
-                .or_o(or_o),
-                .xor_o(xor_o),
-                .nor_o(nor_o),
-                .l_shifter_o(l_shifter_o),
-                .r_a_shifter_o(r_a_shifter_o),
-                .r_shifter_o(r_shifter_o),
-                .ALU_o(ALU_o)
+                .operator_1       (operator_1_r[31]),
+                .operator_2       (operator_2_r[31]),
+                .opcode           (opcode_r),
+                .adder_o          (adder_o),
+                .C                (C),
+                .multiplier_o     (multiplier_o),
+                .divider_q_o      (divider_q_o),
+                .divider_r_o      (divider_r_o),
+                .and_o            (and_o),
+                .or_o             (or_o),
+                .xor_o            (xor_o),
+                .nor_o            (nor_o),
+                .l_shifter_o      (l_shifter_o),
+                .r_a_shifter_o    (r_a_shifter_o),
+                .r_shifter_o      (r_shifter_o),
+                .ALU_o            (ALU_o)
             );
         Left_logic_shifter u_left_logic_shifter0
             (
