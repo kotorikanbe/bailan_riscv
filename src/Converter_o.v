@@ -4,7 +4,6 @@ module Converter_o
         input                operator_1,
         input                operator_2,
         input [4:0]          opcode,
-        input                C,
         input [31:0]         adder_o,
         input [63:0]         multiplier_o,
         input [31:0]         divider_q_o,//商
@@ -96,7 +95,7 @@ module Converter_o
                 5'b10001: begin
                     case ({operator_1,operator_2})
                         2'b00: begin
-                            if((adder_o[31] || C)) begin
+                            if((adder_o[31])) begin
                                 ALU_o = 32'b0;
                             end
                             else begin
@@ -110,7 +109,7 @@ module Converter_o
                             ALU_o = 32'hffffffff;
                         end
                         2'b11: begin
-                            if((adder_o[31] || C)) begin
+                            if((adder_o[31])) begin
                                 ALU_o = 32'b0;
                             end
                             else begin
@@ -123,7 +122,7 @@ module Converter_o
                     endcase
                 end
                 5'b10010: begin
-                    if((adder_o[31] || C)) begin
+                    if((adder_o[31])) begin
                                 ALU_o = 32'b0;
                             end
                             else begin
