@@ -1,17 +1,21 @@
 `timescale 1ns/1ns
 module ROM
     (
-	    input  [7:0]    addr,
-	    output [31:0]   inst
+        input               clk,
+	    input      [7:0]    addr,
+	    output reg [31:0]   inst
     );
 	
 	    reg [31:0]      rom[255:0];
 	
-    //对rom进行初始�?
+    //?ROM?????
     initial begin
         $readmemb("D:/vivado/bailan_riscv/src/instruction_binary.txt", rom);
     end
 	
-    assign inst = rom[addr];
+    always @(posedge clk) begin
+        inst = rom[addr];
+    end
+   
 
 endmodule
