@@ -12,6 +12,6 @@ module ROM
         $readmemb("./instruction_binary.txt", rom);
     end
 	
-    assign instr = rom[addr];
+    assign inst = rom[addr];
 
 endmodule

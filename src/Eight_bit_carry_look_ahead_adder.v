@@ -29,7 +29,9 @@ module  Eight_bit_carry_look_ahead_adder
         output    C_4 ,
         output    C_5 ,
         output    C_6 ,
-        output    C_7 
+        output    C_7 ,
+        output    G_m ,
+        output    P_m 
     );
         assign    C_0 = G_0 | (P_0 & C_i);
         assign    C_1 = G_1 | (P_1 & G_0) | (P_1 & P_0 & C_i);
@@ -39,4 +41,6 @@ module  Eight_bit_carry_look_ahead_adder
         assign    C_5 = G_5 | (P_5 & G_4) | (P_5 & P_4 & G_3) | (P_5 & P_4 & P_3 & G_2) | (P_5 & P_4 & P_3 & P_2 & G_1) | (P_5 & P_4 & P_3 & P_2 & P_1 & G_0) | (P_5 & P_4 & P_3 & P_2 & P_1 & P_0 & C_i);
         assign    C_6 = G_6 | (P_6 & G_5) | (P_6 & P_5 & G_4) | (P_6 & P_5 & P_4 & G_3) | (P_6 & P_5 & P_4 & P_3 & G_2) | (P_6 & P_5 & P_4 & P_3 & P_2 & G_1) | (P_6 & P_5 & P_4 & P_3 & P_2 & P_1 & G_0) | (P_6 & P_5 & P_4 & P_3 & P_2 & P_1 & P_0 & C_i);
         assign    C_7 = G_7 | (P_7 & G_6) | (P_7 & P_6 & G_5) | (P_7 & P_6 & P_5 & G_4) | (P_7 & P_6 & P_5 & P_4 & G_3) | (P_7 & P_6 & P_5 & P_4 & P_3 & G_2) | (P_7 & P_6 & P_5 & P_4 & P_3 & P_2 & G_1) | (P_7 & P_6 & P_5 & P_4 & P_3 & P_2 & P_1 & G_0) | (P_7 & P_6 & P_5 & P_4 & P_3 & P_2 & P_1 & P_0 & C_i);
+        assign    G_m = G_7 | (P_7 & G_6) | (P_7 & P_6 & G_5) | (P_7 & P_6 & P_5 & G_4) | (P_7 & P_6 & P_5 & P_4 & G_3) | (P_7 & P_6 & P_5 & P_4 & P_3 & G_2) | (P_7 & P_6 & P_5 & P_4 & P_3 & P_2 & G_1) | (P_7 & P_6 & P_5 & P_4 & P_3 & P_2 & P_1 & G_0);
+        assign    P_m = P_7 & P_6 & P_5 & P_4 & P_3 & P_2 & P_1 & P_0;
 endmodule

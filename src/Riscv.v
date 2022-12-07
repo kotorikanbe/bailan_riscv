@@ -5,6 +5,7 @@ module Riscv
         output  [7:0]           rom_addr
     );
         wire    [31:0]          inst;
+        wire                    clk_alu;
         
         wire    [31:0]          pc_new;
         wire    [31:0]          pc_out;
@@ -58,9 +59,9 @@ module Riscv
 
         RAM ram (.clk(clk),
                  .rst_n(rst_n),
-        
-                 .wr_en(mem_wr),
+                
                  .rd_en(mem_rd),
+                 .wr_en(mem_wr),
         
                  .addr(alu_result),
                  .rw_type(rw_type), //读写的类型，有：字节，半字，字，双字等等
@@ -70,6 +71,8 @@ module Riscv
                  .dat_o(mem_dat_o)
                 );
 
+        Clkdiv clkdiv(.clk_100M(clk),
+                      .clk_alu(clk_alu));
 
         PC pc(.clk(clk),
               .rst_n(rst_n),
@@ -78,7 +81,7 @@ module Riscv
              );
 
 
-       Decoder_control decoder_control( .clk(clk),
+        Decoder_control decoder_control( .clk(clk),
                                         .inst(inst), //指令
 
                                         .branch_judge(branch_judge),
@@ -87,7 +90,7 @@ module Riscv
                                         .reg_des(reg_des),
                                         .imm(imm),
 
-                                        .mem_rd(mem_rd), //RAM的读使能
+                                        .mem_rd(mem_rd), //RAM读使能
                                         .mem_wr(mem_wr), //RAM写使能
 
                                         .wb_sel(wb_sel), //写回寄存器的数据选择器控制信号
@@ -134,6 +137,7 @@ module Riscv
                  .operator_2(alu_src2_dat),
                  .opcode(alu_ctl),
                  .clk(clk),
+                 .clk_alu(clk_alu),
                  .answer(alu_result)
                 );
 
