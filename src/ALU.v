@@ -63,7 +63,7 @@ module  ALU
             operator_2_r <= operator_2;
             opcode_r <= opcode;
         end
-        always @(posedge clk_alu) begin
+        always @(negedge clk_alu) begin
             answer <= ALU_o;
         end
         clk_wiz_alu u_clk_wizard
