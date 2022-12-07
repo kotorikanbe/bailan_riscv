@@ -10,7 +10,7 @@ module ROM
 	
     //?ROM?????
     initial begin
-        $readmemb("D:/vivado/bailan_riscv/src/instruction_binary.txt", rom);
+        $readmemb("./instruction_binary.txt", rom);
     end
 	
     always @(posedge clk) begin

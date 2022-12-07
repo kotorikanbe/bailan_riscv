@@ -54,7 +54,8 @@ module Riscv
         assign                  pc_plus_4 = pc_out+4;
         assign                  rom_addr = pc_out[9:2];
 
-        ROM rom (.addr(rom_addr),
+        ROM rom (.clk(clk_1M),
+                 .addr(rom_addr),
                  .inst(inst)
                 );
 
