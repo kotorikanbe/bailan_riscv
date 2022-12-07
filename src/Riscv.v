@@ -6,6 +6,7 @@ module Riscv
     );
         wire    [31:0]          inst;
         wire                    clk_alu;
+        wire                    clk_1M;
         
         wire    [31:0]          pc_new;
         wire    [31:0]          pc_out;
@@ -57,7 +58,7 @@ module Riscv
                  .inst(inst)
                 );
 
-        RAM ram (.clk(clk),
+        RAM ram (.clk(clk_1M),
                  .rst_n(rst_n),
                 
                  .rd_en(mem_rd),
@@ -74,14 +75,14 @@ module Riscv
         Clkdiv clkdiv(.clk_100M(clk),
                       .clk_alu(clk_alu));
 
-        PC pc(.clk(clk),
+        PC pc(.clk(clk_1M),
               .rst_n(rst_n),
               .pc_new(pc_new),
               .pc_out(pc_out)
              );
 
 
-        Decoder_control decoder_control( .clk(clk),
+        Decoder_control decoder_control( .clk(clk_1M),
                                         .inst(inst), //指令
 
                                         .branch_judge(branch_judge),
