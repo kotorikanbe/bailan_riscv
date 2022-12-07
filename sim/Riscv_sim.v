@@ -14,7 +14,7 @@ initial
 while(1)
 begin
 clk=~clk;
-#1000;
+#5;
 end
 
 Riscv Riscv_sim
