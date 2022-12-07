@@ -73,7 +73,8 @@ module Riscv
                 );
 
         Clkdiv clkdiv(.clk_100M(clk),
-                      .clk_alu(clk_alu));
+                      .clk_alu(clk_alu),
+                      .clk_1M(clk_1M));
 
         PC pc(.clk(clk_1M),
               .rst_n(rst_n),
