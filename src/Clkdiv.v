@@ -16,8 +16,9 @@ module Clkdiv
         
         initial begin
             count1 = 0;
-            clk_alu = 1;
-            clk_1M = 1;
+            count2 = 0;
+            clk_alu = 0;
+            clk_1M = 0;
         end
 
         always @(posedge clk_100M) begin
