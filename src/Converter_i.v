@@ -85,7 +85,7 @@ module  Converter_i
                     end
                     else if(operator_1[31] && operator_2[31])begin
                         operator_1_c = ~{1'b0 , operator_1[30:0]} + 1;
-                        operator_2_c = operator_2;
+                        operator_2_c = {1'b0 , operator_2[30:0]};
                     end
                     else begin
                         operator_1_c = operator_1;
