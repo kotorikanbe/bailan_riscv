@@ -7,11 +7,11 @@ module ROM
 	
 	    reg [31:0]      rom[255:0];
 	
-    //对rom进行初始化
+    //对rom进行初始�?
     initial begin
-        $readmemb("./instruction_binary.txt", rom);
+        $readmemb("D:/vivado/bailan_riscv/src/instruction_binary.txt", rom);
     end
 	
-    assign instr = rom[addr];
+    assign inst = rom[addr];
 
 endmodule
