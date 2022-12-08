@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/linchi/.local/xPacks/@xpack-dev-tools/riscv-none-elf-gcc/12.2.0-1.1/.content/bin/../lib/gcc/riscv-none-elf/12.2.0/include",
+                "/home/linchi/.local/xPacks/@xpack-dev-tools/riscv-none-elf-gcc/12.2.0-1.1/.content/bin/../lib/gcc/riscv-none-elf/12.2.0/include-fixed",
+                "/home/linchi/.local/xPacks/@xpack-dev-tools/riscv-none-elf-gcc/12.2.0-1.1/.content/bin/../lib/gcc/riscv-none-elf/12.2.0/../../../../riscv-none-elf/include",
+                "/home/linchi/.local/xPacks/@xpack-dev-tools/riscv-none-elf-gcc/12.2.0-1.1/.content/bin/../lib/gcc/riscv-none-elf/12.2.0/../../../../riscv-none-elf/include/c++/12.2.0",
+                "/home/linchi/.local/xPacks/@xpack-dev-tools/riscv-none-elf-gcc/12.2.0-1.1/.content/bin/../lib/gcc/riscv-none-elf/12.2.0/../../../../riscv-none-elf/include/c++/12.2.0/riscv-none-elf",
+                "/home/linchi/.local/xPacks/@xpack-dev-tools/riscv-none-elf-gcc/12.2.0-1.1/.content/bin/../lib/gcc/riscv-none-elf/12.2.0/../../../../riscv-none-elf/include/c++/12.2.0/backward"
+            ],
+            "defines": [],
+            "compilerPath": "/home/linchi/.local/xPacks/@xpack-dev-tools/riscv-none-elf-gcc/12.2.0-1.1/.content/bin/riscv-none-elf-gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
