@@ -1,0 +1,6 @@
+/.vscode/
+/compile/.vscode/
+/compile/*.bin
+/compile/*.o
+/compile/*.mem
+/compile/*.txt

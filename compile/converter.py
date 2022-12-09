@@ -1,6 +1,7 @@
 import re
 import struct
-target=input("please input the binary file's path:")
+import sys
+target=sys.argv[-1]
 while(1):
     try:
         binaryfile=open(target,"rb")
