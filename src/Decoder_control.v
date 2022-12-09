@@ -20,7 +20,7 @@ module Decoder_control
         output [4:0]                reg_src_1,
         output [4:0]                reg_src_2,
         output [4:0]                reg_des,
-        output reg signed [11:0]    imm,
+        output reg signed [31:0]    imm,
         
         output              mem_rd, //RAM的读使能
         output              mem_wr, //RAM写使能

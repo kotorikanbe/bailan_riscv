@@ -23,7 +23,7 @@ module Riscv
         wire    [31:0]          reg_des_dat;
 
         wire    [4:0]           reg_des;
-        wire signed [11:0]      imm;
+        wire signed [31:0]      imm;
         
         wire                    mem_rd; //RAM的读使能
         wire                    mem_wr; //RAM写使能
