@@ -154,7 +154,7 @@ module Riscv
                   );
 
         Mux rs1_mux(
-                    .data1_i(PC),
+                    .data1_i(pc_out),
                     .data2_i(reg_src_dat_1),
                     .sel_i(alu_src1_sel),
                     .dat_o(alu_src1_dat)
