@@ -224,7 +224,7 @@ module Decoder_control
 
         //各个数据选择器信号
         assign  alu_src1      = is_B | is_U_auipc | is_J_jal; //如果为1，则操作数为PC，否则为rs1
-        assign  alu_src2      = is_I | is_S; //如果为1，则操作数为立即数,否则为rs2
+        assign  alu_src2      = is_I | is_S | is_U_auipc| is_J_jal |is_B; //如果为1，则操作数为立即数,否则为rs2
         assign  pc_sel        = is_I_jalr | is_J_jal | (is_B & branch_judge);  //PC寄存器数据选择，若为1，则跳转
 
             //写回寄存器数据选择

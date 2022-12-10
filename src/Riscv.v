@@ -2,7 +2,7 @@ module Riscv
     (
         input                   clk,
         input                   rst_n,
-        output  [7:0]           rom_addr
+        output  [19:0]          rom_addr
     );
         wire    [31:0]          inst;
         wire                    clk_alu;
@@ -52,7 +52,8 @@ module Riscv
         wire [2:0]              rw_type; //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
 
         assign                  pc_plus_4 = pc_out+4;
-        assign                  rom_addr = pc_out[9:2];
+        assign                  rom_addr = pc_out[21:2];
+        assign                  mem_dat_i = reg_src_dat_2;
 
         ROM rom (.clk(clk_1M),
                  .addr(rom_addr),
