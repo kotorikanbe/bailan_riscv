@@ -9,11 +9,9 @@ module PC
 	
 	always @(posedge clk or negedge rst_n) begin
 		if(!rst_n)
-			pc_out <= 72;
+			pc_out <= 0;
 		else
-            if(pc_new>65683)
-			    pc_out <= pc_new-65683;
-            else pc_out <= pc_new;
+            pc_out <= pc_new;
 	end	
 
 endmodule

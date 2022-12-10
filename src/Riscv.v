@@ -49,11 +49,14 @@ module Riscv
         wire                    bltu;
         wire                    bgeu;
         
+        wire [31:0]             mem_addr;
         wire [2:0]              rw_type; //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
 
         assign                  pc_plus_4 = pc_out+4;
         assign                  rom_addr = pc_out[21:2];
         assign                  mem_dat_i = reg_src_dat_2;
+        assign                  mem_addr = {3'b000,alu_result[28:0]};
+        
 
         ROM rom (.clk(clk_1M),
                  .addr(rom_addr),
@@ -66,7 +69,7 @@ module Riscv
                  .rd_en(mem_rd),
                  .wr_en(mem_wr),
         
-                 .addr(alu_result),
+                 .addr(mem_addr),
                  .rw_type(rw_type), //读写的类型，有：字节，半字，字，双字等等
                                 //000：lb sb; 001: lh sh; 010: lw sw; 100: lbu; 101:lhu
 
