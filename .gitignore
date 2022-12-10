@@ -1,6 +1,8 @@
 /.vscode/
-/compile/.vscode/
+/compile/.vscode/*.json
 /compile/*.bin
 /compile/*.o
 /compile/*.mem
 /compile/*.txt
+/compile/main
+/home/linchi/bailan_riscv/compile/.vscode/settings.json

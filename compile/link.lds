@@ -3,8 +3,8 @@ ENTRY(_start)
 
 MEMORY
 {
-    rom(wxa!ri) : ORIGIN = 0x00000000, LENGTH = 1K
-    ram(wxa!ri) : ORIGIN = 0x20000000, LENGTH = 1K
+    rom(wxa!ri) : ORIGIN = 0x00000000, LENGTH = 64K
+    ram(wxa!ri) : ORIGIN = 0x20000000, LENGTH = 128K
 }
 
 SECTIONS
