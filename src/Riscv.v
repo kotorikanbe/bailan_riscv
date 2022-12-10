@@ -7,6 +7,8 @@ module Riscv
         wire    [31:0]          inst;
         wire                    clk_alu;
         wire                    clk_1M;
+        wire                    clk_ram;
+        wire                    clk_reg;
         
         wire    [31:0]          pc_new;
         wire    [31:0]          pc_out;
@@ -25,7 +27,7 @@ module Riscv
         wire    [4:0]           reg_des;
         wire signed [31:0]      imm;
         
-        wire                    mem_rd; //RAM的读使能
+        //wire                    mem_rd; //RAM的读使能
         wire                    mem_wr; //RAM写使能
 
         wire    [31:0]          mem_dat_i;
@@ -63,10 +65,10 @@ module Riscv
                  .inst(inst)
                 );
 
-        RAM ram (.clk(clk_1M),
+        RAM ram (.clk(clk_ram),
                  .rst_n(rst_n),
                 
-                 .rd_en(mem_rd),
+                 //.rd_en(mem_rd),
                  .wr_en(mem_wr),
         
                  .addr(mem_addr),
@@ -79,7 +81,9 @@ module Riscv
 
         Clkdiv clkdiv(.clk_100M(clk),
                       .clk_alu(clk_alu),
-                      .clk_1M(clk_1M));
+                      .clk_1M(clk_1M),
+                      .clk_ram(clk_ram),
+                      .clk_reg(clk_reg));
 
         PC pc(.clk(clk_1M),
               .rst_n(rst_n),
@@ -88,7 +92,8 @@ module Riscv
              );
 
 
-        Decoder_control decoder_control( .clk(clk_1M),
+        Decoder_control decoder_control(//.clk(clk_1M),
+                                        //.clk_alu(clk_alu),
                                         .inst(inst), //指令
 
                                         .branch_judge(branch_judge),
@@ -97,7 +102,7 @@ module Riscv
                                         .reg_des(reg_des),
                                         .imm(imm),
 
-                                        .mem_rd(mem_rd), //RAM读使能
+                                        //.mem_rd(mem_rd), //RAM读使能
                                         .mem_wr(mem_wr), //RAM写使能
 
                                         .wb_sel(wb_sel), //写回寄存器的数据选择器控制信号
@@ -117,7 +122,8 @@ module Riscv
                                         .rw_type(rw_type) //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
                                     );
 
-        Registers registers (.reg_src_1_i(reg_src_1), //寄存器序号1
+        Registers registers (.clk(clk_reg),
+                             .reg_src_1_i(reg_src_1), //寄存器序号1
                              .reg_src_2_i(reg_src_2), //寄存器序号2
                              .reg_des_i(reg_des), //数据写入的目标寄存器
                              .reg_des_dat_i(reg_des_dat), //用于写入的数据

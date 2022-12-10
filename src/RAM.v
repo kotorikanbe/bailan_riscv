@@ -4,7 +4,6 @@ module RAM
         input               clk,
         input               rst_n,
         
-        input               rd_en,
         input               wr_en,
         
         input [31:0]        addr,
@@ -15,7 +14,7 @@ module RAM
         output reg [31:0]   dat_o
     );  
         
-	
+        wire             rd_en; //读使能
         
         wire [31:0]      rd_dat;
         reg  [31:0]      wr_dat;
@@ -28,11 +27,13 @@ module RAM
 
         reg  [31:0]      rd_dat_B_ext;
         reg  [31:0]      rd_dat_H_ext;
+
+        assign           rd_en = 1;
         
 
         RAM_core ram_core (
                             .clka(clk),            // input wire clka
-                            .rsta(rst_n),            // input wire rsta
+                            .rsta(~rst_n),            // input wire rsta
                             .ena(rd_en),              // input wire ena
                             .wea(wr_en),              // input wire [0 : 0] wea
                             .addra(addr[16:2]),          // input wire [14 : 0] addra

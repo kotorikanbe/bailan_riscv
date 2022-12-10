@@ -12,7 +12,8 @@ module Decoder_control
         parameter [6:0]             op_J_jal    = 7'b1101111  //J型指令
     )
     (
-        input                       clk,
+        //input                       clk,
+        //input                       clk_alu,
         input [31:0]                inst, //指令
 
         input                       branch_judge,
@@ -226,6 +227,12 @@ module Decoder_control
         assign  alu_src1      = is_B | is_U_auipc | is_J_jal; //如果为1，则操作数为PC，否则为rs1
         assign  alu_src2      = is_I | is_S | is_U_auipc| is_J_jal |is_B; //如果为1，则操作数为立即数,否则为rs2
         assign  pc_sel        = is_I_jalr | is_J_jal | (is_B & branch_judge);  //PC寄存器数据选择，若为1，则跳转
+
+        //always @(negedge clk_alu or posedge clk) begin
+        //    if(clk == 1)
+        //        mem_wr = 0;
+        //    else mem_wr = is_S;
+        //end
 
             //写回寄存器数据选择
         always @(*) begin

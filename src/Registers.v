@@ -1,6 +1,7 @@
 `timescale 1ns/1ns
 module  Registers 
-    (
+    (   
+        input           clk,
         input [4:0]     reg_src_1_i, //寄存器序号1
         input [4:0]     reg_src_2_i, //寄存器序号2
         input [4:0]     reg_des_i, //数据写入的目标寄存器
@@ -18,7 +19,7 @@ module  Registers
         assign     reg_src_1_dat_o = registers[reg_src_1_i];
         assign     reg_src_2_dat_o = registers[reg_src_2_i];
 
-        always @(*) begin
+        always @(posedge clk or negedge rst_n_i) begin
             if(rst_n_i == 0) //清零，寄存器中默认都是0
                 for(i=0;i<=32;i=i+1)     
                     registers[i]<=32'b0;
