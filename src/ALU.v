@@ -27,10 +27,10 @@ module  ALU
         wire             clk_mul;
         wire             C;    
         wire             clk_div;
-        reg [31:0]       operator_1_c_mul;
-        reg [31:0]       operator_2_c_mul;
-        reg [31:0]       operator_1_c_div;
-        reg [31:0]       operator_2_c_div;
+        // reg [31:0]       operator_1_c_mul;
+        // reg [31:0]       operator_2_c_mul;
+        // reg [31:0]       operator_1_c_div;
+        // reg [31:0]       operator_2_c_div;
         reg [31:0]       operator_1_r;
         reg [31:0]       operator_2_r;
         reg [4:0]        opcode_r;
@@ -38,26 +38,26 @@ module  ALU
         assign           or_o = operator_1_c | operator_2_c;
         assign           xor_o = operator_1_c ^ operator_2_c;
         assign           nor_o = ~or_o;
-        always @(*) begin
-            if((opcode_r >= 5'b00010) && (opcode_r <= 5'b00101))begin
-                operator_1_c_mul = operator_1_c;
-                operator_2_c_mul = operator_2_c;
-            end
-            else begin
-                operator_1_c_mul = 32'b0;
-                operator_2_c_mul = 32'b0;
-            end
-        end
-        always @(*) begin
-            if((opcode_r >= 5'b00110) && (opcode_r <= 5'b01001))begin
-                operator_1_c_div = operator_1_c;
-                operator_2_c_div = operator_2_c;
-            end
-            else begin
-                operator_1_c_div = 32'b0;
-                operator_2_c_div = 32'b0;
-            end
-        end
+        // always @(*) begin
+        //     if((opcode_r >= 5'b00010) && (opcode_r <= 5'b00101))begin
+        //         operator_1_c_mul = operator_1_c;
+        //         operator_2_c_mul = operator_2_c;
+        //     end
+        //     else begin
+        //         operator_1_c_mul = 32'b0;
+        //         operator_2_c_mul = 32'b0;
+        //     end
+        // end
+        // always @(*) begin
+        //     if((opcode_r >= 5'b00110) && (opcode_r <= 5'b01001))begin
+        //         operator_1_c_div = operator_1_c;
+        //         operator_2_c_div = operator_2_c;
+        //     end
+        //     else begin
+        //         operator_1_c_div = 32'b0;
+        //         operator_2_c_div = 32'b0;
+        //     end
+        // end
         always @(posedge clk_alu) begin
             operator_1_r <= operator_1;
             operator_2_r <= operator_2;
@@ -126,8 +126,8 @@ module  ALU
             );
         Thirty_two_bit_multiplier u_thirty_two_bit_multiplier0
             (
-                .operator_1    (operator_1_c_mul),
-                .operator_2    (operator_2_c_mul),
+                .operator_1    (operator_1_c),
+                .operator_2    (operator_2_c),
                 .clk           (clk_mul),
                 .answer        (multiplier_o)
             );
@@ -140,8 +140,8 @@ module  ALU
             );*/
         Divider u_divider0
             (
-                .dividend      (operator_1_c_div),
-                .divisor       (operator_2_c_div),
+                .dividend      (operator_1_c),
+                .divisor       (operator_2_c),
                 .clk           (clk_div),
                 .quotient      (divider_q_o),
                 .remainder     (divider_r_o)
