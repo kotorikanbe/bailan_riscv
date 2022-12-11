@@ -14,7 +14,7 @@ module RAM_origin
         output reg [31:0]   dat_o
     );
 	
-        reg  [31:0]      ram[32767:0];
+        reg  [31:0]      ram[4095:0];
         integer          i;
         
         wire [31:0]      rd_dat;
