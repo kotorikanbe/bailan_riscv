@@ -30,13 +30,14 @@ module  Divider
             else begin
                 if(count < 6'b100001) begin
                     count <= count + 1'b1;
+                    complete_signal <= 6'b0;
                     if(count == 6'b100000) begin
                         if(real_operator_1 > real_operator_2) begin
-                        real_operator_1 <= real_operator_3;
-                    end
-                    else begin
-                        real_operator_1 <= real_operator_1;
-                    end
+                            real_operator_1 <= real_operator_3;
+                        end
+                        else begin
+                            real_operator_1 <= real_operator_1;
+                        end
                     end
                     else begin
                         if(real_operator_1 > real_operator_2) begin
@@ -46,9 +47,10 @@ module  Divider
                             real_operator_1 <= {real_operator_1 [62:0] , 1'b0};
                         end
                     end
-                    
                 end
-                
+                else begin
+                    complete_signal <= 6'b1;
+                end
             end
         end
         /*always @(negedge clk) begin//下降沿进行移位操作
@@ -65,7 +67,6 @@ module  Divider
             if(count == 6'b100001) begin
                 quotient <=  real_operator_1 [31:0];
                 remainder <= real_operator_1 [63:32];
-                complete_signal <= 1'b1;
             end
         end
 endmodule //Divider
