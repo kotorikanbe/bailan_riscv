@@ -42,6 +42,7 @@ module Riscv
         wire    [31:0]          alu_src1_dat;
         wire    [31:0]          alu_src2_dat;
         wire    [4:0]           alu_ctl; //ALU控制信号
+        wire                    complete_signal;
         wire    [31:0]          alu_result;
 
         wire                    beq;
@@ -81,6 +82,7 @@ module Riscv
 
         Clkdiv clkdiv(.clk_100M(clk),
                       .rst_n(rst_n),
+                      .alu_complete(complete_signal),
                       .clk_alu(clk_alu),
                       .clk_1M(clk_1M),
                       .clk_ram(clk_ram),
@@ -152,7 +154,8 @@ module Riscv
                  .opcode(alu_ctl),
                  .clk(clk),
                  .clk_alu(clk_alu),
-                 .answer(alu_result)
+                 .answer(alu_result),
+                 .complete_signal(complete_signal)
                 );
 
         

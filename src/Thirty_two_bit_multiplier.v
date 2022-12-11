@@ -4,7 +4,8 @@ module  Thirty_two_bit_multiplier
         input [31:0]          operator_1,
         input [31:0]          operator_2,
         input                 clk,
-        output reg [63:0]     answer
+        output reg [63:0]     answer,
+        output reg            complete_signal = 1'b0
     );
         wire [31:0]       operated_operator_1;
         wire [31:0]       operated_operator_2;
@@ -60,11 +61,13 @@ module  Thirty_two_bit_multiplier
                 low_answer <= 32'b0;
                 high_answer <= 32'b0;
                 count <= 3'b000;
+                complete_signal <= 1'b0;
             end
         end
         always @(negedge clk) begin
             if(!flag && (count == 3'b100))begin
                 answer <= {high_answer , low_answer};
+                complete_signal <= 1'b1;
             end
         end
         always @(negedge clk) begin
