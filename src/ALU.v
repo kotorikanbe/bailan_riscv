@@ -62,17 +62,17 @@ module  ALU
         //         operator_2_c_div = 32'b0;
         //     end
         // end
-        always @(negedge clk_alu) begin
+        always @(*) begin
             case (opcode_r)
-                5'b00010: complete_signal <= complete_signal_mul;
-                5'b00011: complete_signal <= complete_signal_mul;
-                5'b00100: complete_signal <= complete_signal_mul;
-                5'b00101: complete_signal <= complete_signal_mul;
-                5'b00110: complete_signal <= complete_signal_div;
-                5'b00111: complete_signal <= complete_signal_div;
-                5'b01000: complete_signal <= complete_signal_div;
-                5'b01001: complete_signal <= complete_signal_div;
-                default: complete_signal <= 1'b1;
+                5'b00010: complete_signal = complete_signal_mul;
+                5'b00011: complete_signal = complete_signal_mul;
+                5'b00100: complete_signal = complete_signal_mul;
+                5'b00101: complete_signal = complete_signal_mul;
+                5'b00110: complete_signal = complete_signal_div;
+                5'b00111: complete_signal = complete_signal_div;
+                5'b01000: complete_signal = complete_signal_div;
+                5'b01001: complete_signal = complete_signal_div;
+                default: complete_signal = 1'b1;
             endcase
         end
         always @(posedge clk_alu) begin
@@ -80,7 +80,7 @@ module  ALU
             operator_2_r <= operator_2;
             opcode_r <= opcode;
         end
-        always @(posedge clk_alu) begin
+        always @(negedge clk_alu) begin
             answer <= ALU_o;
         end
         // Clkdiv u_clkdiv

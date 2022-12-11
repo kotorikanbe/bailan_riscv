@@ -61,13 +61,15 @@ module  Thirty_two_bit_multiplier
                 low_answer <= 32'b0;
                 high_answer <= 32'b0;
                 count <= 3'b000;
-                complete_signal <= 1'b0;
             end
         end
         always @(negedge clk) begin
             if(!flag && (count == 3'b100))begin
                 answer <= {high_answer , low_answer};
                 complete_signal <= 1'b1;
+            end
+            else begin
+                complete_signal <= 1'b0;
             end
         end
         always @(negedge clk) begin
