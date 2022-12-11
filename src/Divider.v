@@ -6,7 +6,8 @@ module  Divider
         input [31:0]          divisor,//除数
         input                 clk,//时钟
         output reg [31:0]     quotient = 32'b0,//商
-        output reg [31:0]     remainder = 32'b0//余数
+        output reg [31:0]     remainder = 32'b0,//余数
+        output reg            complete_signal = 1'b0
     );  
         wire                  flag;//此信号用于判断是否输入新数字从而清零
         wire [63:0]           real_operator_3;
@@ -24,6 +25,7 @@ module  Divider
                 real_operator_1 <= {32'b0 , dividend};
                 real_operator_2 <= {divisor , 32'b0};
                 count <= 6'b0;
+                complete_signal <= 6'b0;
             end
             else begin
                 if(count < 6'b100001) begin
@@ -63,6 +65,7 @@ module  Divider
             if(count == 6'b100001) begin
                 quotient <=  real_operator_1 [31:0];
                 remainder <= real_operator_1 [63:32];
+                complete_signal <= 1'b1;
             end
         end
 endmodule //Divider
