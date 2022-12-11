@@ -60,12 +60,12 @@ module Riscv
         assign                  mem_addr = {3'b000,alu_result[28:0]};
         
 
-        ROM rom (.clk(clk_1M),
+        ROM rom (//.clk(clk_1M),
                  .addr(rom_addr),
                  .inst(inst)
                 );
 
-        RAM ram (.clk(clk_ram),
+        RAM_origin ram (.clk(clk_ram),
                  .rst_n(rst_n),
                 
                  //.rd_en(mem_rd),
@@ -80,6 +80,7 @@ module Riscv
                 );
 
         Clkdiv clkdiv(.clk_100M(clk),
+                      .rst_n(rst_n),
                       .clk_alu(clk_alu),
                       .clk_1M(clk_1M),
                       .clk_ram(clk_ram),

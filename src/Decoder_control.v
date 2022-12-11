@@ -23,7 +23,7 @@ module Decoder_control
         output [4:0]                reg_des,
         output reg signed [31:0]    imm,
         
-        output              mem_rd, //RAM的读使能
+        //output              mem_rd, //RAM的读使能
         output              mem_wr, //RAM写使能
 
         output reg [1:0]    wb_sel, //写回寄存器的数据选择器控制信号
@@ -217,7 +217,7 @@ module Decoder_control
         //各种使能信号
         assign  rw_type       = funct3;
 
-        assign  mem_rd        = is_I_load;
+        //assign  mem_rd        = is_I_load;
 
         assign  mem_wr        = is_S;
 

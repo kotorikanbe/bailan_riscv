@@ -1,5 +1,5 @@
 `timescale 1ns/1ns
-module RAM
+module RAM_origin
     (
         input               clk,
         input               rst_n,
@@ -14,7 +14,8 @@ module RAM
         output reg [31:0]   dat_o
     );
 	
-        reg  [31:0]      ram[255:0];
+        reg  [31:0]      ram[32767:0];
+        integer          i;
         
         wire [31:0]      rd_dat;
         reg  [31:0]      wr_dat;
@@ -29,10 +30,9 @@ module RAM
         reg  [31:0]      rd_dat_H_ext;
         
 
-
         //读取
         
-        assign           rd_dat = ram[addr[31:2]]; //原来的数据
+        assign           rd_dat = ram[addr[16:2]]; //原来的数据
 
         //lb指令，根据写地址判断要读取哪一段
         always @(*) begin
@@ -116,9 +116,12 @@ module RAM
 
         //上升沿写入数据
 
-        always @(posedge clk) begin
-            if(wr_en)
-                ram[addr[9:2]] <= wr_dat;
+        always @(posedge clk or negedge rst_n) begin
+            if(rst_n == 0)
+                for(i=0;i<32768;i=i+1)
+                    ram[i] <= 32'b0;
+            else if(wr_en)
+                ram[addr[16:2]] <= wr_dat;
         end
 
     
