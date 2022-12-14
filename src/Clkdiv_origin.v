@@ -1,20 +1,19 @@
 `timescale 1ns/1ns
-module Clkdiv
+module Clkdiv_origin
     #(
-        parameter     div_100 = 100,
-        parameter     div_70 = 70,
-        parameter     div_50 = 50,
-        parameter     div_10 = 10,
-        parameter     div_80 = 80,
-        parameter     div_90 = 90,
-        parameter     div_5  = 5
+        parameter     div1 = 100,
+        parameter     div2 = 70,
+        parameter     div3 = 50,
+        parameter     div4 = 5,
+        parameter     div5 = 80,
+        parameter     div6 = 90
     )
     (
         input         clk_100M,
         input         rst_n,
         input         alu_complete,
         output reg    clk_alu, //1MHz
-        output reg    clk_fetch,
+        output reg    clk_1M,
         output        clk_ram,
         output reg    clk_reg
 
@@ -33,12 +32,12 @@ module Clkdiv
                     clk_alu <= clk_alu;
                 end
                 else begin
-                    if (count1 > div_10 && count1 < div_70) begin
+                    if (count1 > div4 && count1 < div2) begin
                         count1 <= count1 + 1;
                         clk_alu <= 1;
                     end
-                    else if ((count1 >= div_70 && count1 <= div_100) ||
-                            (count1 >= 0 && count1 <= div_10)) begin
+                    else if ((count1 >= div2 && count1 <= div1) ||
+                            (count1 >= 0 && count1 <= div4)) begin
                         clk_alu <= 0;
                         count1 <= count1 + 1; 
                     end 
@@ -50,63 +49,32 @@ module Clkdiv
             end
         end
 
-         always @(posedge clk_100M or negedge rst_n) begin
+        always @(posedge clk_100M or negedge rst_n) begin
             if (rst_n == 0) begin
                 count2 <= 0;
-                clk_fetch <= 0;
+                clk_1M <= 0;
             end
             else begin
                 if(alu_complete == 0) begin
                     count2 <= count2;
-                    clk_fetch <= clk_fetch;
+                    clk_1M <= clk_1M;
                 end
                 else begin
-                    if (count2 < div_5) begin
+                    if (count2 < div3) begin
                         count2 <= count2 + 1;
-                        clk_fetch <= clk_fetch;
+                        clk_1M <= clk_1M;
                     end
-                    else if (count2 >= div_5 && count2 <= div_50 ) begin
-                        clk_fetch <= 1;
-                        count2 <= count2 + 1; 
-                    end 
-                    else if (count2 > div_50 && count2 <= div_100 ) begin
-                        clk_fetch <= 0;
+                    else if (count2 >= div3 && count2 <= div1 ) begin
+                        clk_1M <= 0;
                         count2 <= count2 + 1; 
                     end 
                     else begin
-                        clk_fetch <= 0;
+                        clk_1M <= 1;
                         count2 <= 0;
                     end
                 end
             end
         end
-
-        // always @(posedge clk_100M or negedge rst_n) begin
-        //     if (rst_n == 0) begin
-        //         count2 <= 0;
-        //         clk_fetch <= 0;
-        //     end
-        //     else begin
-        //         if(alu_complete == 0) begin
-        //             count2 <= count2;
-        //             clk_fetch <= clk_fetch;
-        //         end
-        //         else begin
-        //             if (count2 < div_50) begin
-        //                 count2 <= count2 + 1;
-        //                 clk_fetch <= clk_fetch;
-        //             end
-        //             else if (count2 >= div_50 && count2 <= div_100 ) begin
-        //                 clk_fetch <= 0;
-        //                 count2 <= count2 + 1; 
-        //             end 
-        //             else begin
-        //                 clk_fetch <= 1;
-        //                 count2 <= 0;
-        //             end
-        //         end
-        //     end
-        // end
 
         // always @(posedge clk_100M or negedge rst_n) begin
         //     if (rst_n == 0) begin
@@ -119,10 +87,10 @@ module Clkdiv
         //             clk_ram <= clk_ram;
         //         end
         //         else begin
-        //             if (count3 < div_80) begin
+        //             if (count3 < div5) begin
         //                 count3 <= count3 + 1;
         //             end
-        //             else if (count3 >= div_80 && count3 <= div_100 ) begin
+        //             else if (count3 >= div5 && count3 <= div1 ) begin
         //                 clk_ram <= 1;
         //                 count3 <= count3 + 1; 
         //             end 
@@ -155,10 +123,10 @@ module Clkdiv
                     clk_reg <= clk_reg;
                 end
                 else begin
-                    if (count4 < div_90) begin
+                    if (count4 < div6) begin
                         count4 <= count4 + 1;
                     end
-                    else if (count4 >= div_90 && count4 <= div_100 ) begin
+                    else if (count4 >= div6 && count4 <= div1 ) begin
                         clk_reg <= 1;
                         count4 <= count4 + 1; 
                     end 

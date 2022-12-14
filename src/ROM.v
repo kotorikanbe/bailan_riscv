@@ -1,11 +1,18 @@
 `timescale 1ns/1ns
 module ROM
     (
-        //input               clk,
-	    input      [19:0]    addr,
-	    output [31:0]   inst
+        input               clk,
+	    input      [10:0]   addr,
+	    output  [31:0]   inst
     );
 	
+    // ROM_core rom_core(
+    //                   .clka(clk),
+    //                   .addra(addr),
+    //                   .douta(inst)
+    //                  );
+
+
 	    reg [31:0]      rom[2048:0];
 	
     //?ROM?????
@@ -14,7 +21,7 @@ module ROM
     end
 	
     //always @(posedge clk) begin
-        assign inst = rom[addr];
+       assign inst = rom[addr];
     //end
    
 

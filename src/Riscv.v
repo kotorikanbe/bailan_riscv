@@ -6,7 +6,7 @@ module Riscv
     );
         wire    [31:0]          inst;
         wire                    clk_alu;
-        wire                    clk_1M;
+        wire                    clk_fetch;
         wire                    clk_ram;
         wire                    clk_reg;
         
@@ -56,18 +56,18 @@ module Riscv
         wire [2:0]              rw_type; //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
 
         assign                  pc_plus_4 = pc_out+4;
-        assign                  rom_addr = pc_out[21:2];
+        assign                  rom_addr = pc_out[12:2];
         assign                  mem_dat_i = reg_src_dat_2;
         assign                  mem_addr = {3'b000,alu_result[28:0]};
         
 
-        ROM rom (//.clk(clk_1M),
+        ROM rom (//.clk(clk_fetch),
                  .addr(rom_addr),
                  .inst(inst)
                 );
 
-        RAM_origin ram (.clk(clk_ram),
-                 .rst_n(rst_n),
+        RAM ram (.clk(clk_ram),
+                 .rst(~rst_n),
                 
                  //.rd_en(mem_rd),
                  .wr_en(mem_wr),
@@ -84,19 +84,19 @@ module Riscv
                       .rst_n(rst_n),
                       .alu_complete(complete_signal),
                       .clk_alu(clk_alu),
-                      .clk_1M(clk_1M),
+                      .clk_fetch(clk_fetch),
                       .clk_ram(clk_ram),
                       .clk_reg(clk_reg));
 
-        PC pc(.clk(clk_1M),
+        PC pc(.clk(clk_fetch),
               .rst_n(rst_n),
               .pc_new(pc_new),
               .pc_out(pc_out)
              );
 
 
-        Decoder_control decoder_control(//.clk(clk_1M),
-                                        //.clk_alu(clk_alu),
+        Decoder_control decoder_control(.clk(clk_fetch),
+                                        .clk_alu(clk_alu),
                                         .inst(inst), //指令
 
                                         .branch_judge(branch_judge),

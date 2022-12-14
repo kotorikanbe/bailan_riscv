@@ -2,7 +2,7 @@
 module RAM
     (
         input               clk,
-        input               rst_n,
+        input               rst,
         
         input               wr_en,
         
@@ -14,7 +14,7 @@ module RAM
         output [31:0]       dat_o
     );  
         
-        wire             rd_en; //读使能
+        //wire             rd_en; //读使能
         
         wire [31:0]      rd_dat_origin;
         reg [31:0]       rd_dat;
@@ -29,14 +29,24 @@ module RAM
         reg  [31:0]      rd_dat_B_ext;
         reg  [31:0]      rd_dat_H_ext;
 
-        assign           rd_en = 1;
+        //assign           rd_en = 1;
         
         
 
+        // RAM_core ram_core(
+        //                   .clka(clk_ram),
+        //                   .wea(wr_en),
+        //                   .addra(addr[14:0]),
+        //                   .dina(wr_dat),
+        //                   .clkb(clk_ram),
+        //                   .rstb(rst),
+        //                   .addrb(addr[14:0]),
+        //                   .doutb(rd_dat_origin)
+        //                   );
         RAM_core ram_core (
                             .clka(clk),            // input wire clka
-                            .rsta(~rst_n),            // input wire rsta
-                            .ena(rd_en),              // input wire ena
+                            .rsta(rst),            // input wire rsta
+                            //.ena(rd_en),              // input wire ena
                             .wea(wr_en),              // input wire [0 : 0] wea
                             .addra(addr[14:0]),          // input wire [14 : 0] addra
                             .dina(wr_dat),            // input wire [31 : 0] dina
@@ -102,10 +112,10 @@ module RAM
         // sb指令的写入数据，根据地址判断写入到哪一字段
         always @(*) begin
             case(addr[1:0])
-                2'b00:wr_dat_B = {rd_dat[31:8],dat_i[7:0]};
-                2'b01:wr_dat_B = {rd_dat[31:16],dat_i[7:0],rd_dat[7:0]};
-                2'b10:wr_dat_B = {rd_dat[31:24],dat_i[7:0],rd_dat[15:0]};
-                2'b11:wr_dat_B = {dat_i[7:0],rd_dat[23:0]};
+                2'b00:wr_dat_B = {rd_dat_origin[31:8],dat_i[7:0]};
+                2'b01:wr_dat_B = {rd_dat_origin[31:16],dat_i[7:0],rd_dat_origin[7:0]};
+                2'b10:wr_dat_B = {rd_dat_origin[31:24],dat_i[7:0],rd_dat_origin[15:0]};
+                2'b11:wr_dat_B = {dat_i[7:0],rd_dat_origin[23:0]};
             endcase
         end
         //assign  wr_dat_B = {rd_dat[31:8],dat_i[7:0]};
@@ -113,9 +123,9 @@ module RAM
         //sh指令的写入数据，根据地址判断写入到哪一字段
         always @(*) begin
             if(addr[1]==1) //写入到高16位
-                wr_dat_H = {dat_i[15:0],rd_dat[15:0]};
+                wr_dat_H = {dat_i[15:0],rd_dat_origin[15:0]};
             else  //写入到低16位
-                wr_dat_H = {rd_dat[31:16],dat_i[15:0]} ;
+                wr_dat_H = {rd_dat_origin[31:16],dat_i[15:0]} ;
         end
         //assign  wr_dat_H = {rd_dat[31:16],dat_i[15:0]} ;
 

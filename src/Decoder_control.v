@@ -12,8 +12,8 @@ module Decoder_control
         parameter [6:0]             op_J_jal    = 7'b1101111  //J型指令
     )
     (
-        //input                       clk,
-        //input                       clk_alu,
+        input                       clk,
+        input                       clk_alu,
         input [31:0]                inst, //指令
 
         input                       branch_judge,
@@ -24,7 +24,7 @@ module Decoder_control
         output reg signed [31:0]    imm,
         
         //output              mem_rd, //RAM的读使能
-        output              mem_wr, //RAM写使能
+        output reg          mem_wr, //RAM写使能
 
         output reg [1:0]    wb_sel, //写回寄存器的数据选择器控制信号
         output              reg_wr,  //寄存器的写使能控制信号
@@ -107,6 +107,8 @@ module Decoder_control
 
         //J型指令
         wire                      is_J_jal;
+
+        //reg  [2:0]                count; //mem_wr使能控制信号的计数器（读出来后再写）
 
 
          ///////////////////////////////////////////////////////////////////////////
@@ -219,7 +221,7 @@ module Decoder_control
 
         //assign  mem_rd        = is_I_load;
 
-        assign  mem_wr        = is_S;
+        //assign  mem_wr        = is_S;
 
         assign  reg_wr        = is_I | is_R | is_U | is_J_jal;
 
@@ -228,11 +230,21 @@ module Decoder_control
         assign  alu_src2      = is_I | is_S | is_U_auipc| is_J_jal |is_B; //如果为1，则操作数为立即数,否则为rs2
         assign  pc_sel        = is_I_jalr | is_J_jal | (is_B & branch_judge);  //PC寄存器数据选择，若为1，则跳转
 
-        //always @(negedge clk_alu or posedge clk) begin
-        //    if(clk == 1)
-        //        mem_wr = 0;
-        //    else mem_wr = is_S;
-        //end
+        // always @(posedge clk_ram) begin
+        //     if(clk_alu == 0)
+        //         count <= count +1;
+        //     else count <= 0;
+
+        //     if(count >= 3)
+        //         mem_wr = is_S;
+        //     else mem_wr = 0;
+        // end
+        always @(negedge clk_alu or posedge clk) begin
+            if(clk == 1)
+                mem_wr = 0;
+            else mem_wr = is_S;
+        end
+
 
             //写回寄存器数据选择
         always @(*) begin
