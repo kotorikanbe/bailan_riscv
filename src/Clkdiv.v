@@ -5,11 +5,8 @@ module Clkdiv
         parameter     div_70 = 70,
         parameter     div_50 = 50,
         parameter     div_10 = 10,
-        parameter     div_80 = 80,
         parameter     div_90 = 90,
         parameter     div_5  = 5,
-        parameter     div_75 = 75,
-        parameter     div_85 = 85,
         parameter     div_20 = 20,
         parameter     div_30 = 30
     )

@@ -2,7 +2,8 @@ module Riscv
     (
         input                   clk,
         input                   rst_n,
-        output  [10:0]          rom_addr
+        output  [10:0]          rom_addr,
+        output  [31:0]          data
     );
         wire    [31:0]          inst;
         wire                    clk_alu;
@@ -59,6 +60,7 @@ module Riscv
         assign                  rom_addr = pc_out[12:2];
         assign                  mem_dat_i = reg_src_dat_2;
         assign                  mem_addr = {3'b000,alu_result[28:0]};
+        assign                  data = mem_dat_i;
         
 
         ROM rom (.clk(clk_fetch),
