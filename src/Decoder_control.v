@@ -212,6 +212,7 @@ module Decoder_control
                 imm = { {20{inst[31]}},inst[31:25],inst[11:7] };
             else if(is_J)
                 imm = { {11{inst[31]}},inst[31],inst[19:12],inst[20],inst[30:21],1'b0 };
+            else imm = 0;
         end
 
 

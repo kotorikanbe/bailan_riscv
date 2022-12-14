@@ -7,7 +7,7 @@ module PC
         output reg [31:0]   pc_out
     );
 	
-	always @(posedge clk or negedge rst_n) begin
+	always @(negedge clk or negedge rst_n) begin
 		if(!rst_n)
 			pc_out <= 0;
 		else
