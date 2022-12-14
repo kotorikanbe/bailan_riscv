@@ -257,6 +257,7 @@ module Decoder_control
                 wb_sel = 2;
             else if (is_I_load)
                 wb_sel = 3;
+            else wb_sel = 0;
         end    
             
 

@@ -15,6 +15,8 @@ module RAM
     );  
         
         //wire             rd_en; //读使能
+
+        wire            rsta_busy;
         
         wire [31:0]      rd_dat_origin;
         reg [31:0]       rd_dat;
@@ -50,8 +52,8 @@ module RAM
                             .wea(wr_en),              // input wire [0 : 0] wea
                             .addra(addr[14:0]),          // input wire [14 : 0] addra
                             .dina(wr_dat),            // input wire [31 : 0] dina
-                            .douta(rd_dat_origin)         // output wire [31 : 0] douta
-                            //.rsta_busy(rsta_busy)  // output wire rsta_busy
+                            .douta(rd_dat_origin),         // output wire [31 : 0] douta
+                            .rsta_busy(rsta_busy)  // output wire rsta_busy
                           );
 
 
