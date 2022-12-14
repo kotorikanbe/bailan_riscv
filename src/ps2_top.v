@@ -4,17 +4,13 @@
 
 module Ps2_top 
     (
-        input         clk,
-        input         rstn,
-        inout         ps2_clk,
-        inout         ps2_data,
-        output        x_addr,
-        output        y_addr,
-        output reg    x_symbol,
-        output reg    y_symbol,
-        output reg    x_overflow,
-        output reg    y_overflow,
-        output        LBM
+        input                clk,
+        input                rstn,
+        inout                ps2_clk,
+        inout                ps2_data,
+        output reg [15:0]    x_addr,
+        output reg [15:0]    y_addr,
+        output               LBM
     );
     
     wire done;
@@ -38,8 +34,6 @@ module Ps2_top
             .y_addr(y_addr),
             .x_symbol(x_symbol),
             .y_symbol(y_symbol),
-            .x_overflow(x_overflow),
-            .y_overflow(y_overflow),
             .LBM(LBM)
         );
 endmodule   
