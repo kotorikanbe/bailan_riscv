@@ -1,4 +1,5 @@
 `timescale 1ns/1ns
+//(* DONT_TOUCH= "1" *)
 module RAM
     (
         input               clk,
