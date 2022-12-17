@@ -11,7 +11,7 @@ module Riscv
         wire                    clk_ram;
         wire                    clk_reg;
         wire                    clk_ctl_mul_div;
-        //wire                    clk_mul;
+        wire                    clk_mul_origin;
         
         wire    [31:0]          pc_new;
         wire    [31:0]          pc_out;
@@ -91,7 +91,8 @@ module Riscv
                       .clk_fetch(clk_fetch),
                       .clk_ram(clk_ram),
                       .clk_reg(clk_reg),
-                      .clk_ctl_mul_div(clk_ctl_mul_div));
+                      .clk_ctl_mul_div(clk_ctl_mul_div),
+                      .clk_mul_origin(clk_mul_origin));
 
         PC pc(.clk(clk_reg),
               .rst_n(rst_n),
@@ -160,7 +161,7 @@ module Riscv
                  .clk(clk),
                  .clk_alu(clk_alu),
                  .clk_ctl_mul_div(clk_ctl_mul_div),
-                 //.clk_mul(clk_mul),
+                 .clk_mul_origin(clk_mul_origin),
                  .answer(alu_result),
                  .complete_signal(complete_signal)
                 );
