@@ -5,22 +5,24 @@ module Clkdiv
         parameter     div_70 = 70,
         parameter     div_50 = 50,
         parameter     div_10 = 10,
-        parameter     div_90 = 90,
+        parameter     div_95 = 95,
         parameter     div_5  = 5,
         parameter     div_20 = 20,
         parameter     div_30 = 30
     )
-    (
+   (
         input         clk_100M,
         input         rst_n,
         input         alu_complete,
         output reg    clk_alu, //1MHz
         output reg    clk_fetch,
         output        clk_ram,
-        output reg    clk_reg
+        output reg    clk_reg,
+        output reg    clk_ctl_mul_div,
+        output        clk_mul_origin
 
     );  
-        reg [31:0]    count1, count2, count3, count4;
+        reg [10:0]    count1, count2, count3, count4, count5;
         
 
         always @(posedge clk_100M or negedge rst_n) begin
@@ -66,13 +68,13 @@ module Clkdiv
                         count2 <= count2 + 1;
                         clk_fetch <= clk_fetch;
                     end
-                    else if ((count2 >= div_5 && count2 <= div_10)||
-                             (count2 >= div_20 && count2 <= div_30) ) begin
+                    else if ((count2 >= div_5 && count2 < div_10)||
+                             (count2 >= div_20 && count2 < div_30) ) begin
                         clk_fetch <= 1;
                         count2 <= count2 + 1; 
                     end 
-                    else if ((count2 > div_10 && count2 < div_20)||
-                             (count2 > div_30 && count2 <= div_100) ) begin
+                    else if ((count2 >= div_10 && count2 < div_20)||
+                             (count2 >= div_30 && count2 <= div_100) ) begin
                         clk_fetch <= 0;
                         count2 <= count2 + 1; 
                     end 
@@ -84,68 +86,17 @@ module Clkdiv
             end
         end
 
-        // always @(posedge clk_100M or negedge rst_n) begin
-        //     if (rst_n == 0) begin
-        //         count2 <= 0;
-        //         clk_fetch <= 0;
-        //     end
-        //     else begin
-        //         if(alu_complete == 0) begin
-        //             count2 <= count2;
-        //             clk_fetch <= clk_fetch;
-        //         end
-        //         else begin
-        //             if (count2 < div_50) begin
-        //                 count2 <= count2 + 1;
-        //                 clk_fetch <= clk_fetch;
-        //             end
-        //             else if (count2 >= div_50 && count2 <= div_100 ) begin
-        //                 clk_fetch <= 0;
-        //                 count2 <= count2 + 1; 
-        //             end 
-        //             else begin
-        //                 clk_fetch <= 1;
-        //                 count2 <= 0;
-        //             end
-        //         end
-        //     end
-        // end
-
-        // always @(posedge clk_100M or negedge rst_n) begin
-        //     if (rst_n == 0) begin
-        //         count3 <= 0;
-        //         clk_ram <= 0;
-        //     end
-        //     else begin
-        //         if(alu_complete == 0) begin
-        //             count3 <= count3;
-        //             clk_ram <= clk_ram;
-        //         end
-        //         else begin
-        //             if (count3 < div_80) begin
-        //                 count3 <= count3 + 1;
-        //             end
-        //             else if (count3 >= div_80 && count3 <= div_100 ) begin
-        //                 clk_ram <= 1;
-        //                 count3 <= count3 + 1; 
-        //             end 
-        //             else begin
-        //                 clk_ram <= 0;
-        //                 count3 <= 0;
-        //             end
-        //         end
-        //     end
-        // end
 
         always @(posedge clk_100M or negedge rst_n) begin
-            if(rst_n == 0)
-                count3 <= 0;
-            else if(alu_complete == 0)
-                count3 <= count3;
-            else count3 <= count3 + 1;
+            if (rst_n == 0) begin
+                count5 <= 0;
+            end
+            else count5 <= count5 + 1;
         end
 
-        assign clk_ram = count3[1];
+        assign clk_ram = count5[1];
+        assign clk_mul_origin = count5[5];
+        //assign clk_mul = count5[4];
 
         always @(posedge clk_100M or negedge rst_n) begin
             if (rst_n == 0) begin
@@ -158,10 +109,10 @@ module Clkdiv
                     clk_reg <= clk_reg;
                 end
                 else begin
-                    if (count4 < div_90) begin
+                    if (count4 <= div_95) begin
                         count4 <= count4 + 1;
                     end
-                    else if (count4 >= div_90 && count4 <= div_100 ) begin
+                    else if (count4 > div_95 && count4 <= div_100 ) begin
                         clk_reg <= 1;
                         count4 <= count4 + 1; 
                     end 
@@ -172,6 +123,34 @@ module Clkdiv
                     else begin
                         clk_reg <= 0;
                         count4 <= 0;
+                    end
+                end
+            end
+        end
+
+        always @(posedge clk_100M or negedge rst_n) begin
+            if (rst_n == 0) begin
+                count3 <= 0;
+                clk_ctl_mul_div <= 0;
+            end
+            else begin
+                if(alu_complete == 0) begin
+                    count3 <= count3;
+                    clk_ctl_mul_div <= clk_ctl_mul_div;
+                end
+                else begin
+                    if (count3 > (div_30 + 10) && count3 < div_70) begin
+                        count3 <= count3 + 1;
+                        clk_ctl_mul_div <= 1;
+                    end
+                    else if ((count3 >= div_70 && count3 <= div_100) ||
+                            (count3 >= 0 && count3 <= (div_30+10))) begin
+                        clk_ctl_mul_div <= 0;
+                        count3 <= count3 + 1; 
+                    end 
+                    else begin
+                        clk_ctl_mul_div <= 0;
+                        count3 <= 0;
                     end
                 end
             end
