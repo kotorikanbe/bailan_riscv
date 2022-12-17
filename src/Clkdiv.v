@@ -2,7 +2,7 @@
 module Clkdiv
     #(
         parameter     div_100 = 20,
-        parameter     div_70 = 14,
+        parameter     div_70 = 11,
         parameter     div_95 = 19,
         parameter     div_5  = 1,
         parameter     div_10 = 2,
@@ -16,8 +16,8 @@ module Clkdiv
         output reg    clk_alu, //1MHz
         output reg    clk_fetch,
         output        clk_ram,
-        output reg    clk_reg
-        //output        clk_mul
+        output reg    clk_reg,
+        output reg    clk_ctl_mul_div
 
     );  
         reg [5:0]    count1, count2, count3, count4, count5;
@@ -92,7 +92,7 @@ module Clkdiv
             else count5 <= count5 + 1;
         end
 
-        assign clk_ram = clk_100M;
+        assign clk_ram = count5[1];
         //assign clk_mul = count5[4];
 
         always @(posedge clk_100M or negedge rst_n) begin
@@ -120,6 +120,34 @@ module Clkdiv
                     else begin
                         clk_reg <= 0;
                         count4 <= 0;
+                    end
+                end
+            end
+        end
+
+        always @(posedge clk_100M or negedge rst_n) begin
+            if (rst_n == 0) begin
+                count3 <= 0;
+                clk_ctl_mul_div <= 0;
+            end
+            else begin
+                if(alu_complete == 0) begin
+                    count3 <= count3;
+                    clk_ctl_mul_div <= clk_ctl_mul_div;
+                end
+                else begin
+                    if (count3 > (div_30 + 2) && count3 < div_70) begin
+                        count3 <= count3 + 1;
+                        clk_ctl_mul_div <= 1;
+                    end
+                    else if ((count3 >= div_70 && count3 <= div_100) ||
+                            (count3 >= 0 && count3 <= (div_30+2))) begin
+                        clk_ctl_mul_div <= 0;
+                        count3 <= count3 + 1; 
+                    end 
+                    else begin
+                        clk_ctl_mul_div <= 0;
+                        count3 <= 0;
                     end
                 end
             end
