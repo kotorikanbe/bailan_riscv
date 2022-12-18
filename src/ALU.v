@@ -8,7 +8,7 @@ module  ALU
         input                clk,
         input                clk_alu,
         input                clk_ctl_mul_div,
-        input                clk_mul_origin,
+        //input                clk_mul_origin,
         output reg [31:0]    answer,
         output               complete_signal
     );
@@ -27,7 +27,7 @@ module  ALU
         wire [31:0]      r_a_shifter_o;
         wire [31:0]      ALU_o;
         wire             clk_mul;
-        //wire             clk_mul_origin;
+        wire             clk_mul_origin;
         wire             C;    
         wire             clk_div;
         wire             clk_div_origin;
@@ -101,7 +101,7 @@ module  ALU
         clk_wiz_alu u_clk_wizard
             (
                 .clk_out1(clk_div_origin),     // output clk_out1
-                //.clk_out2(clk_mul_origin),
+                .clk_out2(clk_mul_origin),
                 .clk_in1(clk)
             );      // input clk_in1
         Converter_o u_converter_o0

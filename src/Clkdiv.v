@@ -17,8 +17,8 @@ module Clkdiv
         output reg    clk_fetch,
         output reg    clk_ram,
         output reg    clk_reg,
-        output reg    clk_ctl_mul_div,
-        output        clk_mul_origin
+        output reg    clk_ctl_mul_div
+        //output        clk_mul_origin
 
     );  
         reg [10:0]    count1, count2, count3, count4, count5,count6;
@@ -86,15 +86,15 @@ module Clkdiv
         end
 
 
-        always @(posedge clk_100M or negedge rst_n) begin
-            if (rst_n == 0) begin
-                count5 <= 0;
-            end
-            else count5 <= count5 + 1;
-        end
+        // always @(posedge clk_100M or negedge rst_n) begin
+        //     if (rst_n == 0) begin
+        //         count5 <= 0;
+        //     end
+        //     else count5 <= count5 + 1;
+        // end
 
         //assign clk_ram = count5[2];
-        assign clk_mul_origin = count5[5];
+        //assign clk_mul_origin = count5[5];
         //assign clk_mul = count5[4];
 
         always @(posedge clk_100M or negedge rst_n) begin
