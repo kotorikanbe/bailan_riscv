@@ -1,13 +1,13 @@
 `timescale 1ns/1ns
 module Clkdiv
     #(
-        parameter     div_100 = 20,
-        parameter     div_70 = 12,
+        parameter     div_100 = 10,
+        parameter     div_70 = 7,
         parameter     div_10 = 2,
-        parameter     div_95 = 19,
+        parameter     div_95 = 9,
         parameter     div_5  = 1,
-        parameter     div_20 = 4,
-        parameter     div_30 = 6
+        parameter     div_20 = 3,
+        parameter     div_30 = 4
     )
    (
         input         clk_100M,
@@ -15,7 +15,7 @@ module Clkdiv
         input         alu_complete,
         output reg    clk_alu, //1MHz
         output reg    clk_fetch,
-        output reg    clk_ram,
+        output        clk_ram,
         output reg    clk_reg,
         output reg    clk_ctl_mul_div
         //output        clk_mul_origin
@@ -92,7 +92,7 @@ module Clkdiv
         //     end
         //     else count5 <= count5 + 1;
         // end
-
+        assign clk_ram = clk_100M;
         //assign clk_ram = count5[2];
         //assign clk_mul_origin = count5[5];
         //assign clk_mul = count5[4];
@@ -138,12 +138,12 @@ module Clkdiv
                     clk_ctl_mul_div <= clk_ctl_mul_div;
                 end
                 else begin
-                    if (count3 > (div_30 + 4) && count3 < div_70) begin
+                    if (count3 >= (div_30 + 1) && count3 < div_70) begin
                         count3 <= count3 + 1;
                         clk_ctl_mul_div <= 1;
                     end
                     else if ((count3 >= div_70 && count3 <= div_100) ||
-                            (count3 >= 0 && count3 <= (div_30+4))) begin
+                            (count3 >= 0 && count3 < (div_30+1))) begin
                         clk_ctl_mul_div <= 0;
                         count3 <= count3 + 1; 
                     end 
@@ -155,35 +155,35 @@ module Clkdiv
             end
         end
 
-         always @(posedge clk_100M or negedge rst_n) begin
-            if (rst_n == 0) begin
-                count6 <= 0;
-                clk_ram <= 0;
-            end
-            else begin
-                if(alu_complete == 0) begin
-                    count6 <= count6;
-                    clk_ram <= clk_ram;
-                end
-                else begin
-                    if ((count6 > div_70 && count6 < (div_70+2))||
-                        (count6 > (div_70+4) && count6 < (div_70+6))) begin
-                        count6 <= count6 + 1;
-                        clk_ram <= 1;
-                    end
-                    else if ((count6 >= div_70 + 6 && count6 <= div_100) ||
-                            (count6 >= div_70 + 2 && count6 <= (div_70+4))||
-                            (count6 >= 0 && count6 <= div_70)) begin
-                        clk_ram <= 0;
-                        count6 <= count6 + 1; 
-                    end 
-                    else begin
-                        clk_ram <= 0;
-                        count6 <= 0;
-                    end
-                end
-            end
-        end
+        //  always @(posedge clk_100M or negedge rst_n) begin
+        //     if (rst_n == 0) begin
+        //         count6 <= 0;
+        //         clk_ram <= 0;
+        //     end
+        //     else begin
+        //         if(alu_complete == 0) begin
+        //             count6 <= count6;
+        //             clk_ram <= clk_ram;
+        //         end
+        //         else begin
+        //             if ((count6 > div_70 && count6 < (div_70+2))||
+        //                 (count6 > (div_70+4) && count6 < (div_70+6))) begin
+        //                 count6 <= count6 + 1;
+        //                 clk_ram <= 1;
+        //             end
+        //             else if ((count6 >= div_70 + 6 && count6 <= div_100) ||
+        //                     (count6 >= div_70 + 2 && count6 <= (div_70+4))||
+        //                     (count6 >= 0 && count6 <= div_70)) begin
+        //                 clk_ram <= 0;
+        //                 count6 <= count6 + 1; 
+        //             end 
+        //             else begin
+        //                 clk_ram <= 0;
+        //                 count6 <= 0;
+        //             end
+        //         end
+        //     end
+        // end
         
 
     
