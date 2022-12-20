@@ -1,17 +1,28 @@
 module Riscv
     (
         input                   clk,
+        input                   clk_alu,
+        input                   clk_fetch,
+        input                   clk_ram,
+        input                   clk_reg,
+        input                   clk_ctl_mul_div,
         input                   rst_n,
+        input   [31:0]          inst,
+
+        input   [31:0]          mem_dat_o, //从ram读出来的数据
+        output  [31:0]          mem_dat_i, //要写入ram的数据
+        output                  mem_wr, //RAM的写使能
+        output  [31:0]          mem_addr, 
+        output  [2:0]           rw_type, //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
+        
         output  [10:0]          rom_addr,
-        output  [31:0]          data
+        output  [31:0]          data,
+        output                  alu_complete
+
+        
+        
+
     );
-        wire    [31:0]          inst;
-        wire                    clk_alu;
-        wire                    clk_fetch;
-        wire                    clk_ram;
-        wire                    clk_reg;
-        wire                    clk_ctl_mul_div;
-        //wire                    clk_mul_origin;
         
         wire    [31:0]          pc_new;
         wire    [31:0]          pc_out;
@@ -30,11 +41,6 @@ module Riscv
         wire    [4:0]           reg_des;
         wire signed [31:0]      imm;
         
-        //wire                    mem_rd; //RAM的读使能
-        wire                    mem_wr; //RAM写使能
-
-        wire    [31:0]          mem_dat_i;
-        wire    [31:0]          mem_dat_o;
 
         wire    [1:0]           wb_sel; //写回寄存器的数据选择器控制信号
         wire                    reg_wr;  //寄存器的写使能控制信号
@@ -45,18 +51,11 @@ module Riscv
         wire    [31:0]          alu_src1_dat;
         wire    [31:0]          alu_src2_dat;
         wire    [4:0]           alu_ctl; //ALU控制信号
-        wire                    complete_signal;
+       
         wire    [31:0]          alu_result;
 
-        wire                    beq;
-        wire                    bne;
-        wire                    blt;
-        wire                    bge;
-        wire                    bltu;
-        wire                    bgeu;
+        wire    [2:0]           b_type;
         
-        wire [31:0]             mem_addr;
-        wire [2:0]              rw_type; //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
 
         assign                  pc_plus_4 = pc_out+4;
         assign                  rom_addr = pc_out[12:2];
@@ -65,34 +64,33 @@ module Riscv
         assign                  data = mem_dat_i;
         
 
-        ROM rom (.clk(clk_fetch),
-                 .addr(rom_addr),
-                 .inst(inst)
-                );
+        // ROM rom (.clk(clk_fetch),
+        //          .addr(rom_addr),
+        //          .inst(inst)
+        //         );
 
-        RAM ram (.clk(clk_ram),
-                 .rst(~rst_n),
+        // RAM ram (.clk(clk_ram),
+        //          .rst(~rst_n),
                 
-                 //.rd_en(mem_rd),
-                 .wr_en(mem_wr),
+        //          .wr_en(mem_wr),
         
-                 .addr(mem_addr),
-                 .rw_type(rw_type), //读写的类型，有：字节，半字，字，双字等等
-                                //000：lb sb; 001: lh sh; 010: lw sw; 100: lbu; 101:lhu
+        //          .addr(mem_addr),
+        //          .rw_type(rw_type), //读写的类型，有：字节，半字，字，双字等等
+        //                         //000：lb sb; 001: lh sh; 010: lw sw; 100: lbu; 101:lhu
 
-                 .dat_i(mem_dat_i),
-                 .dat_o(mem_dat_o)
-                );
+        //          .dat_i(mem_dat_i),
+        //          .dat_o(mem_dat_o)
+        //         );
 
-        Clkdiv clkdiv(.clk_100M(clk),
-                      .rst_n(rst_n),
-                      .alu_complete(complete_signal),
-                      .clk_alu(clk_alu),
-                      .clk_fetch(clk_fetch),
-                      .clk_ram(clk_ram),
-                      .clk_reg(clk_reg),
-                      .clk_ctl_mul_div(clk_ctl_mul_div));
-                      //.clk_mul_origin(clk_mul_origin));
+        // Clkdiv clkdiv(.clk_100M(clk),
+        //               .rst_n(rst_n),
+        //               .alu_complete(complete_signal),
+        //               .clk_alu(clk_alu),
+        //               .clk_fetch(clk_fetch),
+        //               .clk_ram(clk_ram),
+        //               .clk_reg(clk_reg),
+        //               .clk_ctl_mul_div(clk_ctl_mul_div));
+        //               //.clk_mul_origin(clk_mul_origin));
 
         PC pc(.clk(clk_reg),
               .rst_n(rst_n),
@@ -122,21 +120,17 @@ module Riscv
                                         .alu_src2(alu_src2_sel), //ALU操作数来源
                                         .alu_ctl(alu_ctl), //ALU控制信号
 
-                                        .beq(beq),
-                                        .bne(bne),
-                                        .blt(blt),
-                                        .bge(bge),
-                                        .bltu(bltu),
-                                        .bgeu(bgeu),
+                                        .b_type(b_type),
                                         .rw_type(rw_type) //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
                                     );
 
         Registers registers (.clk(clk_reg),
+                             .rst_n(rst_n),
                              .reg_src_1_i(reg_src_1), //寄存器序号1
                              .reg_src_2_i(reg_src_2), //寄存器序号2
                              .reg_des_i(reg_des), //数据写入的目标寄存器
                              .reg_des_dat_i(reg_des_dat), //用于写入的数据
-                             .rst_n_i(rst_n),
+                             
                              .wr_en(reg_wr), //使能信号，0为读，1为写
 
                              .reg_src_1_dat_o(reg_src_dat_1), //输出的数据1
@@ -144,12 +138,7 @@ module Riscv
                             );
 
         Branch branch(
-                      .beq(beq),
-                      .bne(bne),
-                      .blt(blt),
-                      .bge(bge),
-                      .bltu(bltu),
-                      .bgeu(bgeu),
+                      .b_type(b_type),
                       .reg_src_dat_1(reg_src_dat_1),
                       .reg_src_dat_2(reg_src_dat_2),
                       .branch_judge(branch_judge)
@@ -163,7 +152,7 @@ module Riscv
                  .clk_ctl_mul_div(clk_ctl_mul_div),
                  //.clk_mul_origin(clk_mul_origin),
                  .answer(alu_result),
-                 .complete_signal(complete_signal)
+                 .complete_signal(alu_complete)
                 );
 
         

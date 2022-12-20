@@ -15,41 +15,27 @@ module RAM
         output [31:0]       dat_o
     );  
         
-        //wire             rd_en; //读使能
-
-        wire            rsta_busy;
-        
-        wire [31:0]      rd_dat_origin;
-        reg [31:0]       rd_dat;
-        reg  [31:0]      wr_dat;
-        
-        reg [31:0]      wr_dat_B;    //字节拼接
-        reg [31:0]      wr_dat_H;    //半字拼接
-
-        reg [7:0]       rd_dat_B;
-        reg [15:0]      rd_dat_H;
-
-        reg  [31:0]      rd_dat_B_ext;
-        reg  [31:0]      rd_dat_H_ext;
-
-        //assign           rd_en = 1;
-        
         
 
-        // RAM_core ram_core(
-        //                   .clka(clk_ram),
-        //                   .wea(wr_en),
-        //                   .addra(addr[14:0]),
-        //                   .dina(wr_dat),
-        //                   .clkb(clk_ram),
-        //                   .rstb(rst),
-        //                   .addrb(addr[14:0]),
-        //                   .doutb(rd_dat_origin)
-        //                   );
+        wire                rsta_busy;
+        
+        wire [31:0]         rd_dat_origin; //ram中原来的数据
+        reg [31:0]          rd_dat;
+        reg  [31:0]         wr_dat;
+        
+        reg [31:0]          wr_dat_B;    //字节拼接
+        reg [31:0]          wr_dat_H;    //半字拼接
+
+        reg [7:0]           rd_dat_B;
+        reg [15:0]          rd_dat_H;
+
+        reg  [31:0]         rd_dat_B_ext;
+        reg  [31:0]         rd_dat_H_ext;
+
+       
         RAM_core ram_core (
                             .clka(clk),            // input wire clka
                             .rsta(rst),            // input wire rsta
-                            //.ena(rd_en),              // input wire ena
                             .wea(wr_en),              // input wire [0 : 0] wea
                             .addra(addr[14:0]),          // input wire [14 : 0] addra
                             .dina(wr_dat),            // input wire [31 : 0] dina
@@ -69,7 +55,7 @@ module RAM
                 2'b11: rd_dat_B = rd_dat_origin[31:24];
             endcase
         end
-        //assign  rd_dat_B = rd_dat_origin[7:0];
+        
 
         //lh指令，根据写地址判断要读取哪一段
         always @(*) begin
@@ -78,7 +64,7 @@ module RAM
             else 
                 rd_dat_H = rd_dat_origin[15:0];
         end
-        //assign  rd_dat_H = rd_dat_origin[15:0];
+ 
         
                 
         //扩展到32位，根据rw_type判断是有符号数扩展还是无符号数扩展
@@ -121,7 +107,7 @@ module RAM
                 2'b11:wr_dat_B = {dat_i[7:0],rd_dat_origin[23:0]};
             endcase
         end
-        //assign  wr_dat_B = {rd_dat[31:8],dat_i[7:0]};
+   
 
         //sh指令的写入数据，根据地址判断写入到哪一字段
         always @(*) begin
@@ -130,7 +116,7 @@ module RAM
             else  //写入到低16位
                 wr_dat_H = {rd_dat_origin[31:16],dat_i[15:0]} ;
         end
-        //assign  wr_dat_H = {rd_dat[31:16],dat_i[15:0]} ;
+       
 
 
         //根据写类型，选择写入的数据

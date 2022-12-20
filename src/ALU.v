@@ -1,4 +1,4 @@
-//他真的必须全部大写，不是我不想按照规则
+
 `timescale 1ns/1ns
 module  ALU 
     (
@@ -8,7 +8,6 @@ module  ALU
         input                clk,
         input                clk_alu,
         input                clk_ctl_mul_div,
-        //input                clk_mul_origin,
         output reg [31:0]    answer,
         output               complete_signal
     );

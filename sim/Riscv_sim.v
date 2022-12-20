@@ -2,7 +2,7 @@
 module Riscv_sim ();
     reg         clk = 1'b0;
     reg         rst_n;
-    wire [7:0]   rom_addr;
+    wire [31:0] data;
 
 initial
 begin
@@ -17,10 +17,10 @@ clk=~clk;
 #5;
 end
 
-Riscv Riscv_sim
+Riscv_top Riscv_top_sim
 (
     .clk(clk),
     .rst_n(rst_n),
-    .rom_addr(rom_addr)
+    .data(data)
 );
 endmodule

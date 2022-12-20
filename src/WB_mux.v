@@ -8,6 +8,7 @@ module WB_mux
         input      [1:0]    sel_i,
         output reg [31:0]   wb_dat_o       
     );
+    
         always @(*) begin
             case (sel_i)
                 0:       wb_dat_o = pc_plus4_i;

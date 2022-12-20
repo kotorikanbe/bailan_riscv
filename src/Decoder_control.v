@@ -16,97 +16,98 @@ module Decoder_control
         input                       clk_alu,
         input [31:0]                inst, //指令
 
-        input                       branch_judge,
+        input                       branch_judge, //B型指令的条件跳转信号
         
-        output [4:0]                reg_src_1,
+        output [4:0]                reg_src_1, 
         output [4:0]                reg_src_2,
         output [4:0]                reg_des,
         output reg signed [31:0]    imm,
         
-        //output              mem_rd, //RAM的读使能
-        output reg          mem_wr, //RAM写使能
+        //output              mem_rd, //RAM的读使能，默认为1
+        output reg                  mem_wr, //RAM写使能
 
-        output reg [1:0]    wb_sel, //写回寄存器的数据选择器控制信号
-        output              reg_wr,  //寄存器的写使能控制信号
-        output              pc_sel,
+        output reg [1:0]            wb_sel, //写回寄存器的数据选择器控制信号
+        output                      reg_wr,  //寄存器的写使能控制信号
+        output                      pc_sel,
         
-        output              alu_src1, //ALU操作数来源
-        output              alu_src2, //ALU操作数来源
-        output reg [4:0]    alu_ctl, //ALU控制信号
+        output                      alu_src1, //ALU操作数来源
+        output                      alu_src2, //ALU操作数来源
+        output reg [4:0]            alu_ctl, //ALU控制信号
 
-        output              beq,
-        output              bne,
-        output              blt,
-        output              bge,
-        output              bltu,
-        output              bgeu,
+        // output                      beq,
+        // output                      bne,
+        // output                      blt,
+        // output                      bge,
+        // output                      bltu,
+        // output                      bgeu,
+        output [2:0]                b_type, //根据funct3判断是具体的B型指令(beq bne blt bge bltu bgeu)
         
-        output [2:0]        rw_type //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
+        output [2:0]                rw_type //根据funct3判断RAM的读写类型（lb sb lh sh lw sw lbu lhu）
     );
 
-        wire [6:0]                opcode;
-        wire [2:0]                funct3;
-        wire [6:0]                funct7;
+        wire [6:0]                  opcode;
+        wire [2:0]                  funct3;
+        wire [6:0]                  funct7;
 
-        wire                      is_R;
+        wire                        is_R;
             //整数指令集
-        wire                      is_R_add;
-        wire                      is_R_sub;
-        wire                      is_R_sll;
-        wire                      is_R_slt;
-        wire                      is_R_sltu;
-        wire                      is_R_xor;
-        wire                      is_R_srl;
-        wire                      is_R_sra;
-        wire                      is_R_or;
-        wire                      is_R_and;
+        wire                        is_R_add;
+        wire                        is_R_sub;
+        wire                        is_R_sll;
+        wire                        is_R_slt;
+        wire                        is_R_sltu;
+        wire                        is_R_xor;
+        wire                        is_R_srl;
+        wire                        is_R_sra;
+        wire                        is_R_or;
+        wire                        is_R_and;
             //乘法指令集
-        wire                      is_R_mul;
-        wire                      is_R_mulh;
-        wire                      is_R_mulsu;
-        wire                      is_R_mulu;
-        wire                      is_R_div;
-        wire                      is_R_divu;
-        wire                      is_R_rem;
-        wire                      is_R_remu;
+        wire                        is_R_mul;
+        wire                        is_R_mulh;
+        wire                        is_R_mulsu;
+        wire                        is_R_mulu;
+        wire                        is_R_div;
+        wire                        is_R_divu;
+        wire                        is_R_rem;
+        wire                        is_R_remu;
         
         //I型指令
-        wire                      is_I;
+        wire                        is_I;
             //load类
-        wire                      is_I_load;
+        wire                        is_I_load;
             //跳转类
-        wire                      is_I_jalr;
+        wire                        is_I_jalr;
             //计算类
-        wire                      is_I_cal;
-        wire                      is_I_addi;               
-        wire                      is_I_slli;               
-        wire                      is_I_slti;               
-        wire                      is_I_sltiu;               
-        wire                      is_I_xori;               
-        wire                      is_I_srli;               
-        wire                      is_I_srai;               
-        wire                      is_I_ori;               
-        wire                      is_I_andi;               
+        wire                        is_I_cal;
+        wire                        is_I_addi;               
+        wire                        is_I_slli;               
+        wire                        is_I_slti;               
+        wire                        is_I_sltiu;               
+        wire                        is_I_xori;               
+        wire                        is_I_srli;               
+        wire                        is_I_srai;               
+        wire                        is_I_ori;               
+        wire                        is_I_andi;               
 
         //B型指令
-        wire                      is_B;
-        wire                      is_B_beq;
-	    wire                      is_B_bne;
-	    wire                      is_B_blt;
-	    wire                      is_B_bge;
-	    wire                      is_B_bltu;
-	    wire                      is_B_bgeu;
+        wire                        is_B;
+        wire                        is_B_beq;
+	    wire                        is_B_bne;
+	    wire                        is_B_blt;
+	    wire                        is_B_bge;
+	    wire                        is_B_bltu;
+	    wire                        is_B_bgeu;
 
         //S型指令
-        wire                      is_S;
+        wire                        is_S;
 
         //U型指令
-        wire                      is_U;
-        wire                      is_U_lui;
-        wire                      is_U_auipc;
+        wire                        is_U;
+        wire                        is_U_lui;
+        wire                        is_U_auipc;
 
         //J型指令
-        wire                      is_J_jal;
+        wire                        is_J_jal;
 
         //reg  [2:0]                count; //mem_wr使能控制信号的计数器（读出来后再写）
 
@@ -192,12 +193,12 @@ module Decoder_control
 	    assign    is_B_bgeu 	 = ((is_B) && (funct3 == 7));
 
         //U型指令
-        assign    is_U_lui      = (opcode == op_U_lui);
-        assign    is_U_auipc    = (opcode == op_U_auipc);
+        assign    is_U_lui       = (opcode == op_U_lui);
+        assign    is_U_auipc     = (opcode == op_U_auipc);
 
 
         //J型指令
-        assign    is_J_jal      = (opcode == op_J_jal);
+        assign    is_J_jal       = (opcode == op_J_jal);
 
         //取得立即数imm
 
@@ -218,11 +219,9 @@ module Decoder_control
 
 
         //各种使能信号
+        assign  b_type        = funct3;
         assign  rw_type       = funct3;
 
-        //assign  mem_rd        = is_I_load;
-
-        //assign  mem_wr        = is_S;
 
         assign  reg_wr        = is_I | is_R | is_U | is_J_jal;
 
@@ -231,16 +230,8 @@ module Decoder_control
         assign  alu_src2      = is_I | is_S | is_U_auipc| is_J_jal |is_B; //如果为1，则操作数为立即数,否则为rs2
         assign  pc_sel        = is_I_jalr | is_J_jal | (is_B & branch_judge);  //PC寄存器数据选择，若为1，则跳转
 
-        // always @(posedge clk_ram) begin
-        //     if(clk_alu == 0)
-        //         count <= count +1;
-        //     else count <= 0;
 
-        //     if(count >= 3)
-        //         mem_wr = is_S;
-        //     else mem_wr = 0;
-        // end
-        always @(negedge clk_alu or posedge clk) begin
+        always @(negedge clk_alu or posedge clk) begin //保证在alu于时钟下降沿输出信号之后再写使能，防止乱写
             if(clk == 1)
                 mem_wr = 0;
             else mem_wr = is_S;
