@@ -115,6 +115,9 @@ module Ps2_read_data
                 x_position <= 'd0;
                 y_position <= 'd0;
             end
-            else     
+            else  begin
+                x_position <= (x_position + x_addr);
+                y_position <= (y_position + y_addr);
+            end
         end
 endmodule 
