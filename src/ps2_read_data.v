@@ -7,7 +7,8 @@ module Ps2_read_data
         input                ps2_data,
         output reg [15:0]    x_addr,
         output reg [15:0]    y_addr,
-        output reg           LBM
+        output reg           clk_ps2,
+        output reg [7:0]     LBM
     );
         reg          ps2_clkf;
         reg          ps2_clkb;
@@ -88,13 +89,17 @@ module Ps2_read_data
                         if (count1 == 'd2) begin
                             count1 <= 'd0;
                             state <= 'd0;
+                            clk_ps2 <= ~clk_ps2;
                             x_addr <= { {8{data[4]}} , data[15:8] };
                             y_addr <= { {8{data[5]}} , data[23:16] };
-                            LBM <= data[0];
+                            LBM <= {{0000000},{data[0]}};
                         end
                         else begin
-                            state <= 'd0;
-                            count1 <= count0 + 1'b1;
+                        if(count1 == 'd1) begin
+                            clk_ps2 <= ~clk_ps2;
+                        end
+                            state <= 3'd0;
+                            count1 <= count1 + 'd1;
                         end 
                     end
                     default: state <= state;
