@@ -6,7 +6,7 @@ TARGET = main
 
 COMMON_DIR = .
 
-C_SRCS := test.c
+C_SRCS := calculator.c main.c
 
 CFLAGS += -O0 -Wall
 #-O0 -Wall

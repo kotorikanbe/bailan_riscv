@@ -32,12 +32,20 @@
 
 extern Number operator1, operator2, show_operator;
 extern Operator target;
+Number Number_plus(Number *op1, Number *op2);
+Operator identify(Mouse *mouse);
+Number Number_minus(Number *op1, Number *op2);
+Number Number_multiply(Number *op1, Number *op2);
+Number Number_divide(Number *op1, Number *op2);
+uint8_t get_width(int64_t opr);
+int64_t power10(uint8_t exp);
+void reduct_zero(Number *op);
 void execute_signal(Mouse *mouse)
 {
     static uint8_t execute_flag = 0;
     static State curr_state = clear;
     static uint8_t point_flag = 0;
-    // static uint8_t sign_flag = 0;
+    static uint8_t spec_flag = 0;
     if ((mouse->click == 1) && (!execute_flag))
     {
         execute_flag = 1;
@@ -253,6 +261,7 @@ void execute_signal(Mouse *mouse)
                 point_flag = 0;
                 operator2.operated_number = 0;
                 operator2.point_addr = 0;
+                spec_flag = 0;
                 break;
             }
             case minus:
@@ -262,6 +271,7 @@ void execute_signal(Mouse *mouse)
                 point_flag = 0;
                 operator2.operated_number = 0;
                 operator2.point_addr = 0;
+                spec_flag = 0;
                 break;
             }
             case multiply:
@@ -271,15 +281,17 @@ void execute_signal(Mouse *mouse)
                 point_flag = 0;
                 operator2.operated_number = 0;
                 operator2.point_addr = 0;
+                spec_flag = 0;
                 break;
             }
-            case div:
+            case division:
             {
                 curr_state = to_be_added_op2;
-                target = div;
+                target = division;
                 point_flag = 0;
                 operator2.operated_number = 0;
                 operator2.point_addr = 0;
+                spec_flag = 0;
                 break;
             }
             case C:
@@ -316,6 +328,7 @@ void execute_signal(Mouse *mouse)
                         operator2.point_addr += 1;
                     }
                 }
+                spec_flag = 1;
                 break;
             }
             case one:
@@ -325,6 +338,7 @@ void execute_signal(Mouse *mouse)
                 {
                     operator2.point_addr += 1;
                 }
+                spec_flag = 1;
                 break;
             }
             case two:
@@ -334,6 +348,7 @@ void execute_signal(Mouse *mouse)
                 {
                     operator2.point_addr += 1;
                 }
+                spec_flag = 0;
                 break;
             }
             case three:
@@ -343,6 +358,7 @@ void execute_signal(Mouse *mouse)
                 {
                     operator2.point_addr += 1;
                 }
+                spec_flag = 1;
                 break;
             }
             case four:
@@ -352,6 +368,7 @@ void execute_signal(Mouse *mouse)
                 {
                     operator2.point_addr += 1;
                 }
+                spec_flag = 1;
                 break;
             }
             case five:
@@ -361,6 +378,7 @@ void execute_signal(Mouse *mouse)
                 {
                     operator2.point_addr += 1;
                 }
+                spec_flag = 1;
                 break;
             }
             case six:
@@ -370,6 +388,7 @@ void execute_signal(Mouse *mouse)
                 {
                     operator2.point_addr += 1;
                 }
+                spec_flag = 1;
                 break;
             }
             case seven:
@@ -379,6 +398,7 @@ void execute_signal(Mouse *mouse)
                 {
                     operator2.point_addr += 1;
                 }
+                spec_flag = 1;
                 break;
             }
             case eight:
@@ -388,6 +408,7 @@ void execute_signal(Mouse *mouse)
                 {
                     operator2.point_addr += 1;
                 }
+                spec_flag = 1;
                 break;
             }
             case nine:
@@ -397,6 +418,7 @@ void execute_signal(Mouse *mouse)
                 {
                     operator2.point_addr += 1;
                 }
+                spec_flag = 1;
                 break;
             }
             case sign:
@@ -417,23 +439,43 @@ void execute_signal(Mouse *mouse)
                 {
                     point_flag = 1;
                 }
+                spec_flag = 1;
                 break;
             }
             case plus:
             {
-                if (operator2.operated_number != 0)//逻辑需要改变
+                if (spec_flag != 0)
                 {
-                    curr_state = to_be_added_op1;
-                    operator1 = Number_plus(&operator1, &operator2);
-                    if (operator1.point_addr != 0)
+                    switch (target)
                     {
-                        point_flag = 1;
-                    }
-                    else
+                    case plus:
                     {
-                        point_flag = 0;
+                        operator1 = Number_plus(&operator1, &operator2);
+                        break;
                     }
-                    target = none;
+                    case minus:
+                    {
+                        operator1 = Number_minus(&operator1, &operator2);
+                        break;
+                    }
+                    case multiply:
+                    {
+                        operator1 = Number_multiply(&operator1, &operator2);
+                        break;
+                    }
+                    case division:
+                    {
+                        operator1 = Number_divide(&operator1, &operator2);
+                        break;
+                    }
+                    default:
+                        break;
+                    }
+                    point_flag = 0;
+                    operator2.operated_number = 0;
+                    operator2.point_addr = 0;
+                    spec_flag = 0;
+                    target = plus;
                 }
                 else
                 {
@@ -443,19 +485,38 @@ void execute_signal(Mouse *mouse)
             }
             case minus:
             {
-                if (operator2.operated_number != 0)
+                if (spec_flag != 0)
                 {
-                    curr_state = to_be_added_op1;
-                    operator1 = Number_minus(&operator1, &operator2);
-                    if (operator1.point_addr != 0)
+                    switch (target)
                     {
-                        point_flag = 1;
-                    }
-                    else
+                    case plus:
                     {
-                        point_flag = 0;
+                        operator1 = Number_plus(&operator1, &operator2);
+                        break;
                     }
-                    target = none;
+                    case minus:
+                    {
+                        operator1 = Number_minus(&operator1, &operator2);
+                        break;
+                    }
+                    case multiply:
+                    {
+                        operator1 = Number_multiply(&operator1, &operator2);
+                        break;
+                    }
+                    case division:
+                    {
+                        operator1 = Number_divide(&operator1, &operator2);
+                        break;
+                    }
+                    default:
+                        break;
+                    }
+                    point_flag = 0;
+                    operator2.operated_number = 0;
+                    operator2.point_addr = 0;
+                    spec_flag = 0;
+                    target = minus;
                 }
                 else
                 {
@@ -465,19 +526,38 @@ void execute_signal(Mouse *mouse)
             }
             case multiply:
             {
-                if (operator2.operated_number != 0)
+                if (spec_flag != 0)
                 {
-                    curr_state = to_be_added_op1;
-                    operator1 = Number_multiply(&operator1, &operator2);
-                    if (operator1.point_addr != 0)
+                    switch (target)
                     {
-                        point_flag = 1;
-                    }
-                    else
+                    case plus:
                     {
-                        point_flag = 0;
+                        operator1 = Number_plus(&operator1, &operator2);
+                        break;
                     }
-                    target = none;
+                    case minus:
+                    {
+                        operator1 = Number_minus(&operator1, &operator2);
+                        break;
+                    }
+                    case multiply:
+                    {
+                        operator1 = Number_multiply(&operator1, &operator2);
+                        break;
+                    }
+                    case division:
+                    {
+                        operator1 = Number_divide(&operator1, &operator2);
+                        break;
+                    }
+                    default:
+                        break;
+                    }
+                    point_flag = 0;
+                    operator2.operated_number = 0;
+                    operator2.point_addr = 0;
+                    spec_flag = 0;
+                    target = multiply;
                 }
                 else
                 {
@@ -485,25 +565,44 @@ void execute_signal(Mouse *mouse)
                 }
                 break;
             }
-            case div:
+            case division:
             {
-                if (operator2.operated_number != 0)
+                if (spec_flag != 0)
                 {
-                    curr_state = to_be_added_op1;
-                    operator1 = Number_divide(&operator1, &operator2);
-                    if (operator1.point_addr != 0)
+                    switch (target)
                     {
-                        point_flag = 1;
-                    }
-                    else
+                    case plus:
                     {
-                        point_flag = 0;
+                        operator1 = Number_plus(&operator1, &operator2);
+                        break;
                     }
-                    target = none;
+                    case minus:
+                    {
+                        operator1 = Number_minus(&operator1, &operator2);
+                        break;
+                    }
+                    case multiply:
+                    {
+                        operator1 = Number_multiply(&operator1, &operator2);
+                        break;
+                    }
+                    case division:
+                    {
+                        operator1 = Number_divide(&operator1, &operator2);
+                        break;
+                    }
+                    default:
+                        break;
+                    }
+                    point_flag = 0;
+                    operator2.operated_number = 0;
+                    operator2.point_addr = 0;
+                    spec_flag = 0;
+                    target = division;
                 }
                 else
                 {
-                    target = div;
+                    target = division;
                 }
                 break;
             }
@@ -516,6 +615,7 @@ void execute_signal(Mouse *mouse)
                 operator2.operated_number = 0;
                 operator2.point_addr = 0;
                 point_flag = 0;
+                break;
             }
             case equal:
             {
@@ -704,7 +804,8 @@ void execute_signal(Mouse *mouse)
                 }
                 break;
             }
-            case point:{
+            case point:
+            {
                 if (show_operator.point_addr == 0)
                 {
                     curr_state = to_be_added_op1;
@@ -732,23 +833,67 @@ void execute_signal(Mouse *mouse)
             }
             case plus:
             {
-                
-                
-                    curr_state = to_be_added_op1;
-                    operator1 = Number_plus(&operator1, &operator2);
-                    if (operator1.point_addr != 0)
-                    {
-                        point_flag = 1;
-                    }
-                    else
-                    {
-                        point_flag = 0;
-                    }
-                    target = none;
+
+                curr_state = to_be_added_op2;
+                operator1 = show_operator;
+                target = plus;
+                spec_flag = 0;
+                point_flag = 0;
+                operator2.point_addr = 0;
+                operator2.operated_number = 0;
+                break;
+            }
+            case minus:
+            {
+
+                curr_state = to_be_added_op2;
+                operator1 = show_operator;
+                target = minus;
+                spec_flag = 0;
+                point_flag = 0;
+                operator2.point_addr = 0;
+                operator2.operated_number = 0;
+                break;
+            }
+            case multiply:
+            {
+
+                curr_state = to_be_added_op2;
+                operator1 = show_operator;
+                target = multiply;
+                spec_flag = 0;
+                point_flag = 0;
+                operator2.point_addr = 0;
+                operator2.operated_number = 0;
+                break;
+            }
+            case division:
+            {
+
+                curr_state = to_be_added_op2;
+                operator1 = show_operator;
+                target = division;
+                spec_flag = 0;
+                point_flag = 0;
+                operator2.point_addr = 0;
+                operator2.operated_number = 0;
+                break;
+            }
+            case C:
+            {
+                curr_state = clear;
+                point_flag = 0;
+                operator2.point_addr = 0;
+                operator2.operated_number = 0;
+                target = none;
+                operator1.operated_number = 0;
+                operator1.point_addr = 0;
                 break;
             }
             default:
+            {
                 break;
+            }
             }
             break;
         }
@@ -764,11 +909,71 @@ void execute_signal(Mouse *mouse)
     {
         execute_flag = 0;
     }
+    switch (curr_state)
+    {
+    case clear:
+    {
+        show_operator.operated_number = 0;
+        show_operator.point_addr = 0;
+        break;
+    }
+    case to_be_added_op1:
+    {
+        show_operator = operator1;
+        break;
+    }
+    case to_be_added_op2:
+    {
+        if (spec_flag)
+        {
+            show_operator = operator2;
+        }
+        else
+        {
+            show_operator = operator1;
+        }
+        break;
+    }
+    case show:
+    {
+        switch (target)
+        {
+        case plus:
+        {
+            show_operator = Number_plus(&operator1, &operator2);
+            break;
+        }
+        case minus:
+        {
+            show_operator = Number_minus(&operator1, &operator2);
+            break;
+        }
+        case multiply:
+        {
+            show_operator = Number_multiply(&operator1, &operator2);
+            break;
+        }
+        case division:
+        {
+            show_operator = Number_divide(&operator1, &operator2);
+            break;
+        }
+        default:
+            break;
+        }
+        break;
+    }
+    default:
+    {
+        break;
+    }
+    }
 }
 
 Operator identify(Mouse *mouse)
-{
+{ // 待提供图像具体信息供判断
 }
+
 void delay(uint32_t delay_time)
 {
     int delay_count;
@@ -779,16 +984,68 @@ void delay(uint32_t delay_time)
 
 void mouse_update(Mouse *mouse)
 {
-    mouse->X = GPIO_E32(MOUSE_X);
-    mouse->Y = GPIO_E32(MOUSE_Y);
-    mouse->click = GPIO_E32(MOUSE_CLICK);
+    mouse->X = GPIO_E16(MOUSE_X);
+    mouse->Y = GPIO_E16(MOUSE_Y);
+    mouse->click = GPIO_E8(MOUSE_CLICK);
     return;
 }
 
 void VGA_display(Number *number)
 {
-    GPIO_E32(VGA_POINT) = number->point_addr;
-    GPIO_E64(VGA_NUM) = number->operated_number;
+    uint8_t flag = 0;
+    int64_t tmp;
+    if (number->operated_number < 0)
+    {
+        GPIO_E8(VGA_SIGN) = 1;
+        tmp = -number->operated_number;
+    }
+    else
+    {
+        GPIO_E8(VGA_SIGN) = 0;
+        tmp = number->operated_number;
+    }
+    GPIO_E8(VGA_POINT) = number->point_addr;
+    volatile uint8_t *num_ptr = (uint8_t *)VGA_NUM_0;
+    while (tmp != 0)
+    {
+        GPIO_E8(num_ptr) = tmp % 10;
+        tmp = tmp / 10;
+        if (num_ptr == (uint8_t *)VGA_NUM_11)
+        {
+            flag = 1;
+            break;
+        }
+        else
+        {
+            num_ptr = num_ptr + 1;
+        }
+    }
+    while (num_ptr <= (uint8_t *)VGA_NUM_11)
+    {
+        if (flag)
+        {
+            break;
+        }
+        else
+        {
+            if ((num_ptr - (uint8_t *)VGA_NUM_0) <= number->point_addr)
+            {
+                GPIO_E8(num_ptr) = 0;
+            }
+            else
+            {
+                GPIO_E8(num_ptr) = 0xff;
+            }
+            if (num_ptr == (uint8_t *)VGA_NUM_11)
+            {
+                break;
+            }
+            else
+            {
+                num_ptr = num_ptr + 1;
+            }
+        }
+    }
     return;
 }
 
@@ -803,15 +1060,16 @@ Number Number_plus(Number *op1, Number *op2)
     else if (op1->point_addr > op2->point_addr)
     {
         uint8_t offset = op1->point_addr - op2->point_addr;
-        tmp.operated_number = op1->operated_number + op2->operated_number * pow10(offset);
+        tmp.operated_number = op1->operated_number + op2->operated_number * power10(offset);
         tmp.point_addr = op1->point_addr;
     }
     else
     {
         uint8_t offset = op2->point_addr - op1->point_addr;
-        tmp.operated_number = op2->operated_number + op1->operated_number * pow10(offset);
+        tmp.operated_number = op2->operated_number + op1->operated_number * power10(offset);
         tmp.point_addr = op2->point_addr;
     }
+    reduct_zero(&tmp);
     return tmp;
 }
 
@@ -826,15 +1084,16 @@ Number Number_minus(Number *op1, Number *op2)
     else if (op1->point_addr > op2->point_addr)
     {
         uint8_t offset = op1->point_addr - op2->point_addr;
-        tmp.operated_number = op1->operated_number - op2->operated_number * pow10(offset);
+        tmp.operated_number = op1->operated_number - op2->operated_number * power10(offset);
         tmp.point_addr = op1->point_addr;
     }
     else
     {
         uint8_t offset = op2->point_addr - op1->point_addr;
-        tmp.operated_number = op1->operated_number * pow10(offset) - op2->operated_number;
+        tmp.operated_number = op1->operated_number * power10(offset) - op2->operated_number;
         tmp.point_addr = op2->point_addr;
     }
+    reduct_zero(&tmp);
     return tmp;
 }
 
@@ -843,6 +1102,7 @@ Number Number_multiply(Number *op1, Number *op2)
     Number tmp;
     tmp.operated_number = op1->operated_number * op2->operated_number;
     tmp.point_addr = op1->point_addr + op2->point_addr;
+    reduct_zero(&tmp);
     return tmp;
 }
 
@@ -857,13 +1117,13 @@ Number Number_divide(Number *op1, Number *op2)
         uint8_t width = get_width((int64_t)quotient);
         if (width <= 12)
         {
-            tmp.operated_number = (int64_t)(quotient * pow10(12 - width));
+            tmp.operated_number = (int64_t)(quotient * power10(12 - width));
             tmp.point_addr = 12 - width;
             reduct_zero(&tmp);
         }
         else
         {
-            tmp.operated_number = (int64_t)(quotient / pow10(width - 12));
+            tmp.operated_number = (int64_t)(quotient / power10(width - 12));
             tmp.point_addr = 0;
         }
     }
@@ -873,13 +1133,13 @@ Number Number_divide(Number *op1, Number *op2)
         uint8_t width = get_width((int64_t)quotient);
         if (width <= 12)
         {
-            tmp.operated_number = (int64_t)(quotient * pow10(12 - width));
+            tmp.operated_number = (int64_t)(quotient * power10(12 - width));
             tmp.point_addr = 12 - width + offset;
             reduct_zero(&tmp);
         }
         else
         {
-            tmp.operated_number = (int64_t)(quotient / pow10(width - 12));
+            tmp.operated_number = (int64_t)(quotient / power10(width - 12));
             tmp.point_addr = 0;
         }
     }
@@ -889,22 +1149,22 @@ Number Number_divide(Number *op1, Number *op2)
         uint8_t width = get_width((int64_t)quotient);
         if (width <= 12)
         {
-            tmp.operated_number = (int64_t)(quotient * pow10(12 - width));
+            tmp.operated_number = (int64_t)(quotient * power10(12 - width));
             tmp.point_addr = 12 - width - offset;
             reduct_zero(&tmp);
         }
         else
         {
-            tmp.operated_number = (int64_t)(quotient / pow10(width - 12));
+            tmp.operated_number = (int64_t)(quotient / power10(width - 12));
             tmp.point_addr = 0;
         }
     }
     return tmp;
 }
 
-uint8_t get_width(int64_t *opr)
+uint8_t get_width(int64_t opr)
 {
-    int64_t tmp = *opr;
+    int64_t tmp = opr;
     uint8_t i = 0;
     while (tmp != 0)
     {
@@ -914,7 +1174,7 @@ uint8_t get_width(int64_t *opr)
     return i;
 }
 
-int64_t pow10(uint8_t exp)
+int64_t power10(uint8_t exp)
 {
 
     uint8_t i;

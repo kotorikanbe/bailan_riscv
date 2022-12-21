@@ -8,9 +8,9 @@ typedef struct fixed_number
 
 typedef struct MOUSE
 {
-    uint32_t X;
-    uint32_t Y;
-    uint32_t click;
+    uint16_t X;
+    uint16_t Y;
+    uint8_t click;
 } Mouse;
 
 typedef enum OPERATOR
@@ -30,7 +30,7 @@ typedef enum OPERATOR
     plus,
     minus,
     multiply,
-    div,
+    division,
     C,
     equal,
     none
@@ -43,4 +43,10 @@ typedef enum CURR_STATE
     to_be_added_op2,
     show
 }State;
+void execute_signal(Mouse *mouse);
 
+void delay(uint32_t delay_time);
+
+void mouse_update(Mouse *mouse);
+
+void VGA_display(Number *number);
