@@ -92,7 +92,7 @@ module Ps2_read_data
                             clk_ps2 <= ~clk_ps2;
                             x_addr <= { {8{data[4]}} , data[15:8] };
                             y_addr <= { {8{data[5]}} , data[23:16] };
-                            LBM <= {{0000000},{data[0]}};
+                            LBM <= {{7'b0},{data[0]}};
                         end
                         else begin
                         if(count1 == 'd1) begin
