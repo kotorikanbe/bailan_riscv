@@ -64,34 +64,6 @@ module Riscv
         assign                  data = mem_dat_i;
         
 
-        // ROM rom (.clk(clk_fetch),
-        //          .addr(rom_addr),
-        //          .inst(inst)
-        //         );
-
-        // RAM ram (.clk(clk_ram),
-        //          .rst(~rst_n),
-                
-        //          .wr_en(mem_wr),
-        
-        //          .addr(mem_addr),
-        //          .rw_type(rw_type), //读写的类型，有：字节，半字，字，双字等等
-        //                         //000：lb sb; 001: lh sh; 010: lw sw; 100: lbu; 101:lhu
-
-        //          .dat_i(mem_dat_i),
-        //          .dat_o(mem_dat_o)
-        //         );
-
-        // Clkdiv clkdiv(.clk_100M(clk),
-        //               .rst_n(rst_n),
-        //               .alu_complete(complete_signal),
-        //               .clk_alu(clk_alu),
-        //               .clk_fetch(clk_fetch),
-        //               .clk_ram(clk_ram),
-        //               .clk_reg(clk_reg),
-        //               .clk_ctl_mul_div(clk_ctl_mul_div));
-        //               //.clk_mul_origin(clk_mul_origin));
-
         PC pc(.clk(clk_reg),
               .rst_n(rst_n),
               .pc_new(pc_new),
