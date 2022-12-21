@@ -1,4 +1,3 @@
-`timescale 1ns/1ns
 module  Registers 
     (   
         input           clk,
@@ -11,15 +10,15 @@ module  Registers
         
         input           wr_en, //使能信号，0为读，1为写
 
-        output [31:0]   reg_src_1_dat_o, //输出的数据1
-        output [31:0]   reg_src_2_dat_o //输出的数据2
+        output [31:0]   r_src_1_dat_o, //输出的数据1
+        output [31:0]   r_src_2_dat_o //输出的数据2
     );
 
-        reg [31:0] registers[31:0]; //32个寄存器
-        integer i;
+    reg [31:0] registers[31:0]; //32个寄存器
+    integer i;
 
-        assign     reg_src_1_dat_o = registers[reg_src_1_i];
-        assign     reg_src_2_dat_o = registers[reg_src_2_i];
+    assign     r_src_1_dat_o = registers[r_src_1_i];
+    assign     r_src_2_dat_o = registers[r_src_2_i];
 
         always @(posedge clk or negedge rst_n) begin
             if(rst_n == 0) //清零，寄存器中默认都是0
@@ -28,6 +27,6 @@ module  Registers
             else if(wr_en == 1)   //将数据写入寄存器
                 registers[reg_des_i] = reg_des_dat_i;
 
-        end
+    end
     
 endmodule
