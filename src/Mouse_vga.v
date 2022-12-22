@@ -1,7 +1,6 @@
 module Mouse_vga 
     (
-        input clk,
-        input rstn,
+        input               clk,
         output reg [3:0]    vga_o_red,
         output reg [3:0]    vga_o_green,
         output reg [3:0]    vga_o_blue,
@@ -76,4 +75,6 @@ module Mouse_vga
             vga_o_blue <= 4'hf;
         end
     end
+
+
 endmodule

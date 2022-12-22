@@ -8,8 +8,8 @@ module Ps2_top
         input                rstn,
         inout                ps2_clk,
         inout                ps2_data,
-        output reg [15:0]    x_addr,
-        output reg [15:0]    y_addr,
+        output reg [15:0]    x_position,
+        output reg [15:0]    y_position,
         output               LBM
     );
     
@@ -30,10 +30,8 @@ module Ps2_top
             .done(done),
             .ps2_clk(ps2_clk),
             .ps2_data(ps2_data),
-            .x_addr(x_addr),
-            .y_addr(y_addr),
-            .x_symbol(x_symbol),
-            .y_symbol(y_symbol),
+            .x_position(x_position),
+            .y_position(y_position),
             .LBM(LBM)
         );
 endmodule   

@@ -5,7 +5,6 @@ module Ps2_read_data
         input                rstn,
         input                ps2_clk,
         input                ps2_data,
-        output reg           clk_ps2,
         output reg [15:0]    x_position,
         output reg [15:0]    y_position,
         output reg [7:0]     LBM
@@ -18,7 +17,7 @@ module Ps2_read_data
         reg [3:0]    count0;
         reg [1:0]    count1;
         reg [2:0]    state;
-
+        reg          clk_ps2;
         //检测ps2_clk的下降沿
         always @(posedge clk) begin
             ps2_clkf <= ps2_clk;
@@ -110,7 +109,7 @@ module Ps2_read_data
         end
 
         //x，y在vga屏幕上的坐标位置。
-        always @(posedge ps2_clk or negedge rstn) begin
+        always @(posedge clk_ps2 or negedge rstn) begin
             if (!rstn) begin
                 x_position <= 'd0;
                 y_position <= 'd0;
