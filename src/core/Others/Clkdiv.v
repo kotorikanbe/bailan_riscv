@@ -83,7 +83,7 @@ module Clkdiv
                     clk_ctl_mul_div <= clk_ctl_mul_div;
                 end
                 else begin
-                    if (count >= (div3 + 1) && count < div6) begin
+                    if (count > (div3 + 1) && count < div6) begin
                         clk_ctl_mul_div <= 1;
                     end
                     else begin

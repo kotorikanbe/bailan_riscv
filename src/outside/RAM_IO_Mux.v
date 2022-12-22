@@ -28,7 +28,7 @@ module RAM_IO_Mux
                     ram_wr = 0;
                 end
                 default: begin
-                    rd_ram_or_io_dat  = rd_ram_dat;
+                    rd_ram_or_io_dat  = 0;
                     ram_wr = 0;
                     io_wr  = 0;
                 end

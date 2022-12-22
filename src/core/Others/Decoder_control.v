@@ -34,12 +34,6 @@ module Decoder_control
         output                      alu_src2, //ALU操作数来源
         output reg [4:0]            alu_ctl, //ALU控制信号
 
-        // output                      beq,
-        // output                      bne,
-        // output                      blt,
-        // output                      bge,
-        // output                      bltu,
-        // output                      bgeu,
         output [2:0]                b_type, //根据funct3判断是具体的B型指令(beq bne blt bge bltu bgeu)
         
         output [2:0]                rw_type //根据funct3判断RAM的读写类型（lb sb lh sh lw sw lbu lhu）
@@ -185,12 +179,12 @@ module Decoder_control
 
 
         //B型指令
-        assign    is_B_beq 		 = ((is_B) && (funct3 == 0));
-	    assign    is_B_bne 		 = ((is_B) && (funct3 == 1));
-	    assign    is_B_blt 		 = ((is_B) && (funct3 == 4));
-	    assign    is_B_bge 		 = ((is_B) && (funct3 == 5));
-	    assign    is_B_bltu 	 = ((is_B) && (funct3 == 6));
-	    assign    is_B_bgeu 	 = ((is_B) && (funct3 == 7));
+        // assign    is_B_beq 		 = ((is_B) && (funct3 == 0));
+	    // assign    is_B_bne 		 = ((is_B) && (funct3 == 1));
+	    // assign    is_B_blt 		 = ((is_B) && (funct3 == 4));
+	    // assign    is_B_bge 		 = ((is_B) && (funct3 == 5));
+	    // assign    is_B_bltu 	 = ((is_B) && (funct3 == 6));
+	    // assign    is_B_bgeu 	 = ((is_B) && (funct3 == 7));
 
         //U型指令
         assign    is_U_lui       = (opcode == op_U_lui);
@@ -255,12 +249,12 @@ module Decoder_control
         
         
         //比较器信号
-        assign  beq           = is_B_beq;
-        assign  bne           = is_B_bne;
-        assign  blt           = is_B_blt;
-        assign  bge           = is_B_bge;
-        assign  bltu          = is_B_bltu;
-        assign  bgeu          = is_B_bgeu;
+        // assign  beq           = is_B_beq;
+        // assign  bne           = is_B_bne;
+        // assign  blt           = is_B_blt;
+        // assign  bge           = is_B_bge;
+        // assign  bltu          = is_B_bltu;
+        // assign  bgeu          = is_B_bgeu;
 
 
         //ALU控制信号
