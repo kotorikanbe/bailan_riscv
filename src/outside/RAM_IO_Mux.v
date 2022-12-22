@@ -8,9 +8,9 @@ module RAM_IO_Mux
         input      [31:0]    rd_ram_dat,
         input      [31:0]    rd_io_dat,
 
-        input                wr_en,
+        input                ram_or_io_wr,
 
-        output reg [31:0]    rd_mem_dat,
+        output reg [31:0]    rd_ram_or_io_dat,
         output reg           ram_wr,
         output reg           io_wr
     );
@@ -18,17 +18,17 @@ module RAM_IO_Mux
         always @(*) begin
             case (addr)
                 ram_addr: begin
-                    rd_mem_dat  = rd_ram_dat;
-                    ram_wr = wr_en;
+                    rd_ram_or_io_dat  = rd_ram_dat;
+                    ram_wr = ram_or_io_wr;
                     io_wr  = 0;
                 end
                 io_addr: begin
-                    rd_mem_dat = rd_io_dat;
-                    io_wr = wr_en;
+                    rd_ram_or_io_dat = rd_io_dat;
+                    io_wr = ram_or_io_wr;
                     ram_wr = 0;
                 end
                 default: begin
-                    rd_mem_dat  = rd_ram_dat;
+                    rd_ram_or_io_dat  = rd_ram_dat;
                     ram_wr = 0;
                     io_wr  = 0;
                 end

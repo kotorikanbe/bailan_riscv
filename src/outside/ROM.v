@@ -2,7 +2,7 @@
 module ROM
     (
         input               clk,
-	    input      [10:0]   addr,
+	    input      [13:0]   addr,
 	    output     [31:0]   inst
     );
 	

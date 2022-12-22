@@ -6,7 +6,7 @@ module Riscv_top
     );
 
         wire    [31:0]          inst;
-        wire    [10:0]          rom_addr;
+        wire    [13:0]          rom_addr;
         wire                    clk_alu;
         wire                    clk_fetch;
         wire                    clk_ram;
@@ -19,20 +19,43 @@ module Riscv_top
         wire                    ram_wr;
         wire                    io_wr;
         wire    [31:0]          ram_or_io_addr;
+        wire    [31:0]          addr;
+
         wire    [2:0]           rw_type;
         wire    [31:0]          wr_ram_or_io_dat;
         wire    [31:0]          rd_ram_or_io_dat;
         wire    [31:0]          rd_ram_dat;
         wire    [31:0]          rd_io_dat;
 
-        wire    [31:0]          gpio_ctrl;
-        wire    [31:0]          gpio_data;
-        wire    [1:0]           io_in;
+        wire    [15:0]          Mouse_X;
+        wire    [15:0]          Mouse_Y;
+        wire    [7:0]           Mouse_Click;
+        wire    [7:0]           VGA_num_0;
+        wire    [7:0]           VGA_num_1;
+        wire    [7:0]           VGA_num_2;
+        wire    [7:0]           VGA_num_3;
+        wire    [7:0]           VGA_num_4;
+        wire    [7:0]           VGA_num_5;
+        wire    [7:0]           VGA_num_6;
+        wire    [7:0]           VGA_num_7;
+        wire    [7:0]           VGA_num_8;
+        wire    [7:0]           VGA_num_9;
+        wire    [7:0]           VGA_num_10;
+        wire    [7:0]           VGA_num_11;
+        wire    [7:0]           VGA_point;
+        wire    [7:0]           VGA_sign;
 
-        //io0
-        assign io_in[0] = (gpio_ctrl[1:0] == 2'b01)? gpio_data[0]: 1'bz;
-        // io1
-        assign io_in[1] = (gpio_ctrl[3:2] == 2'b01)? gpio_data[1]: 1'bz;
+
+        // wire    [31:0]          gpio_ctrl;
+        // wire    [31:0]          gpio_data;
+        // wire    [1:0]           io_in;
+
+        // //io0
+        // assign                  io_in[0] = (gpio_ctrl[1:0] == 2'b01)? gpio_data[0]: 1'bz;
+        // // io1
+        // assign                  io_in[1] = (gpio_ctrl[3:2] == 2'b01)? gpio_data[1]: 1'bz;
+
+        assign                  addr = {8'b0000,ram_or_io_addr[23:0]};
 
 
         
@@ -63,7 +86,7 @@ module Riscv_top
             
             .wr_en(ram_wr),
     
-            .addr(ram_or_io_addr),
+            .addr(addr),
             .rw_type(rw_type), //读写的类型，有：字节，半字，字，双字等等
                             //000：lb sb; 001: lh sh; 010: lw sw; 100: lbu; 101:lhu
 
@@ -77,12 +100,29 @@ module Riscv_top
             .rst_n(rst_n),  
             
             .wr_en(io_wr),  //总线写使能
-            .addr_i(ram_or_io_addr),   //总线 配置IO口寄存器地址
+            .addr(addr),   //总线 配置IO口寄存器地址
             .dat_i(wr_ram_or_io_dat),   //总线 写数据（用来配置IO口相关寄存器）
-            .io_pin_i(io_in),  //输入模式下，IO口的输入逻辑电平
+            .Mouse_X(Mouse_X),
+            .Mouse_Y(Mouse_Y),
+            .Mouse_Click(Mouse_Click),
+            .VGA_num_0(VGA_num_0),
+            .VGA_num_1(VGA_num_1),
+            .VGA_num_2(VGA_num_2),
+            .VGA_num_3(VGA_num_3),
+            .VGA_num_4(VGA_num_4),
+            .VGA_num_5(VGA_num_5),
+            .VGA_num_6(VGA_num_6),
+            .VGA_num_7(VGA_num_7),
+            .VGA_num_8(VGA_num_8),
+            .VGA_num_9(VGA_num_9),
+            .VGA_num_10(VGA_num_10),
+            .VGA_num_11(VGA_num_11),
+            .VGA_point(VGA_point),
+            .VGA_sign(VGA_sign),
+            //.io_pin_i(io_in),  //输入模式下，IO口的输入逻辑电平
             
-            .reg_ctrl(gpio_ctrl),  //IO口控制寄存器数据 0: 高阻，1：输出，2：输入
-            .reg_data(gpio_data),  //IO口数据寄存器数据
+            //.reg_ctrl(gpio_ctrl),  //IO口控制寄存器数据 0: 高阻，1：输出，2：输入
+            //.reg_data(gpio_data),  //IO口数据寄存器数据
             .dat_o(rd_io_dat)       // 总线读IO口寄存器数据
         );
 
@@ -91,8 +131,8 @@ module Riscv_top
              .addr(ram_or_io_addr[31:28]),
              .rd_ram_dat(rd_ram_dat),
              .rd_io_dat(rd_io_dat),
-             .wr_en(wr_en),
-
+             .ram_or_io_wr(ram_or_io_wr),
+             
              .rd_ram_or_io_dat(rd_ram_or_io_dat),
              .ram_wr(ram_wr),
              .io_wr(io_wr)

@@ -15,7 +15,7 @@ module Riscv
         output  [31:0]          ram_or_io_addr,//RAM或IO的地址 
         output  [2:0]           rw_type, //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
         
-        output  [10:0]          rom_addr,
+        output  [13:0]          rom_addr,
         output  [31:0]          data,
         output                  alu_complete
 
@@ -58,7 +58,7 @@ module Riscv
         
 
         assign                  pc_plus_4 = pc_out+4;
-        assign                  rom_addr = pc_out[12:2];
+        assign                  rom_addr = pc_out[15:2];
         assign                  wr_ram_or_io_dat = reg_src_dat_2;
         assign                  ram_or_io_addr = alu_result;
         assign                  data = wr_ram_or_io_dat;

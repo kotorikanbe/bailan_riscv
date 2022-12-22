@@ -23,8 +23,8 @@ module Decoder_control
         output [4:0]                reg_des,
         output reg signed [31:0]    imm,
         
-        //output              mem_rd, //RAM的读使能，默认为1
-        output reg                  mem_wr, //RAM写使能
+        //output              ram_or_io_rd, //RAM的读使能，默认为1
+        output reg                  ram_or_io_wr, //RAM写使能
 
         output reg [1:0]            wb_sel, //写回寄存器的数据选择器控制信号
         output                      reg_wr,  //寄存器的写使能控制信号
@@ -109,7 +109,7 @@ module Decoder_control
         //J型指令
         wire                        is_J_jal;
 
-        //reg  [2:0]                count; //mem_wr使能控制信号的计数器（读出来后再写）
+        //reg  [2:0]                count; //ram_or_io_wr使能控制信号的计数器（读出来后再写）
 
 
          ///////////////////////////////////////////////////////////////////////////
@@ -233,8 +233,8 @@ module Decoder_control
 
         always @(negedge clk_alu or posedge clk) begin //保证在alu于时钟下降沿输出信号之后再写使能，防止乱写
             if(clk == 1)
-                mem_wr = 0;
-            else mem_wr = is_S;
+                ram_or_io_wr = 0;
+            else ram_or_io_wr = is_S;
         end
 
 
