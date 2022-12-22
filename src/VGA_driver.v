@@ -26,8 +26,8 @@ module VGA_display
         output reg [3:0]    vga_o_blue,
         output              h_sync,
         output              v_sync,
-        input [9:0]         mouse_position_x,
-        input [9:0]         mouse_position_y,
+        input [15:0]        mouse_position_x,
+        input [15:0]        mouse_position_y,
         input [7:0]         symbol
     );
 
