@@ -63,6 +63,50 @@ module VGA_display
     reg [5:0]     part = 'd0; //表示图像的分区
     
     reg           calculator_static_en; //表示此处是否是计算器静态背景
+
+    //图片储存
+    reg [50:0] ram_addr;
+    reg [2:0] picture_0 [1499:0];
+    reg [2:0] picture_1 [1499:0];
+    reg [2:0] picture_2 [1499:0];
+    reg [2:0] picture_3 [1499:0];
+    reg [2:0] picture_4 [1499:0];
+    reg [2:0] picture_5 [1499:0];
+    reg [2:0] picture_6 [1499:0];
+    reg [2:0] picture_7 [1499:0];
+    reg [2:0] picture_8 [1499:0];
+    reg [2:0] picture_9 [1499:0];
+    reg [2:0] picture_p [299:0];
+    reg [2:0] picture_m [1199:0];
+    reg [2:0] picture_s [176399:0];
+
+    initial $readmemh ("C:/Users/Yuchen/Desktop/vgapicture/0.coe",picture_0);
+    initial $readmemh ("C:/Users/Yuchen/Desktop/vgapicture/1.coe",picture_1);
+    initial $readmemh ("C:/Users/Yuchen/Desktop/vgapicture/2.coe",picture_2);
+    initial $readmemh ("C:/Users/Yuchen/Desktop/vgapicture/3.coe",picture_3);
+    initial $readmemh ("C:/Users/Yuchen/Desktop/vgapicture/4.coe",picture_4);
+    initial $readmemh ("C:/Users/Yuchen/Desktop/vgapicture/5.coe",picture_5);
+    initial $readmemh ("C:/Users/Yuchen/Desktop/vgapicture/6.coe",picture_6);
+    initial $readmemh ("C:/Users/Yuchen/Desktop/vgapicture/7.coe",picture_7);
+    initial $readmemh ("C:/Users/Yuchen/Desktop/vgapicture/8.coe",picture_8);
+    initial $readmemh ("C:/Users/Yuchen/Desktop/vgapicture/9.coe",picture_9);
+    initial $readmemh ("C:/Users/Yuchen/Desktop/vgapicture/p.coe",picture_p);
+    initial $readmemh ("C:/Users/Yuchen/Desktop/vgapicture/m.coe",picture_m);
+    initial $readmemh ("C:/Users/Yuchen/Desktop/vgapicture/s.coe",picture_s);
+    assign data_o_0 = {{4{picture_0[ram_addr][0]}} , {4{picture_0[ram_addr][1]}} , {4{picture_0[ram_addr][2]}}};
+    assign data_o_1 = {{4{picture_1[ram_addr][0]}} , {4{picture_1[ram_addr][1]}} , {4{picture_1[ram_addr][2]}}};
+    assign data_o_2 = {{4{picture_2[ram_addr][0]}} , {4{picture_2[ram_addr][1]}} , {4{picture_2[ram_addr][2]}}};
+    assign data_o_3 = {{4{picture_3[ram_addr][0]}} , {4{picture_3[ram_addr][1]}} , {4{picture_3[ram_addr][2]}}};
+    assign data_o_4 = {{4{picture_4[ram_addr][0]}} , {4{picture_4[ram_addr][1]}} , {4{picture_4[ram_addr][2]}}};
+    assign data_o_5 = {{4{picture_5[ram_addr][0]}} , {4{picture_5[ram_addr][1]}} , {4{picture_5[ram_addr][2]}}};
+    assign data_o_6 = {{4{picture_6[ram_addr][0]}} , {4{picture_6[ram_addr][1]}} , {4{picture_6[ram_addr][2]}}};
+    assign data_o_7 = {{4{picture_7[ram_addr][0]}} , {4{picture_7[ram_addr][1]}} , {4{picture_7[ram_addr][2]}}};
+    assign data_o_8 = {{4{picture_8[ram_addr][0]}} , {4{picture_8[ram_addr][1]}} , {4{picture_8[ram_addr][2]}}};
+    assign data_o_9 = {{4{picture_9[ram_addr][0]}} , {4{picture_9[ram_addr][1]}} , {4{picture_9[ram_addr][2]}}};
+    assign data_o_point = {{4{picture_p[ram_addr][0]}} , {4{picture_p[ram_addr][1]}} , {4{picture_p[ram_addr][2]}}};
+    assign data_o_minus = {{4{picture_m[ram_addr][0]}} , {4{picture_m[ram_addr][1]}} , {4{picture_m[ram_addr][2]}}};
+    assign data_o_static = {{4{picture_s[ram_addr][0]}} , {4{picture_s[ram_addr][1]}} , {4{picture_s[ram_addr][2]}}};
+
     /////////////////////////////////////////
     parameter     hsync_end   = 10'd95;//一些在640*480 60fps状态下的常量
     parameter     hdat_begin  = 10'd143;
@@ -116,6 +160,7 @@ module VGA_display
     always @(*) begin //将vga屏幕分成若干块，每一块分别进行显示
        if (!data_en) begin
             data_addr <= 'd0;
+            ram_addr <= 'd0;
        end 
        else begin
         //背景部分
@@ -140,86 +185,113 @@ module VGA_display
                         //细化到每一位数字和小数点
                             if((h_count > hdat_begin + 'd130) && (h_count < hdat_begin + 'd150)) begin      //+-symbol 
                                 part <= 6'b010000;
+                                ram_addr <= (h_count - hdat_begin - 'd130) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd150) && (h_count < hdat_begin + 'd175)) begin//num12
                                 part <= 6'b010001;
+                                ram_addr <= (h_count - hdat_begin - 'd150) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd175) && (h_count < hdat_begin + 'd180)) begin//dot12
                                 part <= 6'b100001;
+                                ram_addr <= (h_count - hdat_begin - 'd175) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd180) && (h_count < hdat_begin + 'd205)) begin//num11
                                 part <= 6'b010010;
+                                ram_addr <= (h_count - hdat_begin - 'd180) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd205) && (h_count < hdat_begin + 'd210)) begin//dot11
                                 part <= 6'b100010;
+                                ram_addr <= (h_count - hdat_begin - 'd205) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd210) && (h_count < hdat_begin + 'd235)) begin//num10
                                 part <= 6'b010011;
+                                ram_addr <= (h_count - hdat_begin - 'd210) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd235) && (h_count < hdat_begin + 'd240)) begin//dot10
                                 part <= 6'b100011;
+                                ram_addr <= (h_count - hdat_begin - 'd235) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd240) && (h_count < hdat_begin + 'd265)) begin//num9
                                 part <= 6'b010100;
+                                ram_addr <= (h_count - hdat_begin - 'd240) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd265) && (h_count < hdat_begin + 'd270)) begin//dot9
                                 part <= 6'b100100;
+                                ram_addr <= (h_count - hdat_begin - 'd265) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd270) && (h_count < hdat_begin + 'd295)) begin//num8
                                 part <= 6'b010101;
+                                ram_addr <= (h_count - hdat_begin - 'd270) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd295) && (h_count < hdat_begin + 'd300)) begin//dot8
                                 part <= 6'b100101;
+                                ram_addr <= (h_count - hdat_begin - 'd295) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd300) && (h_count < hdat_begin + 'd325)) begin//num7
                                 part <= 6'b010110;
+                                ram_addr <= (h_count - hdat_begin - 'd300) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd325) && (h_count < hdat_begin + 'd330)) begin//dot7
                                 part <= 6'b100110;
+                                ram_addr <= (h_count - hdat_begin - 'd325) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd330) && (h_count < hdat_begin + 'd355)) begin//num6
                                 part <= 6'b010111;
+                                ram_addr <= (h_count - hdat_begin - 'd330) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd355) && (h_count < hdat_begin + 'd360)) begin//dot6
                                 part <= 6'b100111;
+                                ram_addr <= (h_count - hdat_begin - 'd355) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd360) && (h_count < hdat_begin + 'd385)) begin//num5
                                 part <= 6'b011000;
+                                ram_addr <= (h_count - hdat_begin - 'd360) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd385) && (h_count < hdat_begin + 'd390)) begin//dot5
                                 part <= 6'b101000;
+                                ram_addr <= (h_count - hdat_begin - 'd385) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd390) && (h_count < hdat_begin + 'd415)) begin//num4
                                 part <= 6'b011001;
+                                ram_addr <= (h_count - hdat_begin - 'd390) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd415) && (h_count < hdat_begin + 'd420)) begin//dot4
                                 part <= 6'b101001;
+                                ram_addr <= (h_count - hdat_begin - 'd415) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd420) && (h_count < hdat_begin + 'd445)) begin//num3
                                 part <= 6'b011010;
+                                ram_addr <= (h_count - hdat_begin - 'd420) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd445) && (h_count < hdat_begin + 'd450)) begin//dot3
                                 part <= 6'b101010;
+                                ram_addr <= (h_count - hdat_begin - 'd445) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd450) && (h_count < hdat_begin + 'd475)) begin//num2
                                 part <= 6'b011011; 
+                                ram_addr <= (h_count - hdat_begin - 'd450) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd475) && (h_count < hdat_begin + 'd480)) begin//dot2
                                 part <= 6'b101011;
+                                ram_addr <= (h_count - hdat_begin - 'd475) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd480) && (h_count < hdat_begin + 'd505)) begin//num1
                                 part <= 6'b011100;
+                                ram_addr <= (h_count - hdat_begin - 'd480) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else if ((h_count > hdat_begin + 'd505) && (h_count < hdat_begin + 'd510)) begin//dot1
                                 part <= 6'b101100;
+                                ram_addr <= (h_count - hdat_begin - 'd505) + (v_count - vdat_begin - 'd55) * 'd60;
                             end
                             else begin
                                 part <= 6'b000000;
+                                
                             end
                     end
                     else begin
                         part <= 6'b000001;
                         calculator_static_en <= 1'b1;
+                        ram_addr <= (h_count - hdat_begin - 'd110) + (v_count - vdat_begin - 'd30) * 'd420;
                     end
             end
             else begin
