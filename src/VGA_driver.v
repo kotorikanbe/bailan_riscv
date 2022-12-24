@@ -50,10 +50,10 @@ module VGA_display
     wire [11:0]   data_o_static;
     wire [11:0]   data_o_minus;
 
-    reg           vga_clk;//vga时钟，25MHz
+    reg           vga_clk = 'd0;//vga时钟，25MHz
     reg           count=1'b0;
-    reg [10:0]    h_count; //vga_clk跳变时跳变
-    reg [10:0]    v_count; //h_count跳变时跳变
+    reg [10:0]    h_count = 'd0; //vga_clk跳变时跳变
+    reg [10:0]    v_count = 'd0; //h_count跳变时跳变
 
     reg [3:0]     data_red_reg = 'd0;
     reg [3:0]     data_green_reg = 'd0;
@@ -149,10 +149,10 @@ module VGA_display
     always @(posedge vga_clk) begin
         if (pixel_end) begin
             if (line_end) begin
-                v_count <= v_count + 1'b1;
+                v_count <= 'd0;
             end
             else begin
-                v_count <= v_count;
+                v_count <= v_count + 1'b1;
             end
         end
     end
