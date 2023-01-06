@@ -39,7 +39,7 @@ module GPIO
 
     );
         //鼠标寄存器
-        reg        [15:0]    Mouse[2:0];
+        reg        [31:0]    Mouse[2:0];
         //VGA寄存器
         reg        [7:0]     VGA[13:0];
 
@@ -83,9 +83,9 @@ module GPIO
                     for(i=0;i<=13;i=i+1) begin
                         VGA[i] <= VGA[i];
                     end
-                    Mouse[0] <= Mouse_X;
-                    Mouse[1] <= Mouse_Y;
-                    Mouse[2] <= {8'b0000_0000,Mouse_Click}; 
+                    Mouse[0] <= {16'b0000_0000_0000_0000,Mouse_X};
+                    Mouse[1] <= {16'b0000_0000_0000_0000,Mouse_Y};
+                    Mouse[2] <= {24'b0000_0000_0000_0000_0000_0000,Mouse_Click}; 
                 end
             end
         end
