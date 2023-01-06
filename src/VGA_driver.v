@@ -166,15 +166,19 @@ module VGA_display
         //背景部分
             if ((h_count > hdat_begin) && (h_count < hdat_end) && (v_count > vdat_begin) && (v_count < vdat_begin + 'd30)) begin
                     part <= 6'b000000;
+                    ram_addr <= 'd0;
             end
             else if ((h_count > hdat_begin) && (h_count < hdat_begin + 'd110) && (v_count > vdat_begin + 'd30) && (v_count < vdat_end - 'd30)) begin
                     part <= 6'b000000;
+                    ram_addr <= 'd0;
             end
             else if ((h_count > hdat_end - 'd110) && (h_count < hdat_end) && (v_count > vdat_begin + 'd30) && (v_count < vdat_end - 'd30)) begin
                     part <= 6'b000000;
+                    ram_addr <= 'd0;
             end
             else if ((h_count > hdat_begin) && (h_count < hdat_end) && (v_count > vdat_end - 'd30) && (v_count < vdat_end)) begin
                     part <= 6'b000000;
+                    ram_addr <= 'd0;
             end
         //计算器静态图像和动态输出部分
             //大的420*420的范围
@@ -185,106 +189,107 @@ module VGA_display
                         //细化到每一位数字和小数点
                             if((h_count > hdat_begin + 'd130) && (h_count < hdat_begin + 'd150)) begin      //+-symbol 
                                 part <= 6'b010000;
-                                ram_addr <= (h_count - hdat_begin - 'd130) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd130) + (v_count - vdat_begin - 'd55) * 'd20;
                             end
                             else if ((h_count > hdat_begin + 'd150) && (h_count < hdat_begin + 'd175)) begin//num12
                                 part <= 6'b010001;
-                                ram_addr <= (h_count - hdat_begin - 'd150) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd150) + (v_count - vdat_begin - 'd55) * 'd25;
                             end
                             else if ((h_count > hdat_begin + 'd175) && (h_count < hdat_begin + 'd180)) begin//dot12
                                 part <= 6'b100001;
-                                ram_addr <= (h_count - hdat_begin - 'd175) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd175) + (v_count - vdat_begin - 'd55) * 'd5;
                             end
                             else if ((h_count > hdat_begin + 'd180) && (h_count < hdat_begin + 'd205)) begin//num11
                                 part <= 6'b010010;
-                                ram_addr <= (h_count - hdat_begin - 'd180) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd180) + (v_count - vdat_begin - 'd55) * 'd25;
                             end
                             else if ((h_count > hdat_begin + 'd205) && (h_count < hdat_begin + 'd210)) begin//dot11
                                 part <= 6'b100010;
-                                ram_addr <= (h_count - hdat_begin - 'd205) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd205) + (v_count - vdat_begin - 'd55) * 'd5;
                             end
                             else if ((h_count > hdat_begin + 'd210) && (h_count < hdat_begin + 'd235)) begin//num10
                                 part <= 6'b010011;
-                                ram_addr <= (h_count - hdat_begin - 'd210) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd210) + (v_count - vdat_begin - 'd55) * 'd25;
                             end
                             else if ((h_count > hdat_begin + 'd235) && (h_count < hdat_begin + 'd240)) begin//dot10
                                 part <= 6'b100011;
-                                ram_addr <= (h_count - hdat_begin - 'd235) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd235) + (v_count - vdat_begin - 'd55) * 'd5;
                             end
                             else if ((h_count > hdat_begin + 'd240) && (h_count < hdat_begin + 'd265)) begin//num9
                                 part <= 6'b010100;
-                                ram_addr <= (h_count - hdat_begin - 'd240) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd240) + (v_count - vdat_begin - 'd55) * 'd25;
                             end
                             else if ((h_count > hdat_begin + 'd265) && (h_count < hdat_begin + 'd270)) begin//dot9
                                 part <= 6'b100100;
-                                ram_addr <= (h_count - hdat_begin - 'd265) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd265) + (v_count - vdat_begin - 'd55) * 'd5;
                             end
                             else if ((h_count > hdat_begin + 'd270) && (h_count < hdat_begin + 'd295)) begin//num8
                                 part <= 6'b010101;
-                                ram_addr <= (h_count - hdat_begin - 'd270) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd270) + (v_count - vdat_begin - 'd55) * 'd25;
                             end
                             else if ((h_count > hdat_begin + 'd295) && (h_count < hdat_begin + 'd300)) begin//dot8
                                 part <= 6'b100101;
-                                ram_addr <= (h_count - hdat_begin - 'd295) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd295) + (v_count - vdat_begin - 'd55) * 'd5;
                             end
                             else if ((h_count > hdat_begin + 'd300) && (h_count < hdat_begin + 'd325)) begin//num7
                                 part <= 6'b010110;
-                                ram_addr <= (h_count - hdat_begin - 'd300) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd300) + (v_count - vdat_begin - 'd55) * 'd25;
                             end
                             else if ((h_count > hdat_begin + 'd325) && (h_count < hdat_begin + 'd330)) begin//dot7
                                 part <= 6'b100110;
-                                ram_addr <= (h_count - hdat_begin - 'd325) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd325) + (v_count - vdat_begin - 'd55) * 'd5;
                             end
                             else if ((h_count > hdat_begin + 'd330) && (h_count < hdat_begin + 'd355)) begin//num6
                                 part <= 6'b010111;
-                                ram_addr <= (h_count - hdat_begin - 'd330) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd330) + (v_count - vdat_begin - 'd55) * 'd25;
                             end
                             else if ((h_count > hdat_begin + 'd355) && (h_count < hdat_begin + 'd360)) begin//dot6
                                 part <= 6'b100111;
-                                ram_addr <= (h_count - hdat_begin - 'd355) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd355) + (v_count - vdat_begin - 'd55) * 'd5;
                             end
                             else if ((h_count > hdat_begin + 'd360) && (h_count < hdat_begin + 'd385)) begin//num5
                                 part <= 6'b011000;
-                                ram_addr <= (h_count - hdat_begin - 'd360) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd360) + (v_count - vdat_begin - 'd55) * 'd25;
                             end
                             else if ((h_count > hdat_begin + 'd385) && (h_count < hdat_begin + 'd390)) begin//dot5
                                 part <= 6'b101000;
-                                ram_addr <= (h_count - hdat_begin - 'd385) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd385) + (v_count - vdat_begin - 'd55) * 'd5;
                             end
                             else if ((h_count > hdat_begin + 'd390) && (h_count < hdat_begin + 'd415)) begin//num4
                                 part <= 6'b011001;
-                                ram_addr <= (h_count - hdat_begin - 'd390) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd390) + (v_count - vdat_begin - 'd55) * 'd25;
                             end
                             else if ((h_count > hdat_begin + 'd415) && (h_count < hdat_begin + 'd420)) begin//dot4
                                 part <= 6'b101001;
-                                ram_addr <= (h_count - hdat_begin - 'd415) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd415) + (v_count - vdat_begin - 'd55) * 'd5;
                             end
                             else if ((h_count > hdat_begin + 'd420) && (h_count < hdat_begin + 'd445)) begin//num3
                                 part <= 6'b011010;
-                                ram_addr <= (h_count - hdat_begin - 'd420) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd420) + (v_count - vdat_begin - 'd55) * 'd25;
                             end
                             else if ((h_count > hdat_begin + 'd445) && (h_count < hdat_begin + 'd450)) begin//dot3
                                 part <= 6'b101010;
-                                ram_addr <= (h_count - hdat_begin - 'd445) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd445) + (v_count - vdat_begin - 'd55) * 'd5;
                             end
                             else if ((h_count > hdat_begin + 'd450) && (h_count < hdat_begin + 'd475)) begin//num2
                                 part <= 6'b011011; 
-                                ram_addr <= (h_count - hdat_begin - 'd450) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd450) + (v_count - vdat_begin - 'd55) * 'd25;
                             end
                             else if ((h_count > hdat_begin + 'd475) && (h_count < hdat_begin + 'd480)) begin//dot2
                                 part <= 6'b101011;
-                                ram_addr <= (h_count - hdat_begin - 'd475) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd475) + (v_count - vdat_begin - 'd55) * 'd5;
                             end
                             else if ((h_count > hdat_begin + 'd480) && (h_count < hdat_begin + 'd505)) begin//num1
                                 part <= 6'b011100;
-                                ram_addr <= (h_count - hdat_begin - 'd480) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd480) + (v_count - vdat_begin - 'd55) * 'd25;
                             end
                             else if ((h_count > hdat_begin + 'd505) && (h_count < hdat_begin + 'd510)) begin//dot1
                                 part <= 6'b101100;
-                                ram_addr <= (h_count - hdat_begin - 'd505) + (v_count - vdat_begin - 'd55) * 'd60;
+                                ram_addr <= (h_count - hdat_begin - 'd505) + (v_count - vdat_begin - 'd55) * 'd5;
                             end
                             else begin
                                 part <= 6'b000000;
+                                ram_addr <= 'd0;
                                 
                             end
                     end
@@ -296,6 +301,7 @@ module VGA_display
             end
             else begin
                 part <= 6'b000000;
+                ram_addr <= 'd0;
             end
        end
     end
@@ -318,6 +324,11 @@ module VGA_display
                     data_red_reg <= data_o_minus[11:8];
                     data_green_reg <= data_o_minus[7:4];
                     data_blue_reg <= data_o_minus[3:0];
+                end
+                else begin
+                    data_red_reg <= 4'hE;
+                    data_green_reg <= 4'hE;
+                    data_blue_reg <= 4'hE;
                 end
             end
             6'b010001: begin
@@ -1029,7 +1040,7 @@ module VGA_display
                 endcase
             end
             6'b100001: begin
-                if (symbol == 'd12) begin
+                if (point == 'd12) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
                     data_blue_reg <= data_o_point[3:0];
@@ -1041,7 +1052,7 @@ module VGA_display
                 end
             end
             6'b100010: begin
-                if (symbol == 'd11) begin
+                if (point == 'd11) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
                     data_blue_reg <= data_o_point[3:0];
@@ -1053,7 +1064,7 @@ module VGA_display
                 end
             end
             6'b100011: begin
-                if (symbol == 'd10) begin
+                if (point == 'd10) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
                     data_blue_reg <= data_o_point[3:0];
@@ -1065,7 +1076,7 @@ module VGA_display
                 end
             end
             6'b100100: begin
-                if (symbol == 'd9) begin
+                if (point == 'd9) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
                     data_blue_reg <= data_o_point[3:0];
@@ -1077,7 +1088,7 @@ module VGA_display
                 end
             end
             6'b100101: begin
-                if (symbol == 'd8) begin
+                if (point == 'd8) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
                     data_blue_reg <= data_o_point[3:0];
@@ -1089,7 +1100,7 @@ module VGA_display
                 end
             end
             6'b100110: begin
-                if (symbol == 'd7) begin
+                if (point == 'd7) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
                     data_blue_reg <= data_o_point[3:0];
@@ -1101,7 +1112,7 @@ module VGA_display
                 end
             end
             6'b100111: begin
-                if (symbol == 'd6) begin
+                if (point == 'd6) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
                     data_blue_reg <= data_o_point[3:0];
@@ -1113,7 +1124,7 @@ module VGA_display
                 end
             end
             6'b101000: begin
-                if (symbol == 'd5) begin
+                if (point == 'd5) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
                     data_blue_reg <= data_o_point[3:0];
@@ -1125,7 +1136,7 @@ module VGA_display
                 end
             end
             6'b101001: begin
-                if (symbol == 'd4) begin
+                if (point == 'd4) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
                     data_blue_reg <= data_o_point[3:0];
@@ -1137,7 +1148,7 @@ module VGA_display
                 end
             end
             6'b101010: begin
-                if (symbol == 'd3) begin
+                if (point == 'd3) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
                     data_blue_reg <= data_o_point[3:0];
@@ -1149,7 +1160,7 @@ module VGA_display
                 end
             end
             6'b101011: begin
-                if (symbol == 'd2) begin
+                if (point == 'd2) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
                     data_blue_reg <= data_o_point[3:0];
@@ -1161,7 +1172,7 @@ module VGA_display
                 end
             end
             6'b101100: begin
-                if (symbol == 'd1) begin
+                if (point == 'd1) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
                     data_blue_reg <= data_o_point[3:0];
@@ -1182,15 +1193,15 @@ module VGA_display
         
     //输出判断逻辑，分离接口，并判断鼠标
     always @(posedge vga_clk) begin
-        if(data_en)begin
-            vga_o_red <= data_red_reg;
-            vga_o_green <= data_green_reg;
-            vga_o_blue <= data_blue_reg;
-        end
-        else if (mouse_en) begin
+        if(mouse_en)begin
             vga_o_red <= 4'b0;
             vga_o_green <= 4'b0;
             vga_o_blue <= 4'b0;
+        end
+        else if (data_en) begin
+            vga_o_red <= data_red_reg;
+            vga_o_green <= data_green_reg;
+            vga_o_blue <= data_blue_reg;
         end
         else begin
             vga_o_red <= 4'b0;
