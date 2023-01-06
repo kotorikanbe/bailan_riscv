@@ -2,6 +2,14 @@ module Riscv_top
     (
         input                   clk,
         input                   rst_n,
+        inout                   ps2_clk,
+        inout                   ps2_data,
+
+        output  [3:0]           vga_o_red,
+        output  [3:0]           vga_o_blue,
+        output  [3:0]           vga_o_green,
+        output                  h_sync,
+        output                  v_sync,
         output  [31:0]          data
     );
 
@@ -162,6 +170,36 @@ module Riscv_top
 
             .wr_ram_or_io_dat(wr_ram_or_io_dat),
             .rd_ram_or_io_dat(rd_ram_or_io_dat)
+        );
+
+        VGA_ps2_top VGA_ps2_top
+        (
+            .clk(clk),
+            .rst(rst_n),
+            .ps2_clk(ps2_clk),
+            .ps2_data(ps2_data),
+            .vga_o_red(vga_o_red),
+            .vga_o_blue(vga_o_blue),
+            .vga_o_green(vga_o_green),
+            .h_sync(h_sync),
+            .v_sync(v_sync),
+            .key_down(Mouse_Click),
+            .mouse_position_x(Mouse_X),
+            .mouse_position_y(Mouse_Y),
+            .number12(VGA_num_11),
+            .number11(VGA_num_10),
+            .number10(VGA_num_9),
+            .number9(VGA_num_8),
+            .number8(VGA_num_7),
+            .number7(VGA_num_6),
+            .number6(VGA_num_5),
+            .number5(VGA_num_4),
+            .number4(VGA_num_3),
+            .number3(VGA_num_2),
+            .number2(VGA_num_1),
+            .number1(VGA_num_0),
+            .point(VGA_point),
+            .symbol(VGA_sign)
         );
 
 endmodule
