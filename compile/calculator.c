@@ -973,7 +973,113 @@ void execute_signal(Mouse *mouse, Number *operator1, Number *operator2, Number *
 }
 
 Operator identify(Mouse *mouse)
-{ // 待提供图像具体信息供判断
+{
+    const int x = mouse->X;
+    const int y = mouse->Y;
+    if (x >= 130 && x < 210)
+    {
+        if (y >= 190 && y <= 240)
+        {
+            return seven;
+        }
+        else if (y >= 255 && y <= 305)
+        {
+            return four;
+        }
+        else if (y >= 320 && y <= 370)
+        {
+            return one;
+        }
+        else if (y >= 385 && y <= 435)
+        {
+            return sign;
+        }
+        else
+        {
+            return none;
+        }
+    }
+    else if (x >= 230 && x <= 310)
+    {
+        if (y >= 190 && y <= 240)
+        {
+            return eight;
+        }
+        else if (y >= 255 && y <= 305)
+        {
+            return five;
+        }
+        else if (y >= 320 && y <= 370)
+        {
+            return two;
+        }
+        else if (y >= 385 && y <= 435)
+        {
+            return zero;
+        }
+        else
+        {
+            return none;
+        }
+    }
+    else if (x >= 330 && x <= 410)
+    {
+        if (y >= 125 && y <= 175)
+        {
+            return clear;
+        }
+        else if (y >= 190 && y <= 240)
+        {
+            return nine;
+        }
+        else if (y >= 255 && y <= 305)
+        {
+            return six;
+        }
+        else if (y >= 320 && y <= 370)
+        {
+            return three;
+        }
+        else if (y >= 385 && y <= 435)
+        {
+            return point;
+        }
+        else
+        {
+            return none;
+        }
+    }
+    else if (x >= 430 && x <= 510)
+    {
+        if (y >= 125 && y <= 175)
+        {
+            return division;
+        }
+        else if (y >= 190 && y <= 240)
+        {
+            return multiply;
+        }
+        else if (y >= 255 && y <= 305)
+        {
+            return minus;
+        }
+        else if (y >= 320 && y <= 370)
+        {
+            return plus;
+        }
+        else if (y >= 385 && y <= 435)
+        {
+            return equal;
+        }
+        else
+        {
+            return none;
+        }
+    }
+    else
+    {
+        return none;
+    }
 }
 
 void delay(uint32_t delay_time)
@@ -1071,7 +1177,7 @@ Number Number_plus(Number *op1, Number *op2)
         tmp.operated_number = op2->operated_number + op1->operated_number * power10(offset);
         tmp.point_addr = op2->point_addr;
     }
-    
+
     reduct_zero(&tmp);
     reduct_len(&tmp);
     return tmp;
