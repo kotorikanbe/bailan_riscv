@@ -9,10 +9,10 @@ module Riscv_top
         output  [3:0]           vga_o_blue,
         output  [3:0]           vga_o_green,
         output                  h_sync,
-        output                  v_sync,
-        output  [31:0]          data
+        output                  v_sync
+        //output  [31:0]          data
     );
-
+    
         wire    [31:0]          inst;
         wire    [13:0]          rom_addr;
         wire                    clk_alu;
@@ -107,9 +107,9 @@ module Riscv_top
             .clk(clk_ram),  
             .rst_n(rst_n),  
             
-            .wr_en(io_wr),  //总线写使能
+            .wr_en(io_wr),  //总线写使�?
             .addr(addr),   //总线 配置IO口寄存器地址
-            .dat_i(wr_ram_or_io_dat),   //总线 写数据（用来配置IO口相关寄存器）
+            .dat_i(wr_ram_or_io_dat),   //总线 写数据（用来配置IO口相关寄存器�?
             .Mouse_X(Mouse_X),
             .Mouse_Y(Mouse_Y),
             .Mouse_Click(Mouse_Click),
@@ -129,7 +129,7 @@ module Riscv_top
             .VGA_sign(VGA_sign),
             //.io_pin_i(io_in),  //输入模式下，IO口的输入逻辑电平
             
-            //.reg_ctrl(gpio_ctrl),  //IO口控制寄存器数据 0: 高阻，1：输出，2：输入
+            //.reg_ctrl(gpio_ctrl),  //IO口控制寄存器数据 0: 高阻�?1：输出，2：输�?
             //.reg_data(gpio_data),  //IO口数据寄存器数据
             .dat_o(rd_io_dat)       // 总线读IO口寄存器数据
         );
@@ -160,7 +160,7 @@ module Riscv_top
 
             .inst(inst),
             .rom_addr(rom_addr),
-            .data(data),
+            //.data(data),
             .alu_complete(alu_complete),
 
             .ram_or_io_wr(ram_or_io_wr),
