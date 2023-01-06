@@ -8,8 +8,8 @@ typedef struct fixed_number
 
 typedef struct MOUSE
 {
-    uint16_t X;
-    uint16_t Y;
+    int16_t X;
+    int16_t Y;
     uint8_t click;
 } Mouse;
 
@@ -43,7 +43,7 @@ typedef enum CURR_STATE
     to_be_added_op2,
     show
 }State;
-void execute_signal(Mouse *mouse);
+void execute_signal(Mouse *mouse,Number *operator1,Number *operator2,Number *show_operator,Operator *target);
 
 void delay(uint32_t delay_time);
 

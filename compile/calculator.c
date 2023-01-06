@@ -30,8 +30,8 @@
 //     div
 // } Operator;
 
-extern Number operator1, operator2, show_operator;
-extern Operator target;
+// extern Number operator1, operator2, show_operator;
+// extern Operator target;
 Number Number_plus(Number *op1, Number *op2);
 Operator identify(Mouse *mouse);
 Number Number_minus(Number *op1, Number *op2);
@@ -40,7 +40,8 @@ Number Number_divide(Number *op1, Number *op2);
 uint8_t get_width(int64_t opr);
 int64_t power10(uint8_t exp);
 void reduct_zero(Number *op);
-void execute_signal(Mouse *mouse)
+void reduct_len(Number *op);
+void execute_signal(Mouse *mouse, Number *operator1, Number *operator2, Number *show_operator, Operator *target)
 {
     static uint8_t execute_flag = 0;
     static State curr_state = clear;
@@ -64,71 +65,71 @@ void execute_signal(Mouse *mouse)
             case one:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = 1;
-                operator1.point_addr = 0;
+                operator1->operated_number = 1;
+                operator1->point_addr = 0;
                 break;
             }
             case two:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = 2;
-                operator1.point_addr = 0;
+                operator1->operated_number = 2;
+                operator1->point_addr = 0;
                 break;
             }
             case three:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = 3;
-                operator1.point_addr = 0;
+                operator1->operated_number = 3;
+                operator1->point_addr = 0;
                 break;
             }
             case four:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = 4;
-                operator1.point_addr = 0;
+                operator1->operated_number = 4;
+                operator1->point_addr = 0;
                 break;
             }
             case five:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = 5;
-                operator1.point_addr = 0;
+                operator1->operated_number = 5;
+                operator1->point_addr = 0;
                 break;
             }
             case six:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = 6;
-                operator1.point_addr = 0;
+                operator1->operated_number = 6;
+                operator1->point_addr = 0;
                 break;
             }
             case seven:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = 7;
-                operator1.point_addr = 0;
+                operator1->operated_number = 7;
+                operator1->point_addr = 0;
                 break;
             }
             case eight:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = 8;
-                operator1.point_addr = 0;
+                operator1->operated_number = 8;
+                operator1->point_addr = 0;
                 break;
             }
             case nine:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = 9;
-                operator1.point_addr = 0;
+                operator1->operated_number = 9;
+                operator1->point_addr = 0;
                 break;
             }
             case point:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = 0;
-                operator1.point_addr = 0;
+                operator1->operated_number = 0;
+                operator1->point_addr = 0;
                 point_flag = 1;
                 break;
             }
@@ -136,8 +137,8 @@ void execute_signal(Mouse *mouse)
             {
                 // curr_state = to_be_added_op1;
                 // sign_flag = 1;
-                // operator1.operated_number = 0;
-                // operator1.point_addr = 0;
+                // operator1->operated_number = 0;
+                // operator1->point_addr = 0;
                 // do nothing
                 break;
             }
@@ -154,91 +155,91 @@ void execute_signal(Mouse *mouse)
             {
             case zero:
             {
-                operator1.operated_number = operator1.operated_number * 10 + 0;
+                operator1->operated_number = operator1->operated_number * 10 + 0;
                 if (point_flag)
                 {
-                    operator1.point_addr += 1;
+                    operator1->point_addr += 1;
                 }
                 break;
             }
             case one:
             {
-                operator1.operated_number = operator1.operated_number * 10 + 1;
+                operator1->operated_number = operator1->operated_number * 10 + 1;
                 if (point_flag)
                 {
-                    operator1.point_addr += 1;
+                    operator1->point_addr += 1;
                 }
                 break;
             }
             case two:
             {
-                operator1.operated_number = operator1.operated_number * 10 + 2;
+                operator1->operated_number = operator1->operated_number * 10 + 2;
                 if (point_flag)
                 {
-                    operator1.point_addr += 1;
+                    operator1->point_addr += 1;
                 }
                 break;
             }
             case three:
             {
-                operator1.operated_number = operator1.operated_number * 10 + 3;
+                operator1->operated_number = operator1->operated_number * 10 + 3;
                 if (point_flag)
                 {
-                    operator1.point_addr += 1;
+                    operator1->point_addr += 1;
                 }
                 break;
             }
             case four:
             {
-                operator1.operated_number = operator1.operated_number * 10 + 4;
+                operator1->operated_number = operator1->operated_number * 10 + 4;
                 if (point_flag)
                 {
-                    operator1.point_addr += 1;
+                    operator1->point_addr += 1;
                 }
                 break;
             }
             case five:
             {
-                operator1.operated_number = operator1.operated_number * 10 + 5;
+                operator1->operated_number = operator1->operated_number * 10 + 5;
                 if (point_flag)
                 {
-                    operator1.point_addr += 1;
+                    operator1->point_addr += 1;
                 }
                 break;
             }
             case six:
             {
-                operator1.operated_number = operator1.operated_number * 10 + 6;
+                operator1->operated_number = operator1->operated_number * 10 + 6;
                 if (point_flag)
                 {
-                    operator1.point_addr += 1;
+                    operator1->point_addr += 1;
                 }
                 break;
             }
             case seven:
             {
-                operator1.operated_number = operator1.operated_number * 10 + 7;
+                operator1->operated_number = operator1->operated_number * 10 + 7;
                 if (point_flag)
                 {
-                    operator1.point_addr += 1;
+                    operator1->point_addr += 1;
                 }
                 break;
             }
             case eight:
             {
-                operator1.operated_number = operator1.operated_number * 10 + 8;
+                operator1->operated_number = operator1->operated_number * 10 + 8;
                 if (point_flag)
                 {
-                    operator1.point_addr += 1;
+                    operator1->point_addr += 1;
                 }
                 break;
             }
             case nine:
             {
-                operator1.operated_number = operator1.operated_number * 10 + 9;
+                operator1->operated_number = operator1->operated_number * 10 + 9;
                 if (point_flag)
                 {
-                    operator1.point_addr += 1;
+                    operator1->point_addr += 1;
                 }
                 break;
             }
@@ -252,54 +253,55 @@ void execute_signal(Mouse *mouse)
             }
             case sign:
             {
-                operator1.operated_number = -operator1.operated_number;
+                operator1->operated_number = -operator1->operated_number;
+                break;
             }
             case plus:
             {
                 curr_state = to_be_added_op2;
-                target = plus;
+                *target = plus;
                 point_flag = 0;
-                operator2.operated_number = 0;
-                operator2.point_addr = 0;
+                operator2->operated_number = 0;
+                operator2->point_addr = 0;
                 spec_flag = 0;
                 break;
             }
             case minus:
             {
                 curr_state = to_be_added_op2;
-                target = minus;
+                *target = minus;
                 point_flag = 0;
-                operator2.operated_number = 0;
-                operator2.point_addr = 0;
+                operator2->operated_number = 0;
+                operator2->point_addr = 0;
                 spec_flag = 0;
                 break;
             }
             case multiply:
             {
                 curr_state = to_be_added_op2;
-                target = multiply;
+                *target = multiply;
                 point_flag = 0;
-                operator2.operated_number = 0;
-                operator2.point_addr = 0;
+                operator2->operated_number = 0;
+                operator2->point_addr = 0;
                 spec_flag = 0;
                 break;
             }
             case division:
             {
                 curr_state = to_be_added_op2;
-                target = division;
+                *target = division;
                 point_flag = 0;
-                operator2.operated_number = 0;
-                operator2.point_addr = 0;
+                operator2->operated_number = 0;
+                operator2->point_addr = 0;
                 spec_flag = 0;
                 break;
             }
             case C:
             {
                 curr_state = clear;
-                target = none;
-                operator1.operated_number = 0;
-                operator1.point_addr = 0;
+                *target = none;
+                operator1->operated_number = 0;
+                operator1->point_addr = 0;
                 point_flag = 0;
                 break;
             }
@@ -316,16 +318,16 @@ void execute_signal(Mouse *mouse)
             {
             case zero:
             {
-                if (operator2.operated_number == 0)
+                if (operator2->operated_number == 0)
                 {
                     ;
                 }
                 else
                 {
-                    operator2.operated_number = operator2.operated_number * 10 + 0;
+                    operator2->operated_number = operator2->operated_number * 10 + 0;
                     if (point_flag == 1)
                     {
-                        operator2.point_addr += 1;
+                        operator2->point_addr += 1;
                     }
                 }
                 spec_flag = 1;
@@ -333,103 +335,103 @@ void execute_signal(Mouse *mouse)
             }
             case one:
             {
-                operator2.operated_number = operator2.operated_number * 10 + 1;
+                operator2->operated_number = operator2->operated_number * 10 + 1;
                 if (point_flag == 1)
                 {
-                    operator2.point_addr += 1;
+                    operator2->point_addr += 1;
                 }
                 spec_flag = 1;
                 break;
             }
             case two:
             {
-                operator2.operated_number = operator2.operated_number * 10 + 2;
+                operator2->operated_number = operator2->operated_number * 10 + 2;
                 if (point_flag == 1)
                 {
-                    operator2.point_addr += 1;
+                    operator2->point_addr += 1;
                 }
                 spec_flag = 0;
                 break;
             }
             case three:
             {
-                operator2.operated_number = operator2.operated_number * 10 + 3;
+                operator2->operated_number = operator2->operated_number * 10 + 3;
                 if (point_flag == 1)
                 {
-                    operator2.point_addr += 1;
+                    operator2->point_addr += 1;
                 }
                 spec_flag = 1;
                 break;
             }
             case four:
             {
-                operator2.operated_number = operator2.operated_number * 10 + 4;
+                operator2->operated_number = operator2->operated_number * 10 + 4;
                 if (point_flag == 1)
                 {
-                    operator2.point_addr += 1;
+                    operator2->point_addr += 1;
                 }
                 spec_flag = 1;
                 break;
             }
             case five:
             {
-                operator2.operated_number = operator2.operated_number * 10 + 5;
+                operator2->operated_number = operator2->operated_number * 10 + 5;
                 if (point_flag == 1)
                 {
-                    operator2.point_addr += 1;
+                    operator2->point_addr += 1;
                 }
                 spec_flag = 1;
                 break;
             }
             case six:
             {
-                operator2.operated_number = operator2.operated_number * 10 + 6;
+                operator2->operated_number = operator2->operated_number * 10 + 6;
                 if (point_flag == 1)
                 {
-                    operator2.point_addr += 1;
+                    operator2->point_addr += 1;
                 }
                 spec_flag = 1;
                 break;
             }
             case seven:
             {
-                operator2.operated_number = operator2.operated_number * 10 + 7;
+                operator2->operated_number = operator2->operated_number * 10 + 7;
                 if (point_flag == 1)
                 {
-                    operator2.point_addr += 1;
+                    operator2->point_addr += 1;
                 }
                 spec_flag = 1;
                 break;
             }
             case eight:
             {
-                operator2.operated_number = operator2.operated_number * 10 + 8;
+                operator2->operated_number = operator2->operated_number * 10 + 8;
                 if (point_flag == 1)
                 {
-                    operator2.point_addr += 1;
+                    operator2->point_addr += 1;
                 }
                 spec_flag = 1;
                 break;
             }
             case nine:
             {
-                operator2.operated_number = operator2.operated_number * 10 + 9;
+                operator2->operated_number = operator2->operated_number * 10 + 9;
                 if (point_flag == 1)
                 {
-                    operator2.point_addr += 1;
+                    operator2->point_addr += 1;
                 }
                 spec_flag = 1;
                 break;
             }
             case sign:
             {
-                if (operator2.operated_number == 0)
+                if (operator2->operated_number == 0)
                 {
                     ;
                 }
                 else
                 {
-                    operator2.operated_number = -operator2.operated_number;
+                    operator2->operated_number = -operator2->operated_number;
                 }
                 break;
             }
@@ -446,40 +448,40 @@ void execute_signal(Mouse *mouse)
             {
                 if (spec_flag != 0)
                 {
-                    switch (target)
+                    switch (*target)
                     {
                     case plus:
                     {
-                        operator1 = Number_plus(&operator1, &operator2);
+                        *operator1 = Number_plus(operator1, operator2);
                         break;
                     }
                     case minus:
                     {
-                        operator1 = Number_minus(&operator1, &operator2);
+                        *operator1 = Number_minus(operator1, operator2);
                         break;
                     }
                     case multiply:
                     {
-                        operator1 = Number_multiply(&operator1, &operator2);
+                        *operator1 = Number_multiply(operator1, operator2);
                         break;
                     }
                     case division:
                     {
-                        operator1 = Number_divide(&operator1, &operator2);
+                        *operator1 = Number_divide(operator1, operator2);
                         break;
                     }
                     default:
                         break;
                     }
                     point_flag = 0;
-                    operator2.operated_number = 0;
-                    operator2.point_addr = 0;
+                    operator2->operated_number = 0;
+                    operator2->point_addr = 0;
                     spec_flag = 0;
-                    target = plus;
+                    *target = plus;
                 }
                 else
                 {
-                    target = plus;
+                    *target = plus;
                 }
                 break;
             }
@@ -487,40 +489,40 @@ void execute_signal(Mouse *mouse)
             {
                 if (spec_flag != 0)
                 {
-                    switch (target)
+                    switch (*target)
                     {
                     case plus:
                     {
-                        operator1 = Number_plus(&operator1, &operator2);
+                        *operator1 = Number_plus(operator1, operator2);
                         break;
                     }
                     case minus:
                     {
-                        operator1 = Number_minus(&operator1, &operator2);
+                        *operator1 = Number_minus(operator1, operator2);
                         break;
                     }
                     case multiply:
                     {
-                        operator1 = Number_multiply(&operator1, &operator2);
+                        *operator1 = Number_multiply(operator1, operator2);
                         break;
                     }
                     case division:
                     {
-                        operator1 = Number_divide(&operator1, &operator2);
+                        *operator1 = Number_divide(operator1, operator2);
                         break;
                     }
                     default:
                         break;
                     }
                     point_flag = 0;
-                    operator2.operated_number = 0;
-                    operator2.point_addr = 0;
+                    operator2->operated_number = 0;
+                    operator2->point_addr = 0;
                     spec_flag = 0;
-                    target = minus;
+                    *target = minus;
                 }
                 else
                 {
-                    target = minus;
+                    *target = minus;
                 }
                 break;
             }
@@ -528,40 +530,40 @@ void execute_signal(Mouse *mouse)
             {
                 if (spec_flag != 0)
                 {
-                    switch (target)
+                    switch (*target)
                     {
                     case plus:
                     {
-                        operator1 = Number_plus(&operator1, &operator2);
+                        *operator1 = Number_plus(operator1, operator2);
                         break;
                     }
                     case minus:
                     {
-                        operator1 = Number_minus(&operator1, &operator2);
+                        *operator1 = Number_minus(operator1, operator2);
                         break;
                     }
                     case multiply:
                     {
-                        operator1 = Number_multiply(&operator1, &operator2);
+                        *operator1 = Number_multiply(operator1, operator2);
                         break;
                     }
                     case division:
                     {
-                        operator1 = Number_divide(&operator1, &operator2);
+                        *operator1 = Number_divide(operator1, operator2);
                         break;
                     }
                     default:
                         break;
                     }
                     point_flag = 0;
-                    operator2.operated_number = 0;
-                    operator2.point_addr = 0;
+                    operator2->operated_number = 0;
+                    operator2->point_addr = 0;
                     spec_flag = 0;
-                    target = multiply;
+                    *target = multiply;
                 }
                 else
                 {
-                    target = multiply;
+                    *target = multiply;
                 }
                 break;
             }
@@ -569,51 +571,51 @@ void execute_signal(Mouse *mouse)
             {
                 if (spec_flag != 0)
                 {
-                    switch (target)
+                    switch (*target)
                     {
                     case plus:
                     {
-                        operator1 = Number_plus(&operator1, &operator2);
+                        *operator1 = Number_plus(operator1, operator2);
                         break;
                     }
                     case minus:
                     {
-                        operator1 = Number_minus(&operator1, &operator2);
+                        *operator1 = Number_minus(operator1, operator2);
                         break;
                     }
                     case multiply:
                     {
-                        operator1 = Number_multiply(&operator1, &operator2);
+                        *operator1 = Number_multiply(operator1, operator2);
                         break;
                     }
                     case division:
                     {
-                        operator1 = Number_divide(&operator1, &operator2);
+                        *operator1 = Number_divide(operator1, operator2);
                         break;
                     }
                     default:
                         break;
                     }
                     point_flag = 0;
-                    operator2.operated_number = 0;
-                    operator2.point_addr = 0;
+                    operator2->operated_number = 0;
+                    operator2->point_addr = 0;
                     spec_flag = 0;
-                    target = division;
+                    *target = division;
                 }
                 else
                 {
-                    target = division;
+                    *target = division;
                 }
                 break;
             }
             case C:
             {
                 curr_state = clear;
-                target = none;
-                operator1.operated_number = 0;
-                operator1.point_addr = 0;
-                operator2.operated_number = 0;
-                operator2.point_addr = 0;
+                *target = none;
+                operator1->operated_number = 0;
+                operator1->point_addr = 0;
+                operator2->operated_number = 0;
+                operator2->point_addr = 0;
                 point_flag = 0;
                 break;
             }
@@ -647,15 +649,15 @@ void execute_signal(Mouse *mouse)
             case zero:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = show_operator.operated_number * 10 + 0;
-                if (show_operator.point_addr != 0)
+                operator1->operated_number = show_operator->operated_number * 10 + 0;
+                if (show_operator->point_addr != 0)
                 {
-                    operator1.point_addr = show_operator.point_addr + 1;
+                    operator1->point_addr = show_operator->point_addr + 1;
                     point_flag = 1;
                 }
                 else
                 {
-                    operator1.point_addr = 0;
+                    operator1->point_addr = 0;
                     point_flag = 0;
                 }
                 break;
@@ -663,15 +665,15 @@ void execute_signal(Mouse *mouse)
             case one:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = show_operator.operated_number * 10 + 1;
-                if (show_operator.point_addr != 0)
+                operator1->operated_number = show_operator->operated_number * 10 + 1;
+                if (show_operator->point_addr != 0)
                 {
-                    operator1.point_addr = show_operator.point_addr + 1;
+                    operator1->point_addr = show_operator->point_addr + 1;
                     point_flag = 1;
                 }
                 else
                 {
-                    operator1.point_addr = 0;
+                    operator1->point_addr = 0;
                     point_flag = 0;
                 }
                 break;
@@ -679,15 +681,15 @@ void execute_signal(Mouse *mouse)
             case two:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = show_operator.operated_number * 10 + 2;
-                if (show_operator.point_addr != 0)
+                operator1->operated_number = show_operator->operated_number * 10 + 2;
+                if (show_operator->point_addr != 0)
                 {
-                    operator1.point_addr = show_operator.point_addr + 1;
+                    operator1->point_addr = show_operator->point_addr + 1;
                     point_flag = 1;
                 }
                 else
                 {
-                    operator1.point_addr = 0;
+                    operator1->point_addr = 0;
                     point_flag = 0;
                 }
                 break;
@@ -695,15 +697,15 @@ void execute_signal(Mouse *mouse)
             case three:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = show_operator.operated_number * 10 + 3;
-                if (show_operator.point_addr != 0)
+                operator1->operated_number = show_operator->operated_number * 10 + 3;
+                if (show_operator->point_addr != 0)
                 {
-                    operator1.point_addr = show_operator.point_addr + 1;
+                    operator1->point_addr = show_operator->point_addr + 1;
                     point_flag = 1;
                 }
                 else
                 {
-                    operator1.point_addr = 0;
+                    operator1->point_addr = 0;
                     point_flag = 0;
                 }
                 break;
@@ -711,15 +713,15 @@ void execute_signal(Mouse *mouse)
             case four:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = show_operator.operated_number * 10 + 4;
-                if (show_operator.point_addr != 0)
+                operator1->operated_number = show_operator->operated_number * 10 + 4;
+                if (show_operator->point_addr != 0)
                 {
-                    operator1.point_addr = show_operator.point_addr + 1;
+                    operator1->point_addr = show_operator->point_addr + 1;
                     point_flag = 1;
                 }
                 else
                 {
-                    operator1.point_addr = 0;
+                    operator1->point_addr = 0;
                     point_flag = 0;
                 }
                 break;
@@ -727,15 +729,15 @@ void execute_signal(Mouse *mouse)
             case five:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = show_operator.operated_number * 10 + 5;
-                if (show_operator.point_addr != 0)
+                operator1->operated_number = show_operator->operated_number * 10 + 5;
+                if (show_operator->point_addr != 0)
                 {
-                    operator1.point_addr = show_operator.point_addr + 1;
+                    operator1->point_addr = show_operator->point_addr + 1;
                     point_flag = 1;
                 }
                 else
                 {
-                    operator1.point_addr = 0;
+                    operator1->point_addr = 0;
                     point_flag = 0;
                 }
                 break;
@@ -743,15 +745,15 @@ void execute_signal(Mouse *mouse)
             case six:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = show_operator.operated_number * 10 + 6;
-                if (show_operator.point_addr != 0)
+                operator1->operated_number = show_operator->operated_number * 10 + 6;
+                if (show_operator->point_addr != 0)
                 {
-                    operator1.point_addr = show_operator.point_addr + 1;
+                    operator1->point_addr = show_operator->point_addr + 1;
                     point_flag = 1;
                 }
                 else
                 {
-                    operator1.point_addr = 0;
+                    operator1->point_addr = 0;
                     point_flag = 0;
                 }
                 break;
@@ -759,15 +761,15 @@ void execute_signal(Mouse *mouse)
             case seven:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = show_operator.operated_number * 10 + 7;
-                if (show_operator.point_addr != 0)
+                operator1->operated_number = show_operator->operated_number * 10 + 7;
+                if (show_operator->point_addr != 0)
                 {
-                    operator1.point_addr = show_operator.point_addr + 1;
+                    operator1->point_addr = show_operator->point_addr + 1;
                     point_flag = 1;
                 }
                 else
                 {
-                    operator1.point_addr = 0;
+                    operator1->point_addr = 0;
                     point_flag = 0;
                 }
                 break;
@@ -775,15 +777,15 @@ void execute_signal(Mouse *mouse)
             case eight:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = show_operator.operated_number * 10 + 8;
-                if (show_operator.point_addr != 0)
+                operator1->operated_number = show_operator->operated_number * 10 + 8;
+                if (show_operator->point_addr != 0)
                 {
-                    operator1.point_addr = show_operator.point_addr + 1;
+                    operator1->point_addr = show_operator->point_addr + 1;
                     point_flag = 1;
                 }
                 else
                 {
-                    operator1.point_addr = 0;
+                    operator1->point_addr = 0;
                     point_flag = 0;
                 }
                 break;
@@ -791,26 +793,26 @@ void execute_signal(Mouse *mouse)
             case nine:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = show_operator.operated_number * 10 + 9;
-                if (show_operator.point_addr != 0)
+                operator1->operated_number = show_operator->operated_number * 10 + 9;
+                if (show_operator->point_addr != 0)
                 {
-                    operator1.point_addr = show_operator.point_addr + 1;
+                    operator1->point_addr = show_operator->point_addr + 1;
                     point_flag = 1;
                 }
                 else
                 {
-                    operator1.point_addr = 0;
+                    operator1->point_addr = 0;
                     point_flag = 0;
                 }
                 break;
             }
             case point:
             {
-                if (show_operator.point_addr == 0)
+                if (show_operator->point_addr == 0)
                 {
                     curr_state = to_be_added_op1;
-                    operator1.operated_number = show_operator.operated_number;
-                    operator1.point_addr = 0;
+                    operator1->operated_number = show_operator->operated_number;
+                    operator1->point_addr = 0;
                     point_flag = 1;
                 }
                 break;
@@ -818,15 +820,15 @@ void execute_signal(Mouse *mouse)
             case sign:
             {
                 curr_state = to_be_added_op1;
-                operator1.operated_number = -show_operator.operated_number;
-                if (show_operator.point_addr != 0)
+                operator1->operated_number = -show_operator->operated_number;
+                if (show_operator->point_addr != 0)
                 {
-                    operator1.point_addr = show_operator.point_addr;
+                    operator1->point_addr = show_operator->point_addr;
                     point_flag = 1;
                 }
                 else
                 {
-                    operator1.point_addr = 0;
+                    operator1->point_addr = 0;
                     point_flag = 0;
                 }
                 break;
@@ -836,11 +838,11 @@ void execute_signal(Mouse *mouse)
 
                 curr_state = to_be_added_op2;
                 operator1 = show_operator;
-                target = plus;
+                *target = plus;
                 spec_flag = 0;
                 point_flag = 0;
-                operator2.point_addr = 0;
-                operator2.operated_number = 0;
+                operator2->point_addr = 0;
+                operator2->operated_number = 0;
                 break;
             }
             case minus:
@@ -848,11 +850,11 @@ void execute_signal(Mouse *mouse)
 
                 curr_state = to_be_added_op2;
                 operator1 = show_operator;
-                target = minus;
+                *target = minus;
                 spec_flag = 0;
                 point_flag = 0;
-                operator2.point_addr = 0;
-                operator2.operated_number = 0;
+                operator2->point_addr = 0;
+                operator2->operated_number = 0;
                 break;
             }
             case multiply:
@@ -860,11 +862,11 @@ void execute_signal(Mouse *mouse)
 
                 curr_state = to_be_added_op2;
                 operator1 = show_operator;
-                target = multiply;
+                *target = multiply;
                 spec_flag = 0;
                 point_flag = 0;
-                operator2.point_addr = 0;
-                operator2.operated_number = 0;
+                operator2->point_addr = 0;
+                operator2->operated_number = 0;
                 break;
             }
             case division:
@@ -872,22 +874,22 @@ void execute_signal(Mouse *mouse)
 
                 curr_state = to_be_added_op2;
                 operator1 = show_operator;
-                target = division;
+                *target = division;
                 spec_flag = 0;
                 point_flag = 0;
-                operator2.point_addr = 0;
-                operator2.operated_number = 0;
+                operator2->point_addr = 0;
+                operator2->operated_number = 0;
                 break;
             }
             case C:
             {
                 curr_state = clear;
                 point_flag = 0;
-                operator2.point_addr = 0;
-                operator2.operated_number = 0;
-                target = none;
-                operator1.operated_number = 0;
-                operator1.point_addr = 0;
+                operator2->point_addr = 0;
+                operator2->operated_number = 0;
+                *target = none;
+                operator1->operated_number = 0;
+                operator1->point_addr = 0;
                 break;
             }
             default:
@@ -913,8 +915,8 @@ void execute_signal(Mouse *mouse)
     {
     case clear:
     {
-        show_operator.operated_number = 0;
-        show_operator.point_addr = 0;
+        show_operator->operated_number = 0;
+        show_operator->point_addr = 0;
         break;
     }
     case to_be_added_op1:
@@ -936,26 +938,26 @@ void execute_signal(Mouse *mouse)
     }
     case show:
     {
-        switch (target)
+        switch (*target)
         {
         case plus:
         {
-            show_operator = Number_plus(&operator1, &operator2);
+            *show_operator = Number_plus(operator1, operator2);
             break;
         }
         case minus:
         {
-            show_operator = Number_minus(&operator1, &operator2);
+            *show_operator = Number_minus(operator1, operator2);
             break;
         }
         case multiply:
         {
-            show_operator = Number_multiply(&operator1, &operator2);
+            *show_operator = Number_multiply(operator1, operator2);
             break;
         }
         case division:
         {
-            show_operator = Number_divide(&operator1, &operator2);
+            *show_operator = Number_divide(operator1, operator2);
             break;
         }
         default:
@@ -1069,7 +1071,9 @@ Number Number_plus(Number *op1, Number *op2)
         tmp.operated_number = op2->operated_number + op1->operated_number * power10(offset);
         tmp.point_addr = op2->point_addr;
     }
+    
     reduct_zero(&tmp);
+    reduct_len(&tmp);
     return tmp;
 }
 
@@ -1094,6 +1098,7 @@ Number Number_minus(Number *op1, Number *op2)
         tmp.point_addr = op2->point_addr;
     }
     reduct_zero(&tmp);
+    reduct_len(&tmp);
     return tmp;
 }
 
@@ -1103,6 +1108,7 @@ Number Number_multiply(Number *op1, Number *op2)
     tmp.operated_number = op1->operated_number * op2->operated_number;
     tmp.point_addr = op1->point_addr + op2->point_addr;
     reduct_zero(&tmp);
+    reduct_len(&tmp);
     return tmp;
 }
 
@@ -1159,6 +1165,7 @@ Number Number_divide(Number *op1, Number *op2)
             tmp.point_addr = 0;
         }
     }
+    reduct_len(&tmp);
     return tmp;
 }
 
@@ -1202,6 +1209,20 @@ void reduct_zero(Number *op)
         {
             op->operated_number = op->operated_number * 10;
             op->point_addr = op->point_addr + 1;
+        }
+    }
+    return;
+}
+
+void reduct_len(Number *op)
+{
+    uint8_t len = get_width(op->operated_number);
+    while (len > 12)
+    {
+        op->operated_number = op->operated_number / 10;
+        if (op->point_addr != 0)
+        {
+            op->point_addr += 1;
         }
     }
     return;

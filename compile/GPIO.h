@@ -38,5 +38,5 @@
 
 #endif // !_VGA_
 
-#define GPIO_E16(addr) (*((volatile uint16_t *)(addr)))
+#define GPIO_E16(addr) (*((volatile int16_t *)(addr)))
 #define GPIO_E8(addr) (*((volatile uint8_t *)(addr)))

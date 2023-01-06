@@ -37,7 +37,7 @@ C_OBJS := $(C_SRCS:.c=.o)
 LINK_OBJS += $(ASM_OBJS) $(C_OBJS)
 LINK_DEPS += $(LINKER_SCRIPT)
 
-CLEAN_OBJS += $(TARGET) $(LINK_OBJS) $(TARGET).txt $(TARGET).bin $(TARGET).mem
+CLEAN_OBJS += $(TARGET) $(LINK_OBJS) $(TARGET).txt $(TARGET).bin $(TARGET).mem $(TARGET)v2.mem
 
 CFLAGS += -march=$(RISCV_ARCH)
 CFLAGS += -mabi=$(RISCV_ABI)
@@ -46,8 +46,10 @@ CFLAGS += -mcmodel=$(RISCV_MCMODEL) -ffunction-sections -fdata-sections -fno-bui
 $(TARGET): $(LINK_OBJS) $(LINK_DEPS) Makefile
 	$(RISCV_GCC) $(CFLAGS) $(INCLUDES) $(LINK_OBJS) -o $@ $(LDFLAGS)
 	$(RISCV_OBJCOPY) -O binary $@ $@.bin
+	$(RISCV_OBJCOPY) -O verilog $@ $@.ver
 	$(RISCV_OBJDUMP) --disassemble-all $@ > $@.txt
 	python3 $(COMMON_DIR)/converter.py $@.bin
+	python3 $(COMMON_DIR)/converterv2.py $@.ver
 
 $(ASM_OBJS): %.o: %.S
 	$(RISCV_GCC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
