@@ -16,7 +16,7 @@ module Riscv
         output  [2:0]           rw_type, //RAM的读写类型（lb sb lh sh lw sw lbu lhu）
         
         output  [13:0]          rom_addr,
-        output  [31:0]          data,
+        //output  [31:0]          data,
         output                  alu_complete
 
         
