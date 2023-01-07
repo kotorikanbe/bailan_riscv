@@ -36,7 +36,11 @@ module ps2mouse_basemod(
     );
 
     always @(posedge CLOCK) begin
-        if(oTrig)
+        if (RESET == 'd0) begin
+            Xpos_reg <= 'd0;
+            Ypos_reg <= 'd0; 
+        end
+        else if(oTrig)
         begin
         Xpos_reg <= Xpos_reg + Xpos_add;
         Ypos_reg <= Ypos_reg + Ypos_add;
