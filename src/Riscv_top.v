@@ -9,12 +9,12 @@ module Riscv_top
         output  [3:0]           vga_o_blue,
         output  [3:0]           vga_o_green,
         output                  h_sync,
-        output                  v_sync,
-        output [31:0]           inst
+        output                  v_sync
+        //output [31:0]           inst
         //output  [31:0]          data
     );
     
-       // wire    [31:0]          inst;
+        wire    [31:0]          inst;
         wire    [13:0]          rom_addr;
         wire                    clk_alu;
         wire                    clk_fetch;
