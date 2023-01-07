@@ -11,8 +11,8 @@ module VGA_ps2_top
     output [3:0]         vga_o_green,
     output               h_sync,
     output               v_sync,
-    output [7:0]         mouse_position_x,
-    output [7:0]         mouse_position_y,
+    output [15:0]         mouse_position_x,
+    output [15:0]         mouse_position_y,
     output [7:0]         key_down,
 
     input  [7:0]         number12,
