@@ -25,7 +25,7 @@ module  Registers
             if(rst_n == 0) //清零，寄存器中默认都是0
                 for(i=0;i<32;i=i+1)     
                     registers[i]<=0;
-            else if(wr_en == 1)   //将数据写入寄存器
+            else if(wr_en == 1 && reg_des_i)   //将数据写入寄存器
                 registers[reg_des_i] = reg_des_dat_i;
 
         end
