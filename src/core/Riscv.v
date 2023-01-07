@@ -3,7 +3,6 @@ module Riscv
         input                   clk,
         input                   clk_alu,
         input                   clk_fetch,
-        input                   clk_ram,
         input                   clk_reg,
         input                   clk_ctl_mul_div,
         input                   rst_n,

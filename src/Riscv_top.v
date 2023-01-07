@@ -154,7 +154,6 @@ module Riscv_top
             .clk(clk),
             .clk_alu(clk_alu),
             .clk_fetch(clk_fetch),
-            .clk_ram(clk_ram),
             .clk_reg(clk_reg),
             .clk_ctl_mul_div(clk_ctl_mul_div),
 
