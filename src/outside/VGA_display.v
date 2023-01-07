@@ -320,7 +320,7 @@ module VGA_display
                 data_green_reg <= data_o_static[3:0];
             end
             6'b010000: begin
-                if (symbol == 'd0) begin
+                if (symbol == 'd1) begin
                     data_red_reg <= data_o_minus[11:8];
                     data_green_reg <= data_o_minus[7:4];
                     data_blue_reg <= data_o_minus[3:0];
