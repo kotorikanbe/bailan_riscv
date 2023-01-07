@@ -1040,18 +1040,6 @@ module VGA_display
                 endcase
             end
             6'b100001: begin
-                if (point == 'd12) begin
-                    data_red_reg <= data_o_point[11:8];
-                    data_green_reg <= data_o_point[7:4];
-                    data_blue_reg <= data_o_point[3:0];
-                end
-                else begin
-                    data_red_reg <= 'hE;
-                    data_green_reg <= 'hE;
-                    data_blue_reg <= 'hE;
-                end
-            end
-            6'b100010: begin
                 if (point == 'd11) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
@@ -1063,7 +1051,7 @@ module VGA_display
                     data_blue_reg <= 'hE;
                 end
             end
-            6'b100011: begin
+            6'b100010: begin
                 if (point == 'd10) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
@@ -1075,7 +1063,7 @@ module VGA_display
                     data_blue_reg <= 'hE;
                 end
             end
-            6'b100100: begin
+            6'b100011: begin
                 if (point == 'd9) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
@@ -1087,7 +1075,7 @@ module VGA_display
                     data_blue_reg <= 'hE;
                 end
             end
-            6'b100101: begin
+            6'b100100: begin
                 if (point == 'd8) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
@@ -1099,7 +1087,7 @@ module VGA_display
                     data_blue_reg <= 'hE;
                 end
             end
-            6'b100110: begin
+            6'b100101: begin
                 if (point == 'd7) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
@@ -1111,7 +1099,7 @@ module VGA_display
                     data_blue_reg <= 'hE;
                 end
             end
-            6'b100111: begin
+            6'b100110: begin
                 if (point == 'd6) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
@@ -1123,7 +1111,7 @@ module VGA_display
                     data_blue_reg <= 'hE;
                 end
             end
-            6'b101000: begin
+            6'b100111: begin
                 if (point == 'd5) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
@@ -1135,7 +1123,7 @@ module VGA_display
                     data_blue_reg <= 'hE;
                 end
             end
-            6'b101001: begin
+            6'b101000: begin
                 if (point == 'd4) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
@@ -1147,7 +1135,7 @@ module VGA_display
                     data_blue_reg <= 'hE;
                 end
             end
-            6'b101010: begin
+            6'b101001: begin
                 if (point == 'd3) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
@@ -1159,7 +1147,7 @@ module VGA_display
                     data_blue_reg <= 'hE;
                 end
             end
-            6'b101011: begin
+            6'b101010: begin
                 if (point == 'd2) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
@@ -1171,7 +1159,7 @@ module VGA_display
                     data_blue_reg <= 'hE;
                 end
             end
-            6'b101100: begin
+            6'b101011: begin
                 if (point == 'd1) begin
                     data_red_reg <= data_o_point[11:8];
                     data_green_reg <= data_o_point[7:4];
@@ -1183,6 +1171,11 @@ module VGA_display
                     data_blue_reg <= 'hE;
                 end
             end
+            6'b101100: begin
+                    data_red_reg <= 'hE;
+                    data_green_reg <= 'hE;
+                    data_blue_reg <= 'hE;
+                end
             default: begin
                 data_red_reg <= 'hE;
                 data_green_reg <= 'hE;
