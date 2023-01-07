@@ -23,7 +23,7 @@ module Riscv
         
 
     );
-        
+        wire    [31:0]          data;
         wire    [31:0]          pc_new;
         wire    [31:0]          pc_out;
         wire    [31:0]          pc_plus_4;
