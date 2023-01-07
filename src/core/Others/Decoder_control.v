@@ -160,7 +160,7 @@ module Decoder_control
 	    assign    is_I_sltiu    = ((is_I_cal) && (funct3 == 3'h3));
 	    assign    is_I_xori 	= ((is_I_cal) && (funct3 == 3'h4));
 	    assign    is_I_srli 	= ((is_I_cal) && (funct3 == 3'h5 && funct7 == 7'h00));
-	    assign    is_I_srai 	= ((is_I_cal) && (funct3 == 3'h5 && funct7 == 7'h10));
+	    assign    is_I_srai 	= ((is_I_cal) && (funct3 == 3'h5 && funct7 == 7'h20));
 	    assign    is_I_ori      = ((is_I_cal) && (funct3 == 3'h6));
 	    assign    is_I_andi 	= ((is_I_cal) && (funct3 == 3'h7));
 

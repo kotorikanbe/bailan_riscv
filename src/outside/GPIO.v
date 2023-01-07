@@ -68,6 +68,9 @@ module GPIO
                     VGA[i] <= 0;
                 for(i=0;i<=2;i=i+1)
                     Mouse[i] <= 0;
+                // Mouse[0] = 666;
+                // Mouse[1] = 666;
+                // Mouse[2] = 666;
             end
             else begin
                 if(wr_en == 1) begin //CPU要输出到VGA
@@ -83,6 +86,9 @@ module GPIO
                     for(i=0;i<=13;i=i+1) begin
                         VGA[i] <= VGA[i];
                     end
+                    // for(i=0;i<=2;i=i+1) begin
+                    //     Mouse[i] <= Mouse[i];
+                    // end
                     Mouse[0] <= {16'b0000_0000_0000_0000,Mouse_X};
                     Mouse[1] <= {16'b0000_0000_0000_0000,Mouse_Y};
                     Mouse[2] <= {24'b0000_0000_0000_0000_0000_0000,Mouse_Click}; 
