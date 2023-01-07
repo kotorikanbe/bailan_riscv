@@ -93,7 +93,7 @@ module GPIO
         //读取
         //只有一种情况：CPU读取鼠标坐标
         always @(*) begin
-            case (addr[3:0])
+            case (addr)
                 MOUSE_X:        dat_o = Mouse[0];
                 MOUSE_Y:        dat_o = Mouse[1];
                 MOUSE_CLICK:    dat_o = Mouse[2];
