@@ -837,7 +837,7 @@ void execute_signal(Mouse *mouse, Number *operator1, Number *operator2, Number *
             {
 
                 curr_state = to_be_added_op2;
-                operator1 = show_operator;
+                *operator1 = *show_operator;
                 *target = plus;
                 spec_flag = 0;
                 point_flag = 0;
@@ -849,7 +849,7 @@ void execute_signal(Mouse *mouse, Number *operator1, Number *operator2, Number *
             {
 
                 curr_state = to_be_added_op2;
-                operator1 = show_operator;
+                *operator1 = *show_operator;
                 *target = minus;
                 spec_flag = 0;
                 point_flag = 0;
@@ -861,7 +861,7 @@ void execute_signal(Mouse *mouse, Number *operator1, Number *operator2, Number *
             {
 
                 curr_state = to_be_added_op2;
-                operator1 = show_operator;
+                *operator1 = *show_operator;
                 *target = multiply;
                 spec_flag = 0;
                 point_flag = 0;
@@ -873,7 +873,7 @@ void execute_signal(Mouse *mouse, Number *operator1, Number *operator2, Number *
             {
 
                 curr_state = to_be_added_op2;
-                operator1 = show_operator;
+                *operator1 = *show_operator;
                 *target = division;
                 spec_flag = 0;
                 point_flag = 0;
@@ -921,18 +921,18 @@ void execute_signal(Mouse *mouse, Number *operator1, Number *operator2, Number *
     }
     case to_be_added_op1:
     {
-        show_operator = operator1;
+        *show_operator = *operator1;
         break;
     }
     case to_be_added_op2:
     {
         if (spec_flag)
         {
-            show_operator = operator2;
+            *show_operator = *operator2;
         }
         else
         {
-            show_operator = operator1;
+            *show_operator = *operator1;
         }
         break;
     }
@@ -1114,18 +1114,26 @@ void VGA_display(Number *number)
     }
     GPIO_E8(VGA_POINT) = number->point_addr;
     volatile uint8_t *num_ptr = (uint8_t *)VGA_NUM_0;
-    while (tmp != 0)
+    if (tmp == 0)
     {
-        GPIO_E8(num_ptr) = tmp % 10;
-        tmp = tmp / 10;
-        if (num_ptr == (uint8_t *)VGA_NUM_11)
+        GPIO_E8(num_ptr) = tmp;
+        num_ptr = num_ptr + 1;
+    }
+    else
+    {
+        while (tmp != 0)
         {
-            flag = 1;
-            break;
-        }
-        else
-        {
-            num_ptr = num_ptr + 1;
+            GPIO_E8(num_ptr) = tmp % 10;
+            tmp = tmp / 10;
+            if (num_ptr == (uint8_t *)VGA_NUM_11)
+            {
+                flag = 1;
+                break;
+            }
+            else
+            {
+                num_ptr = num_ptr + 1;
+            }
         }
     }
     while (num_ptr <= (uint8_t *)VGA_NUM_11)

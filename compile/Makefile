@@ -8,7 +8,7 @@ COMMON_DIR = .
 
 C_SRCS := calculator.c main.c
 
-CFLAGS += -O0 -Wall
+CFLAGS += -O2 -Wall
 #-O0 -Wall
 RISCV_PATH := /home/linchi/.local/xPacks/@xpack-dev-tools/riscv-none-elf-gcc/12.2.0-1.1/.content/
 
